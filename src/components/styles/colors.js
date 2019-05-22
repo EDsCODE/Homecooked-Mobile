@@ -7,5 +7,6 @@ export const white = "white";
 export const transparent = "transparent";
 export const facebookBlue = "#084A93";
 
+export const lightestGray = "#D8D8D8";
 export const primaryText = black;
 export const secondaryText = gray;

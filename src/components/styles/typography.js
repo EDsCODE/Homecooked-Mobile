@@ -10,6 +10,9 @@ export const smallestFontSize = 10;
 export const largeHeaderFontSize = 20;
 export const headerFontSize = 18;
 
+export const heavy = "800";
+export const medium = "600";
+
 export const fontFamily = "Avenir";
 
 const base = {};
