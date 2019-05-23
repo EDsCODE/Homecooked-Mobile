@@ -13,7 +13,7 @@ import NavigationService from "Homecooked/src/utils/NavigationService";
 import TextField from "Homecooked/src/components/TextFields/Material";
 import LocationField from "Homecooked/src/components/TextFields/LocationAutocomplete";
 
-export default class Prompt extends Component {
+export default class BasicInfo extends Component {
     state = {
         address: "",
         phoneNumber: ""

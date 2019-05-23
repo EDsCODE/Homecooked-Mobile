@@ -49,10 +49,11 @@ export default class Main extends Component {
         console.log(index);
         if (index == 0) {
             // render header cell
-            return <HeaderCell name="Eric" />;
+            return <HeaderCell id={item.id} name="Eric" />;
         } else {
             return (
                 <Cell
+                    id={item.id}
                     title={item.title}
                     prompt={item.prompt}
                     onPress={item.onPress}
@@ -60,6 +61,8 @@ export default class Main extends Component {
             );
         }
     };
+
+    _keyExtractor = (item, index) => item.id;
 
     _renderSeparator = () => (
         <View
@@ -78,6 +81,7 @@ export default class Main extends Component {
                     renderItem={this._renderItem}
                     ItemSeparatorComponent={this._renderSeparator}
                     bounces={false}
+                    keyExtractor={this._keyExtractor}
                 />
             </View>
         );

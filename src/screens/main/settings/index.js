@@ -19,6 +19,7 @@ const SettingsStack = createStackNavigator(
     }
 );
 
+// remove tabbar when a route is clicked in settings
 SettingsStack.navigationOptions = ({ navigation }) => {
     let tabBarVisible = true;
     if (navigation.state.index > 0) {

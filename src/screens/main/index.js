@@ -14,7 +14,7 @@ const MainStack = createBottomTabNavigator(
         }
     },
     {
-        initialRouteName: "Settings"
+        initialRouteName: "Feed"
     }
 );
 

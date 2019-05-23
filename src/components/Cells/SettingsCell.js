@@ -4,7 +4,11 @@ import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 
 const Cell = props => (
-    <TouchableOpacity onPress={props.onPress} style={props.style}>
+    <TouchableOpacity
+        onPress={props.onPress}
+        style={props.style}
+        key={props.key}
+    >
         <View style={styles.row}>
             <Text style={styles.title}>{props.title}</Text>
             {props.prompt ? (

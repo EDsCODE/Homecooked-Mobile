@@ -10,13 +10,17 @@ const BasicHeader = props => (
             justifyContent: "space-around"
         }}
         leftComponent={
-            <Icon
-                name="ios-arrow-round-back"
-                type="ionicon"
-                containerStyle={{ marginLeft: Spacing.base }}
-                size={40}
-                onPress={props.leftOnPress}
-            />
+            props.leftComponent ? (
+                props.leftComponent
+            ) : (
+                <Icon
+                    name="ios-arrow-round-back"
+                    type="ionicon"
+                    containerStyle={{ marginLeft: Spacing.base }}
+                    size={40}
+                    onPress={props.leftOnPress}
+                />
+            )
         }
         centerComponent={{
             text: props.title,
@@ -27,6 +31,7 @@ const BasicHeader = props => (
                 ? rightComponents[props.rightComponent](props)
                 : null
         }
+        props
     />
 );
 
