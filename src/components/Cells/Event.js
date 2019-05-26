@@ -1,26 +1,3 @@
-/* <View style={{ margin: Spacing.small, flexDirection: "row" }}>
-    <View
-        style={{
-            flex: 1,
-            flexDirection: "column",
-            alignItems: "flex-start"
-        }}
-    >
-        <Text>{title}</Text>
-        <Text>{date}</Text>
-    </View>
-    <View
-        style={{
-            flex: 1,
-            flexDirection: "column",
-            alignItems: "flex-end"
-        }}
-    >
-        <Text>{price}</Text>
-        <Text>{distance}</Text>
-    </View>
-</View> */
-
 import React, { Component } from "react";
 import {
     View,
@@ -112,7 +89,7 @@ export default class EventCard extends Component {
     }
 
     render() {
-        let { title, date, distance, price, onPress, people } = this.props;
+        let { title, date, distance, price, onPress, people, key } = this.props;
         let _dateWithType = dateWithMealType(date);
 
         return (
@@ -120,6 +97,7 @@ export default class EventCard extends Component {
                 style={styles.card}
                 onPress={onPress}
                 activeOpacity={1.0}
+                key={key}
             >
                 <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
                     <Carousel
@@ -166,7 +144,7 @@ export default class EventCard extends Component {
                             ]}
                         >
                             <MinorText style={{ color: "white" }}>
-                                {`Thu, Mar 28`}
+                                {`Thu, Sept 28`}
                             </MinorText>
                         </View>
                         <View style={[styles.badge]}>
@@ -230,6 +208,8 @@ const styles = StyleSheet.create({
         paddingRight: 10,
         paddingLeft: 10,
         borderBottomLeftRadius: 5,
-        backgroundColor: "#e55a44"
+        backgroundColor: "#e55a44",
+        justifyContent: "center",
+        alignItems: "center"
     }
 });

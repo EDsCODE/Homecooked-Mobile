@@ -5,14 +5,19 @@ import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 export default props => (
     <View style={[styles.bar, props.style]}>
         <View style={styles.textContainer}>
-            <Text style={[styles.price, { color: props.color }]}>
+            <Text style={[styles.price, { color: props.mainTextColor }]}>
                 {props.mainText}
             </Text>
             <Text style={styles.subInfo}>{props.subText}</Text>
         </View>
         <View style={styles.buttonContainer}>
             <TouchableOpacity>
-                <View style={[styles.button, { backgroundColor: props.color }]}>
+                <View
+                    style={[
+                        styles.button,
+                        { backgroundColor: props.buttonColor }
+                    ]}
+                >
                     <Text style={styles.buttonText}>{props.buttonText}</Text>
                 </View>
             </TouchableOpacity>
@@ -35,11 +40,11 @@ const styles = StyleSheet.create({
         borderColor: Color.lightestGray
     },
     textContainer: {
-        flex: 1,
+        flex: 3,
         flexDirection: "column"
     },
     buttonContainer: {
-        flex: 1,
+        flex: 2,
         alignItems: "flex-end"
     },
     button: {
@@ -61,6 +66,7 @@ const styles = StyleSheet.create({
     },
     subInfo: {
         fontFamily: Typography.fontFamily,
+        fontSize: Typography.smallFontSize,
         color: Color.lightGray
     }
 });

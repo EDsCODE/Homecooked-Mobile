@@ -10,6 +10,8 @@ import UtilityBar from "Homecooked/src/components/Buttons/UtilityBar";
 import LocationSection from "Homecooked/src/components/Event/Location";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 import Separator from "Homecooked/src/components/Separator";
+import PrimaryText from "Homecooked/src/components/Text/Primary";
+import MinorText from "Homecooked/src/components/Text/Minor";
 
 const people = [
     {
@@ -39,24 +41,16 @@ export default class Feed extends Component {
                     contentInset={{ bottom: 100 }}
                     showsVerticalScrollIndicator={false}
                 >
-                    <HeroSection />
-                    <Separator />
-                    <InfoSection />
+                    <PrimaryText style={{ marginHorizontal: Spacing.large }}>
+                        A Texan Treat
+                    </PrimaryText>
+                    <MinorText style={{ marginHorizontal: Spacing.large }}>
+                        Dinner on Thursday, March 28th
+                    </MinorText>
                     <PeopleRow people={people} />
                     <Separator />
                     <MenuSection />
-                    <Separator />
-                    <LocationSection />
-                    <Separator />
-                    <RatingSection />
                 </ScrollView>
-                <UtilityBar
-                    mainTextColor={Color.green}
-                    buttonColor={Color.green}
-                    mainText={"$16 / person"}
-                    subText={"2 seats left"}
-                    buttonText={"RSVP"}
-                />
             </View>
         );
     }

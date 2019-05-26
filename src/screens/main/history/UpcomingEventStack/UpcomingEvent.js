@@ -52,10 +52,10 @@ export default class Feed extends Component {
                 </ScrollView>
                 <UtilityBar
                     mainTextColor={Color.green}
-                    buttonColor={Color.green}
-                    mainText={"$16 / person"}
-                    subText={"2 seats left"}
-                    buttonText={"RSVP"}
+                    buttonColor={Color.orange}
+                    mainText={"Status: Booked"}
+                    subText={"Happening in 3 days"}
+                    buttonText={"Refund"}
                 />
             </View>
         );

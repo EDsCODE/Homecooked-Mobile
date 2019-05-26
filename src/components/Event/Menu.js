@@ -19,8 +19,12 @@ export default class Menu extends Component {
         }
     ];
 
-    _renderItem = ({ item }) => {
-        return <Row name={item.name} description={item.description} />;
+    _keyExtractor = (item, index) => item.id;
+
+    _renderItem = ({ item, index }) => {
+        return (
+            <Row id={index} name={item.name} description={item.description} />
+        );
     };
 
     _renderSeparator = () => (
@@ -38,6 +42,7 @@ export default class Menu extends Component {
             <View style={styles.container}>
                 <PrimaryText>What's Cooking</PrimaryText>
                 <FlatList
+                    keyExtractor={this._keyExtractor}
                     data={this.menu}
                     renderItem={this._renderItem}
                     ItemSeparatorComponent={this._renderSeparator}

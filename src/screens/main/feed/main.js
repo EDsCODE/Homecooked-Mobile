@@ -32,7 +32,7 @@ export default class Feed extends Component {
     _renderItem = ({ item }) => {
         return (
             <EventCell
-                id={item.id}
+                key={item.id}
                 title={item.title}
                 date={item.date}
                 price={item.price}
