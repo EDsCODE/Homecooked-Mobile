@@ -7,7 +7,7 @@ const Button = props => (
         <View
             style={{
                 width: Spacing.deviceWidth - 40,
-                height: 40,
+                height: 50,
                 borderColor: props.borderColor || Color.transparent,
                 backgroundColor: props.fill || Color.transparent,
                 borderRadius: 4,
@@ -19,8 +19,9 @@ const Button = props => (
             <Text
                 style={{
                     color: props.textColor || Color.white,
-                    fontSize: 15,
-                    fontFamily: Typography.fontFamily
+                    fontSize: Typography.baseFontSize,
+                    fontFamily: Typography.fontFamily,
+                    fontWeight: Typography.heavy
                 }}
             >
                 {props.title}

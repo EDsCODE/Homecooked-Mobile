@@ -29,7 +29,14 @@ const people = [
     }
 ];
 
-export default class Feed extends Component {
+export default class Event extends Component {
+    state = {
+        modules: ["dateTime", "location", "description", "refundPolicy"]
+    };
+    _navigateToCreateProfile = () => {
+        this.props.navigation.navigate("BookingStack");
+    };
+
     render() {
         return (
             <View style={{ flex: 1 }}>
@@ -41,7 +48,7 @@ export default class Feed extends Component {
                 >
                     <HeroSection />
                     <Separator />
-                    <InfoSection />
+                    <InfoSection modules={this.state.modules} />
                     <PeopleRow people={people} />
                     <Separator />
                     <MenuSection />
@@ -56,6 +63,7 @@ export default class Feed extends Component {
                     mainText={"$16 / person"}
                     subText={"2 seats left"}
                     buttonText={"RSVP"}
+                    onPress={this._navigateToCreateProfile}
                 />
             </View>
         );

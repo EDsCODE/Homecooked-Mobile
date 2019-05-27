@@ -30,6 +30,9 @@ const people = [
 ];
 
 export default class Feed extends Component {
+    state = {
+        modules: ["dateTime", "location", "description", "refundPolicy"]
+    };
     render() {
         return (
             <View style={{ flex: 1 }}>
@@ -41,7 +44,7 @@ export default class Feed extends Component {
                 >
                     <HeroSection />
                     <Separator />
-                    <InfoSection />
+                    <InfoSection modules={this.state.modules} />
                     <PeopleRow people={people} />
                     <Separator />
                     <MenuSection />

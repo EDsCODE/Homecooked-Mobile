@@ -11,7 +11,7 @@ export default props => (
             <Text style={styles.subInfo}>{props.subText}</Text>
         </View>
         <View style={styles.buttonContainer}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={props.onPress}>
                 <View
                     style={[
                         styles.button,

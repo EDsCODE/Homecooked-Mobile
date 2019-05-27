@@ -5,7 +5,7 @@ import { Icon } from "react-native-elements";
 
 export default props => (
     <Icon
-        name="ios-close"
+        name={`ios-${props.icon || "close"}`}
         type="ionicon"
         color={Color.gray}
         size={55}
