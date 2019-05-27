@@ -29,7 +29,18 @@ const people = [
     }
 ];
 
-export default class Event extends Component {
+const menu = [
+    {
+        name: "Xialong Bao",
+        description: "Classic Soup dumplings"
+    },
+    {
+        name: "Zhongzi",
+        description:
+            "Sticky rice dumplings with salted egg and pork nestled inside"
+    }
+];
+export default class HostUpcomingEvent extends Component {
     state = {
         modules: ["dateTime", "location", "description", "refundPolicy"]
     };
@@ -51,7 +62,7 @@ export default class Event extends Component {
                     <InfoSection modules={this.state.modules} />
                     <PeopleRow people={people} />
                     <Separator />
-                    <MenuSection title={"What's cooking?"} />
+                    <MenuSection title={"What's cooking"} menu={menu} />
                     <Separator />
                     <LocationSection />
                     <Separator />
@@ -59,10 +70,10 @@ export default class Event extends Component {
                 </ScrollView>
                 <UtilityBar
                     mainTextColor={Color.green}
-                    buttonColor={Color.green}
-                    mainText={"$16 / person"}
-                    subText={"2 seats left"}
-                    buttonText={"RSVP"}
+                    buttonColor={Color.orange}
+                    mainText={"Status: Upcoming"}
+                    subText={"1 week away"}
+                    buttonText={"Cancel"}
                     onPress={this._navigateToCreateProfile}
                 />
             </View>

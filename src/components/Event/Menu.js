@@ -7,23 +7,11 @@ import MinorText from "Homecooked/src/components/Text/Minor";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 
 export default class Menu extends Component {
-    menu = [
-        {
-            name: "Xialong Bao",
-            description: "Classic Soup dumplings"
-        },
-        {
-            name: "Zhongzi",
-            description:
-                "Sticky rice dumplings with salted egg and pork nestled inside"
-        }
-    ];
-
     _keyExtractor = (item, index) => item.id;
 
-    _renderItem = ({ item, index }) => {
+    _renderItem = ({ item }) => {
         return (
-            <Row id={index} name={item.name} description={item.description} />
+            <Row id={item.id} name={item.name} description={item.description} />
         );
     };
 
@@ -38,14 +26,16 @@ export default class Menu extends Component {
     );
 
     render() {
+        let { title, menu, containerStyle } = this.props;
         return (
-            <View style={styles.container}>
-                <PrimaryText>What's Cooking</PrimaryText>
+            <View style={containerStyle ? containerStyle : styles.container}>
+                {title ? <PrimaryText>{title}</PrimaryText> : null}
                 <FlatList
                     keyExtractor={this._keyExtractor}
-                    data={this.menu}
+                    data={menu}
                     renderItem={this._renderItem}
                     ItemSeparatorComponent={this._renderSeparator}
+                    bounces={false}
                 />
             </View>
         );

@@ -1,6 +1,7 @@
 import { createSwitchNavigator } from "react-navigation";
 import Auth from "./auth";
 import Main from "./main";
+import Host from "./host";
 
 const AppStack = createSwitchNavigator(
     {
@@ -9,10 +10,13 @@ const AppStack = createSwitchNavigator(
         },
         Main: {
             screen: Main
+        },
+        Host: {
+            screen: Host
         }
     },
     {
-        initialRouteName: "Main"
+        initialRouteName: "Host"
     }
 );
 

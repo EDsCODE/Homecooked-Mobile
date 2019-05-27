@@ -7,7 +7,7 @@ import NavigationService from "Homecooked/src/utils/NavigationService";
 
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 
-export default class Main extends Component {
+export default class Host_Settings_Main extends Component {
     constructor() {
         super();
         this.state = {
@@ -18,11 +18,11 @@ export default class Main extends Component {
     settingRows = [
         {},
         {
-            title: "Switch to Host Mode",
-            onPress: () => NavigationService.navigate("Host")
+            title: "Switch to Guest Mode",
+            onPress: () => NavigationService.navigate("Main")
         },
         {
-            title: "Payment"
+            title: "Payouts"
         },
         {
             title: "Invite Friends",

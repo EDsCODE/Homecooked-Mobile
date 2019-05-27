@@ -2,10 +2,6 @@ import React, { Component } from "react";
 import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
 
 export default class Tabs extends Component {
-    state = {
-        tabSelected: 0
-    };
-
     select = index => {
         this.props.tabSelected(index);
     };

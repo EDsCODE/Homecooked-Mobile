@@ -46,12 +46,22 @@ let rightComponents = {
                 style={{
                     color: Color.orange,
                     fontFamily: Typography.fontFamily,
-                    marginRight: Spacing.base
+                    marginRight: Spacing.smaller
                 }}
             >
                 Next
             </Text>
         </TouchableOpacity>
+    ),
+    new: props => (
+        <Icon
+            name="ios-add"
+            type="ionicon"
+            containerStyle={{ marginRight: Spacing.smaller }}
+            size={30}
+            color={Color.gray}
+            onPress={props.rightOnPress}
+        />
     )
 };
 
