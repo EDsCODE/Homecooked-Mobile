@@ -6,8 +6,27 @@ import PromptText from "Homecooked/src/components/Text/Prompt";
 import CloseButton from "Homecooked/src/components/Buttons/Close";
 import BarButton from "Homecooked/src/components/Buttons/BarButton";
 import StaticField from "Homecooked/src/components/TextFields/Static";
+import Picker from "Homecooked/src/components/Picker/Basic";
+import DateTimePicker from "react-native-modal-datetime-picker";
+
+import moment from "moment";
 
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
+
+const durationItems = [
+    {
+        label: "1 hour",
+        value: 1
+    },
+    {
+        label: "1 hour and 30 minutes",
+        value: 1.5
+    },
+    {
+        label: "2 hours",
+        value: 2
+    }
+];
 
 export default class Time extends Component {
     _goBack = () => {
@@ -15,26 +34,69 @@ export default class Time extends Component {
     };
 
     state = {
-        minGuests: 0,
-        maxGuests: 0
+        startTime: 0,
+        duration: 0,
+        isDateTimePickerVisible: false,
+        durationPickerVisible: false
     };
 
     componentDidMount() {
-        let { minGuests, maxGuests } = this.props.screenProps.state;
+        let { startTime, duration } = this.props.screenProps.state;
         this.setState({
-            minGuests,
-            maxGuests
+            startTime,
+            duration
         });
     }
 
+    showDateTimePicker = () => {
+        this.setState({ isDateTimePickerVisible: true });
+    };
+
+    hideDateTimePicker = () => {
+        this.setState({ isDateTimePickerVisible: false });
+    };
+
+    handleDatePicked = time => {
+        console.log("A date has been picked: ", time);
+        this.setState({
+            startTime: time
+        });
+        this.hideDateTimePicker();
+    };
+
+    showDurationPicker = () => {
+        this.setState({
+            durationPickerVisible: true
+        });
+    };
+
+    hideDurationPicker = chosenValue => {
+        this.setState({
+            durationPickerVisible: false,
+            duration: chosenValue
+        });
+    };
+
     _goNext = () => {
-        let { eventDescription } = this.state;
-        this.props.screenProps.updateData("eventDescription", eventDescription);
+        let { startTime, duration } = this.state;
+        this.props.screenProps.updateData("startTime", startTime);
+        this.props.screenProps.updateData("duration", duration);
         this._goBack();
     };
 
     render() {
-        let { minGuests, maxGuests } = this.state;
+        let {
+            startTime,
+            duration,
+            isDateTimePickerVisible,
+            durationPickerVisible
+        } = this.state;
+
+        let parsedDuration = duration
+            ? duration == 1
+                ? "1 hour"
+                : `${duration} hours`
+            : "";
         return (
             <View style={styles.container}>
                 <CloseButton onPress={this._goBack} />
@@ -46,13 +108,15 @@ export default class Time extends Component {
                 </PromptText>
                 <StaticField
                     label={"Start Time"}
-                    value={0}
+                    value={startTime ? moment(startTime).format("hh:mm a") : ""}
                     containerStyle={{ marginTop: Spacing.larger }}
+                    onPress={this.showDateTimePicker}
                 />
                 <StaticField
-                    label={"End Time"}
-                    value={5}
+                    label={"Duration"}
+                    value={parsedDuration}
                     containerStyle={{ marginVertical: Spacing.base }}
+                    onPress={this.showDurationPicker}
                 />
                 <BarButton
                     title="Confirm"
@@ -64,6 +128,18 @@ export default class Time extends Component {
                     borderColor={Color.orange}
                     fill={Color.orange}
                     onPress={this._goNext}
+                />
+                <Picker
+                    visible={durationPickerVisible}
+                    done={this.hideDurationPicker}
+                    items={durationItems}
+                />
+                <DateTimePicker
+                    mode={"time"}
+                    minuteInterval={30}
+                    isVisible={isDateTimePickerVisible}
+                    onConfirm={this.handleDatePicked}
+                    onCancel={this.hideDateTimePicker}
                 />
             </View>
         );

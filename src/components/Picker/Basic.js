@@ -18,8 +18,15 @@ import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 export default class App extends React.Component {
     state = {
         modalIsVisible: false,
-        modalAnimatedValue: new Animated.Value(0)
+        modalAnimatedValue: new Animated.Value(0),
+        chosenValue: 0
     };
+
+    componentDidMount() {
+        this.setState({
+            chosenValue: this.props.items[0].value
+        });
+    }
 
     componentWillReceiveProps(nextProps) {
         if (!this.props.visible && nextProps.visible) {
@@ -30,6 +37,7 @@ export default class App extends React.Component {
     }
 
     _handlePressDone = () => {
+        this.props.done(this.state.chosenValue);
         Animated.timing(this.state.modalAnimatedValue, {
             toValue: 0,
             duration: 150,
@@ -65,12 +73,14 @@ export default class App extends React.Component {
             outputRange: [300, 0]
         });
 
+        let { items } = this.props;
+        console.log(items);
         return (
             <View
                 style={StyleSheet.absoluteFill}
                 pointerEvents={this.state.modalIsVisible ? "auto" : "none"}
             >
-                <TouchableWithoutFeedback onPress={this.props.done}>
+                <TouchableWithoutFeedback onPress={this._handlePressDone}>
                     <Animated.View style={[styles.overlay, { opacity }]} />
                 </TouchableWithoutFeedback>
                 <Animated.View
@@ -83,7 +93,10 @@ export default class App extends React.Component {
                 >
                     <View style={styles.toolbar}>
                         <View style={styles.toolbarRight}>
-                            <Button title="Done" onPress={this.props.done} />
+                            <Button
+                                title="Done"
+                                onPress={this._handlePressDone}
+                            />
                         </View>
                     </View>
                     <Picker
@@ -91,21 +104,17 @@ export default class App extends React.Component {
                             width: Spacing.deviceWidth,
                             backgroundColor: "#e1e1e1"
                         }}
-                        selectedValue={this.state.language}
+                        selectedValue={this.state.chosenValue}
                         onValueChange={itemValue =>
-                            this.setState({ language: itemValue })
+                            this.setState({ chosenValue: itemValue })
                         }
                     >
-                        <Picker.Item label="Java" value="java" />
-                        <Picker.Item label="Objective C" value="objc" />
-                        <Picker.Item label="Swift" value="swift" />
-                        <Picker.Item label="JavaScript" value="js" />
-                        <Picker.Item label="Rust" value="rust" />
-                        <Picker.Item label="C" value="c" />
-                        <Picker.Item label="C++" value="cpp" />
-                        <Picker.Item label="Python" value="python" />
-                        <Picker.Item label="Ruby" value="ruby" />
-                        <Picker.Item label="Clojure" value="clojure" />
+                        {items.map(item => (
+                            <Picker.Item
+                                label={item.label}
+                                value={item.value}
+                            />
+                        ))}
                     </Picker>
                 </Animated.View>
             </View>

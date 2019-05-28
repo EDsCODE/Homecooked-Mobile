@@ -6,6 +6,7 @@ import PromptText from "Homecooked/src/components/Text/Prompt";
 import CloseButton from "Homecooked/src/components/Buttons/Close";
 import BarButton from "Homecooked/src/components/Buttons/BarButton";
 import StaticField from "Homecooked/src/components/TextFields/Static";
+import Picker from "Homecooked/src/components/Picker/Basic";
 
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 
@@ -16,7 +17,9 @@ export default class Guests extends Component {
 
     state = {
         minGuests: 0,
-        maxGuests: 0
+        maxGuests: 0,
+        minGuestPickerVisible: false,
+        maxGuestPickerVisible: false
     };
 
     componentDidMount() {
@@ -28,13 +31,56 @@ export default class Guests extends Component {
     }
 
     _goNext = () => {
-        let { eventDescription } = this.state;
-        this.props.screenProps.updateData("eventDescription", eventDescription);
+        let { minGuests, maxGuests } = this.state;
+        this.props.screenProps.updateData("minGuests", minGuests);
+        this.props.screenProps.updateData("maxGuests", maxGuests);
         this._goBack();
     };
 
+    showMinPicker = () => {
+        this.setState({
+            minGuestPickerVisible: true
+        });
+    };
+
+    showMaxPicker = () => {
+        this.setState({
+            maxGuestPickerVisible: true
+        });
+    };
+
+    hideMinPicker = chosenValue => {
+        this.setState({
+            minGuestPickerVisible: false,
+            minGuests: chosenValue
+        });
+    };
+
+    hideMaxPicker = chosenValue => {
+        this.setState({
+            maxGuestPickerVisible: false,
+            maxGuests: chosenValue
+        });
+    };
+
+    getMaxItems = min => {
+        let items = [];
+        for (let i = min + 1; i < 8; i++) {
+            items.push({
+                label: `${i} people`,
+                value: i
+            });
+        }
+        return items;
+    };
+
     render() {
-        let { minGuests, maxGuests } = this.state;
+        let {
+            minGuests,
+            maxGuests,
+            minGuestPickerVisible,
+            maxGuestPickerVisible
+        } = this.state;
         return (
             <View style={styles.container}>
                 <CloseButton onPress={this._goBack} />
@@ -54,13 +100,15 @@ export default class Guests extends Component {
                 </PromptText>
                 <StaticField
                     label={"Minimum"}
-                    value={0}
+                    value={`${minGuests} people`}
                     containerStyle={{ marginTop: Spacing.larger }}
+                    onPress={this.showMinPicker}
                 />
                 <StaticField
                     label={"Maximum"}
-                    value={5}
+                    value={`${maxGuests} people`}
                     containerStyle={{ marginVertical: Spacing.base }}
+                    onPress={this.showMaxPicker}
                 />
                 <BarButton
                     title="Confirm"
@@ -72,6 +120,16 @@ export default class Guests extends Component {
                     borderColor={Color.orange}
                     fill={Color.orange}
                     onPress={this._goNext}
+                />
+                <Picker
+                    visible={minGuestPickerVisible}
+                    done={this.hideMinPicker}
+                    items={this.getMaxItems(3)}
+                />
+                <Picker
+                    visible={maxGuestPickerVisible}
+                    done={this.hideMaxPicker}
+                    items={this.getMaxItems(3)}
                 />
             </View>
         );

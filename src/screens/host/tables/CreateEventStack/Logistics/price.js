@@ -10,28 +10,36 @@ import Picker from "Homecooked/src/components/Picker/Basic";
 
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 
-export default class Guests extends Component {
+let priceOptions = [];
+
+for (let i = 15; i <= 25; i++) {
+    priceOptions.push({
+        label: `$${i}`,
+        value: i
+    });
+}
+
+export default class Price extends Component {
     _goBack = () => {
         this.props.navigation.goBack();
     };
 
     state = {
-        minGuests: 0,
-        maxGuests: 0,
+        price: 0,
         pickerVisible: false
     };
 
     componentDidMount() {
-        let { minGuests, maxGuests } = this.props.screenProps.state;
+        let { price } = this.props.screenProps.state;
+        console.log(price);
         this.setState({
-            minGuests,
-            maxGuests
+            price
         });
     }
 
     _goNext = () => {
-        let { eventDescription } = this.state;
-        this.props.screenProps.updateData("eventDescription", eventDescription);
+        let { price } = this.state;
+        this.props.screenProps.updateData("price", price);
         this._goBack();
     };
 
@@ -41,14 +49,15 @@ export default class Guests extends Component {
         });
     };
 
-    hidePicker = () => {
+    hidePicker = chosenValue => {
         this.setState({
-            pickerVisible: false
+            pickerVisible: false,
+            price: chosenValue
         });
     };
 
     render() {
-        let { minGuests, maxGuests, pickerVisible } = this.state;
+        let { price, pickerVisible } = this.state;
         return (
             <View style={styles.container}>
                 <CloseButton onPress={this._goBack} />
@@ -58,7 +67,7 @@ export default class Guests extends Component {
                 </PromptText>
                 <StaticField
                     label={"Price"}
-                    value={"$0"}
+                    value={`$${price}`}
                     containerStyle={{ marginTop: Spacing.larger }}
                     onPress={this.showPicker}
                 />
@@ -74,8 +83,9 @@ export default class Guests extends Component {
                     onPress={this._goNext}
                 />
                 <Picker
-                    visible={this.state.pickerVisible}
+                    visible={pickerVisible}
                     done={this.hidePicker}
+                    items={priceOptions}
                 />
             </View>
         );

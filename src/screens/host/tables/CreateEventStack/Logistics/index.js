@@ -47,8 +47,8 @@ class CreateEventLogistics extends Component {
         specialDirections: "",
         date: "",
         startTime: "",
-        endTIme: "",
-        price: "",
+        duration: "",
+        price: 0,
         minGuests: 0,
         maxGuests: 0
     };

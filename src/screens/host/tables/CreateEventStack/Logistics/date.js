@@ -26,8 +26,8 @@ export default class Date extends Component {
     };
 
     _goNext = () => {
-        let { eventDescription } = this.state;
-        this.props.screenProps.updateData("eventDescription", eventDescription);
+        let { date } = this.state;
+        this.props.screenProps.updateData("date", date);
         this._goBack();
     };
 
