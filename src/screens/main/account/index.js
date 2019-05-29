@@ -2,25 +2,28 @@ import React from "react";
 import { createStackNavigator } from "react-navigation";
 import Main from "./main";
 import HostApplication from "./HostApplication";
+import Settings from "./Settings";
 
-const SettingsStack = createStackNavigator(
+const AccountStack = createStackNavigator(
     {
-        SettingsMain: {
+        AccountMain: {
             screen: Main
         },
         HostApplication: {
             screen: HostApplication
+        },
+        Settings: {
+            screen: Settings
         }
     },
     {
-        initialRouteName: "SettingsMain",
-        mode: "modal",
+        initialRouteName: "AccountMain",
         headerMode: "none"
     }
 );
 
-// remove tabbar when a route is clicked in settings
-SettingsStack.navigationOptions = ({ navigation }) => {
+// remove tabbar when a route is clicked in Account
+AccountStack.navigationOptions = ({ navigation }) => {
     let tabBarVisible = true;
     if (navigation.state.index > 0) {
         tabBarVisible = false;
@@ -31,4 +34,4 @@ SettingsStack.navigationOptions = ({ navigation }) => {
     };
 };
 
-export default SettingsStack;
+export default AccountStack;

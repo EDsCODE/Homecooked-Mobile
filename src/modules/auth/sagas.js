@@ -14,7 +14,8 @@ function* loginWorkerSaga(action) {
             email,
             password
         );
-        console.log(message);
+        // TODO: store user and refresh token
+
         // dispatch a success action to the store with the new accesstoken
         yield put({ type: types.LOGIN_SUCCESS, accessToken });
 
@@ -26,7 +27,7 @@ function* loginWorkerSaga(action) {
     }
 }
 
-function* registerWorkerSage(action) {
+function* registerWorkerSaga(action) {
     try {
         let { email, password, firstName } = action.payload;
         const payload = yield call(
@@ -53,5 +54,5 @@ function* registerWorkerSage(action) {
 
 export const authSagas = [
     takeLatest(types.LOGIN_REQUEST, loginWorkerSaga),
-    takeLatest(types.SIGNUP_REQUEST, registerWorkerSage)
+    takeLatest(types.SIGNUP_REQUEST, registerWorkerSaga)
 ];

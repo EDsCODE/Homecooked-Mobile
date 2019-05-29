@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { View, FlatList, Text, StyleSheet } from "react-native";
 
-import HeaderCell from "Homecooked/src/components/Cells/SettingsHeaderCell";
-import Cell from "Homecooked/src/components/Cells/SettingsCell";
+import HeaderCell from "Homecooked/src/components/Cells/AccountHeaderCell";
+import Cell from "Homecooked/src/components/Cells/AccountCell";
 import NavigationService from "Homecooked/src/utils/NavigationService";
 
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 
-export default class Main extends Component {
+export default class Host_Settings_Main extends Component {
     constructor() {
         super();
         this.state = {
@@ -18,11 +18,11 @@ export default class Main extends Component {
     settingRows = [
         {},
         {
-            title: "Switch to Host Mode",
-            onPress: () => NavigationService.navigate("Host")
+            title: "Switch to Guest Mode",
+            onPress: () => NavigationService.navigate("Main")
         },
         {
-            title: "Payment"
+            title: "Payouts"
         },
         {
             title: "Invite Friends",

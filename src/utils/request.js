@@ -9,8 +9,13 @@ const client = axios.create({
 
 const request = options => {
     const onSuccess = res => {
-        console.debug("Request Successful!", res);
-        return res.data;
+        console.log(res);
+        if (res.status == "error") {
+            return Promise.reject(res.error);
+        } else {
+            console.debug("Request Successful!", res);
+            return res.data;
+        }
     };
 
     const onError = err => {

@@ -12,6 +12,8 @@ import TextField from "Homecooked/src/components/TextFields/Material";
 
 import NavigationService from "Homecooked/src/utils/NavigationService";
 
+const coverImageUri = "Homecooked/src/assets/img/filledTable.jpg";
+
 class Login extends Component {
     state = {
         email: "",
@@ -34,7 +36,7 @@ class Login extends Component {
         return (
             <View>
                 <Header title={"Login"} leftOnPress={this._back} />
-                <Image style={styles.image} />
+                <Image style={styles.image} source={require(coverImageUri)} />
                 <Text style={styles.caption}>Fayzeh's table, Nov. 2018</Text>
                 <TextField
                     containerStyle={[styles.input]}
@@ -101,7 +103,7 @@ const styles = StyleSheet.create({
     image: {
         width: Spacing.deviceWidth,
         height: 250,
-        backgroundColor: "blue"
+        backgroundColor: "white"
     },
     caption: {
         fontFamily: "Avenir",

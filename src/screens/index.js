@@ -16,7 +16,7 @@ const AppStack = createSwitchNavigator(
         }
     },
     {
-        initialRouteName: "Host"
+        initialRouteName: "Main"
     }
 );
 

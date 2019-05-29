@@ -1,5 +1,5 @@
 import React from "react";
-import { TouchableOpacity, View, Text } from "react-native";
+import { TouchableOpacity, View, Text, ActivityIndicator } from "react-native";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 
 const Button = props => (
@@ -16,16 +16,20 @@ const Button = props => (
                 alignItems: "center"
             }}
         >
-            <Text
-                style={{
-                    color: props.textColor || Color.white,
-                    fontSize: Typography.baseFontSize,
-                    fontFamily: Typography.fontFamily,
-                    fontWeight: Typography.heavy
-                }}
-            >
-                {props.title}
-            </Text>
+            {props.loading ? (
+                <ActivityIndicator size="small" color={Color.white} />
+            ) : (
+                <Text
+                    style={{
+                        color: props.textColor || Color.white,
+                        fontSize: Typography.baseFontSize,
+                        fontFamily: Typography.fontFamily,
+                        fontWeight: Typography.heavy
+                    }}
+                >
+                    {props.title}
+                </Text>
+            )}
         </View>
     </TouchableOpacity>
 );

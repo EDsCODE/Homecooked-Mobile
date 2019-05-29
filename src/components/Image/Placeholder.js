@@ -6,12 +6,19 @@ import MinorText from "Homecooked/src/components/Text/Minor";
 
 const Placeholder = props => (
     <TouchableOpacity onPress={props.onPress} style={props.style}>
-        <View style={styles.outerSquare}>
-            <View style={styles.innerSquare}>
-                <Image source={props.tempImage} />
-                <MinorText>{props.caption}</MinorText>
+        {props.source.uri ? (
+            <Image
+                resizeMode={"cover"}
+                style={{ flex: 1 }}
+                source={props.source}
+            />
+        ) : (
+            <View style={styles.outerSquare}>
+                <View style={styles.innerSquare}>
+                    <MinorText>{props.caption}</MinorText>
+                </View>
             </View>
-        </View>
+        )}
     </TouchableOpacity>
 );
 

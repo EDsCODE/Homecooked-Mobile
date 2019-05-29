@@ -6,7 +6,6 @@ import PromptText from "Homecooked/src/components/Text/Prompt";
 import MinorText from "Homecooked/src/components/Text/Minor";
 import CloseButton from "Homecooked/src/components/Buttons/Close";
 import FloatyButton from "Homecooked/src/components/Buttons/FloatyButton";
-import SecondaryText from "Homecooked/src/components/Text/Secondary";
 
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 import NavigationService from "Homecooked/src/utils/NavigationService";
@@ -14,54 +13,52 @@ import NavigationService from "Homecooked/src/utils/NavigationService";
 import TextField from "Homecooked/src/components/TextFields/Material";
 import LocationField from "Homecooked/src/components/TextFields/LocationAutocomplete";
 
-export default class ShortResponse extends Component {
+export default class BasicInfo extends Component {
     state = {
-        reason: "",
-        experience: ""
+        address: "",
+        phoneNumber: ""
     };
     _goBack = () => {
         NavigationService.navigate("SettingsMain");
     };
 
+    _goNext = () => {
+        let { address, phoneNumber } = this.state;
+        this.props.screenProps.updateData("address", address);
+        this.props.screenProps.updateData("phoneNumber", phoneNumber);
+        this.props.navigation.navigate("ShortResponse");
+    };
+
     render() {
-        let { reason, experience } = this.state;
+        let { address, phoneNumber } = this.state;
         return (
             <View style={styles.container}>
                 <CloseButton onPress={this._goBack} />
-                <MinorText>Step 2 of 3</MinorText>
-                <HeadingText>Short Response</HeadingText>
+                <MinorText>Step 1 of 3</MinorText>
+                <HeadingText>Basic Information</HeadingText>
                 <PromptText style={{ marginTop: Spacing.large }}>
-                    Our cooks range from Syrian refugees to food entrepreneurs
-                    to grad students with a flair for the culinary arts.
+                    We phone screen our hosts to determine if you’re a right fit
+                    for Homecooked.
                 </PromptText>
                 <PromptText style={{ marginTop: Spacing.large }}>
-                    The one thing they have in common is a passion for building
-                    community over food.
+                    Your location helps us gauge how many chefs are in your
+                    area.
                 </PromptText>
-                <SecondaryText style={{ marginTop: Spacing.large }}>
-                    What's your cooking experience?
-                </SecondaryText>
                 <TextField
-                    multiline={true}
-                    containerStyle={{ marginTop: -20 }}
                     tintColor={Color.gray}
-                    placeholder="Your answer"
-                    value={experience}
-                    onChangeText={experience => this.setState({ experience })}
+                    label="Address"
+                    value={address}
+                    onChangeText={address => this.setState({ address })}
                 />
-                <SecondaryText style={{ marginTop: Spacing.base }}>
-                    Why do you want to cook for Homecooked?
-                </SecondaryText>
                 <TextField
-                    multiline={true}
-                    containerStyle={{ marginTop: -20 }}
                     tintColor={Color.gray}
-                    placeholder="Your answer"
-                    value={reason}
-                    onChangeText={reason => this.setState({ reason })}
+                    label="Phone Number"
+                    value={phoneNumber}
+                    keyboardType={"phone-pad"}
+                    onChangeText={phoneNumber => this.setState({ phoneNumber })}
                 />
                 <FloatyButton
-                    onPress={() => this._swiper.scrollBy(1)}
+                    onPress={this._goNext}
                     style={{
                         position: "absolute",
                         bottom: Spacing.largest,

@@ -8,6 +8,7 @@ const Cell = props => (
         onPress={props.onPress}
         style={props.style}
         key={props.key}
+        activeOpacity={1.0}
     >
         <View style={styles.row}>
             <Text style={styles.title}>{props.title}</Text>
