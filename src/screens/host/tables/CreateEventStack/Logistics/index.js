@@ -8,6 +8,8 @@ import Price from "./price";
 import DateScreen from "./date";
 import Address from "./address";
 
+import moment from "moment";
+
 const CreateEventLogisticsStack = createStackNavigator(
     {
         LogisticsMain: {
@@ -44,19 +46,40 @@ class CreateEventLogistics extends Component {
 
     state = {
         address: "",
-        specialDirections: "",
-        date: "",
-        startTime: "",
-        duration: "",
-        price: 0,
-        minGuests: 0,
-        maxGuests: 0
+        specialDirections: "test special directions",
+        date: moment(),
+        startTime: moment(),
+        duration: 1,
+        price: 15,
+        minGuests: 4,
+        maxGuests: 6
     };
 
-    updateData = (key, value) => {
-        this.setState({
-            [key]: value
-        });
+    updateData = (key, value, cb) => {
+        this.setState(
+            {
+                [key]: value
+            },
+            () => {
+                typeof cb === "function" && cb();
+            }
+        );
+    };
+
+    submit = async () => {
+        // merge date and time
+        let time = moment(this.state.startTime).format("hh:mm:ss a");
+        let date = this.state.date.format("YYYY-MM-DD");
+        let startTime = moment(time + " " + date);
+        this.setState(
+            {
+                ...this.state,
+                startTime
+            },
+            () => {
+                this.props.screenProps.updateData("logistics", this.state);
+            }
+        );
     };
 
     render() {
@@ -65,7 +88,11 @@ class CreateEventLogistics extends Component {
         return (
             <CreateEventLogisticsStack
                 navigation={navigation}
-                screenProps={{ updateData: this.updateData, state: this.state }}
+                screenProps={{
+                    updateData: this.updateData,
+                    state: this.state,
+                    submit: this.submit
+                }}
             />
         );
     }

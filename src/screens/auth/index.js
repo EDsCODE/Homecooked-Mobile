@@ -4,6 +4,7 @@ import Landing from "./landing";
 import Login from "./login";
 import SignUpStack from "./signup";
 import OnboardingStack from "./onboarding";
+import ProfileCreationStack from "Homecooked/src/screens/main/common/ProfileCreationStack";
 
 const AuthStack = createStackNavigator(
     {
@@ -18,10 +19,13 @@ const AuthStack = createStackNavigator(
         },
         Onboarding: {
             screen: OnboardingStack
+        },
+        OnboardingProfileCreationStack: {
+            screen: ProfileCreationStack
         }
     },
     {
-        initialRouteName: "Landing",
+        initialRouteName: "Onboarding",
         headerMode: "none"
     }
 );

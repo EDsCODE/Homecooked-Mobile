@@ -7,10 +7,17 @@ import CloseButton from "Homecooked/src/components/Buttons/Close";
 import BarButton from "Homecooked/src/components/Buttons/BarButton";
 import NavigationService from "Homecooked/src/utils/NavigationService";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
+import TextField from "Homecooked/src/components/TextFields/Material";
+
+import { userTypes } from "Homecooked/src/modules/types";
+import { connect } from "react-redux";
 
 const placeHolderWidth = 140;
 
-export default class Bio extends Component {
+class Bio extends Component {
+    state = {
+        bio: ""
+    };
     _goBack = () => {
         this.props.navigation.goBack();
     };
@@ -20,6 +27,7 @@ export default class Bio extends Component {
     };
 
     render() {
+        let { bio } = this.state;
         return (
             <View style={styles.container}>
                 <CloseButton onPress={this._goBack} icon={"arrow-round-back"} />
@@ -28,6 +36,14 @@ export default class Bio extends Component {
                     Each guest brings a unique flavor to the Homecooked
                     experience.
                 </PromptText>
+                <TextField
+                    tintColor={Color.gray}
+                    label="Bio"
+                    value={bio}
+                    multiline={true}
+                    maxLength={150}
+                    onChangeText={bio => this.setState({ bio })}
+                />
 
                 <BarButton
                     title="Complete Profile"
@@ -44,6 +60,23 @@ export default class Bio extends Component {
         );
     }
 }
+
+const mapDispatchToProps = dispatch => {
+    const updateUser = userInput => {
+        dispatch({
+            type: userTypes.UPDATE_USER_REQUEST,
+            payload: { userInput }
+        });
+    };
+    return {
+        updateUser
+    };
+};
+
+export default connect(
+    null,
+    mapDispatchToProps
+)(Bio);
 
 const styles = StyleSheet.create({
     container: {

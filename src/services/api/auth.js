@@ -12,9 +12,6 @@ const login = (email, password) => {
 };
 
 const register = (email, password, firstName) => {
-    console.log(email);
-    console.log(password);
-    console.log(firstName);
     return request({
         method: "POST",
         headers: {

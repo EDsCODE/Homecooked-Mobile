@@ -19,10 +19,6 @@ class Main extends Component {
     }
 
     hostRow = status => {
-        return {
-            title: "Submit application to become a host",
-            onPress: () => this._goToCreateApplication()
-        };
         if (status) {
             if (status == "REQ") {
                 return {
@@ -148,7 +144,7 @@ const mapDispatchToProps = dispatch => {
         dispatch({
             type: hostTypes.GET_CHEF_REQUEST,
             payload: {
-                userId: "2aec387e-5976-4cf4-9fe7-bdeb5ac238e7"
+                userId: "7aff6007-d658-4944-bd41-ea2d05589864"
             }
         });
     };

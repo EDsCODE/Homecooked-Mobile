@@ -6,6 +6,9 @@ import ShortResponse from "./ShortResponse";
 import Photos from "./Photos";
 import Finish from "./Finish";
 
+import { hostTypes } from "Homecooked/src/modules/types";
+import { connect } from "react-redux";
+
 const HostApplicationStack = createStackNavigator(
     {
         Prompt: {
@@ -37,13 +40,33 @@ class HostApplication extends Component {
         address: null,
         phoneNumber: null,
         reason: null,
-        experience: null
+        experience: null,
+        lat: null,
+        lng: null,
+        images: null
     };
 
-    updateData = (key, value) => {
-        this.setState({
-            [key]: value
-        });
+    updateData = (key, value, cb) => {
+        this.setState(
+            {
+                [key]: value
+            },
+            () => {
+                typeof cb === "function" && cb();
+            }
+        );
+    };
+
+    submitApplication = () => {
+        let { address, lat, lng, reason, experience, images } = this.state;
+        this.props.createApplication(
+            address,
+            lat,
+            lng,
+            reason,
+            experience,
+            images
+        );
     };
 
     render() {
@@ -52,10 +75,44 @@ class HostApplication extends Component {
         return (
             <HostApplicationStack
                 navigation={navigation}
-                screenProps={{ updateData: this.updateData, state: this.state }}
+                screenProps={{
+                    updateData: this.updateData,
+                    state: this.state,
+                    submit: this.submitApplication
+                }}
             />
         );
     }
 }
 
-export default HostApplication;
+const mapDispatchToProps = dispatch => {
+    const createApplication = (
+        address,
+        lat,
+        lng,
+        reason,
+        experience,
+        images
+    ) => {
+        dispatch({
+            type: hostTypes.CREATE_APPLICATION_REQUEST,
+            payload: {
+                address,
+                lat,
+                lng,
+                images,
+                reason,
+                experience
+            }
+        });
+    };
+
+    return {
+        createApplication
+    };
+};
+
+export default connect(
+    null,
+    mapDispatchToProps
+)(HostApplication);

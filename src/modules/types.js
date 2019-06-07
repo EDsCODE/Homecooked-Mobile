@@ -3,5 +3,6 @@ import authTypes from "./auth/types";
 // import notificationsTypes from "./notifications/types";
 // import settingsTypes from "./settings/types";
 import hostTypes from "./host/types";
+import userTypes from "./user/types";
 
-export { authTypes, hostTypes };
+export { authTypes, hostTypes, userTypes };

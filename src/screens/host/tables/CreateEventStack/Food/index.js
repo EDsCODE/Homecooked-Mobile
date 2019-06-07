@@ -27,15 +27,29 @@ class CreateEventFood extends Component {
     static router = CreateEventFoodStack.router;
 
     state = {
-        menu: [],
+        menu: [
+            {
+                name: "test item",
+                description: "test description"
+            }
+        ],
         restrictions: {},
         preferences: {}
     };
 
-    updateData = (key, value) => {
-        this.setState({
-            [key]: value
-        });
+    updateData = (key, value, cb) => {
+        this.setState(
+            {
+                [key]: value
+            },
+            () => {
+                typeof cb === "function" && cb();
+            }
+        );
+    };
+
+    submit = () => {
+        this.props.screenProps.updateData("food", this.state);
     };
 
     render() {
@@ -44,7 +58,11 @@ class CreateEventFood extends Component {
         return (
             <CreateEventFoodStack
                 navigation={navigation}
-                screenProps={{ updateData: this.updateData, state: this.state }}
+                screenProps={{
+                    updateData: this.updateData,
+                    state: this.state,
+                    submit: this.submit
+                }}
             />
         );
     }

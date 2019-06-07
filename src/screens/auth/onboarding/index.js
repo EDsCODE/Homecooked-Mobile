@@ -16,10 +16,22 @@ const OnboardingStack = createStackNavigator(
     {
         Schedule: {
             screen: Schedule
+        },
+        Location: {
+            screen: Location
+        },
+        Notification: {
+            screen: Notification
+        },
+        ProfilePrompt: {
+            screen: ProfilePrompt
+        },
+        Prompt: {
+            screen: Prompt
         }
     },
     {
-        initialRouteName: "Schedule",
+        initialRouteName: "Prompt",
         headerMode: "none"
     }
 );

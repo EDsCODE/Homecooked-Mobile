@@ -1,7 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "react-navigation";
 import Event from "./event";
-import ProfileCreationStack from "./ProfileCreationStack";
+import ProfileCreationStack from "Homecooked/src/screens/main/common/ProfileCreationStack";
 import BookingStack from "./BookingStack";
 
 const EventStack = createStackNavigator(
@@ -9,7 +9,7 @@ const EventStack = createStackNavigator(
         Event: {
             screen: Event
         },
-        ProfileCreationStack: {
+        BookingProfileCreationStack: {
             screen: ProfileCreationStack
         },
         BookingStack: {

@@ -29,7 +29,8 @@ const reducer = (state = initialState, action) => {
             };
         case types.CREATE_APPLICATION_SUCCESS:
             return {
-                ...state
+                ...state,
+                status: "REQ"
             };
         case types.CREATE_APPLICATION_ERROR:
             return {

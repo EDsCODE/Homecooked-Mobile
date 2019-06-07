@@ -27,14 +27,23 @@ class CreateEventDetails extends Component {
     static router = CreateEventDetailsStack.router;
 
     state = {
-        eventTitle: "",
-        eventDescription: ""
+        eventTitle: "Test title",
+        eventDescription: "test description"
     };
 
-    updateData = (key, value) => {
-        this.setState({
-            [key]: value
-        });
+    updateData = (key, value, cb) => {
+        this.setState(
+            {
+                [key]: value
+            },
+            () => {
+                typeof cb === "function" && cb();
+            }
+        );
+    };
+
+    submit = () => {
+        this.props.screenProps.updateData("details", this.state);
     };
 
     render() {
@@ -43,7 +52,11 @@ class CreateEventDetails extends Component {
         return (
             <CreateEventDetailsStack
                 navigation={navigation}
-                screenProps={{ updateData: this.updateData, state: this.state }}
+                screenProps={{
+                    updateData: this.updateData,
+                    state: this.state,
+                    submit: this.submit
+                }}
             />
         );
     }

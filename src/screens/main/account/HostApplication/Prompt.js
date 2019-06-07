@@ -11,7 +11,7 @@ import NavigationService from "Homecooked/src/utils/NavigationService";
 
 export default class Prompt extends Component {
     _goBack = () => {
-        NavigationService.navigate("SettingsMain");
+        NavigationService.navigate("AccountMain");
     };
 
     _goNext = () => {

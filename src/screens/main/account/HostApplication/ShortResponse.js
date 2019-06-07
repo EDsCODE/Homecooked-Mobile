@@ -20,7 +20,7 @@ export default class ShortResponse extends Component {
         experience: ""
     };
     _goBack = () => {
-        NavigationService.navigate("SettingsMain");
+        this.props.navigation.goBack();
     };
 
     _goNext = () => {

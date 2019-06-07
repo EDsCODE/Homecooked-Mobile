@@ -19,7 +19,7 @@ export default class BasicInfo extends Component {
         phoneNumber: ""
     };
     _goBack = () => {
-        NavigationService.navigate("SettingsMain");
+        NavigationService.navigate("AccountMain");
     };
 
     _goNext = () => {

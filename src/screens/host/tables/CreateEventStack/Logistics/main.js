@@ -41,6 +41,11 @@ export default class DetailsMain extends Component {
         this.props.navigation.navigate("LogisticsTime");
     };
 
+    _goNext = async () => {
+        await this.props.screenProps.submit();
+        this.props.navigation.navigate("Preview");
+    };
+
     render() {
         let {
             address,

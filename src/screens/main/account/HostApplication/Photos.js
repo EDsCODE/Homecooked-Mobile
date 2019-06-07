@@ -7,9 +7,6 @@ import MinorText from "Homecooked/src/components/Text/Minor";
 import CloseButton from "Homecooked/src/components/Buttons/Close";
 import BarButton from "Homecooked/src/components/Buttons/BarButton";
 
-import { hostTypes } from "Homecooked/src/modules/types";
-import { connect } from "react-redux";
-
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 import NavigationService from "Homecooked/src/utils/NavigationService";
 
@@ -20,7 +17,7 @@ const placeHolderWidth = 140;
 
 const placeholders = [
     {
-        caption: "1. Yourself"
+        caption: "1. You cooking"
     },
     {
         caption: "2. Your space"
@@ -33,7 +30,7 @@ const placeholders = [
     }
 ];
 
-class Photos extends Component {
+export default class Photos extends Component {
     state = {
         images: {
             0: null,
@@ -44,19 +41,21 @@ class Photos extends Component {
         loading: false
     };
     _goBack = () => {
-        NavigationService.navigate("SettingsMain");
+        this.props.navigation.goBack();
     };
 
     _goNext = () => {
         this.setState({
             loading: true
         });
-        this.props.createApplication();
+        this.props.screenProps.updateData("images", this.state.images, () => {
+            this.props.screenProps.submit();
+        });
     };
 
     openPickerFor = index => {
         const options = {
-            title: "Select Avatar",
+            title: "Select Image",
             storageOptions: {
                 skipBackup: true,
                 path: "images"
@@ -121,31 +120,6 @@ class Photos extends Component {
         );
     }
 }
-
-const mapDispatchToProps = dispatch => {
-    const createApplication = () => {
-        dispatch({
-            type: hostTypes.CREATE_APPLICATION_REQUEST,
-            payload: {
-                userId: "2aec387e-5976-4cf4-9fe7-bdeb5ac238e7",
-                address: "645 denver blvd",
-                lat: 30.0,
-                lng: 30.0,
-                reason: "test reason",
-                experience: "test epxiernece"
-            }
-        });
-    };
-
-    return {
-        createApplication
-    };
-};
-
-export default connect(
-    null,
-    mapDispatchToProps
-)(Photos);
 
 const styles = StyleSheet.create({
     container: {

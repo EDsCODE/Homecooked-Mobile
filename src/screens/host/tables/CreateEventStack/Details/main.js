@@ -25,6 +25,7 @@ export default class DetailsMain extends Component {
     };
 
     _goNext = () => {
+        this.props.screenProps.submit();
         this.props.navigation.navigate("CreateEventFood");
     };
 
