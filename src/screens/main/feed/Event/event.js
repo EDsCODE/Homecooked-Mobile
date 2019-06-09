@@ -30,14 +30,33 @@ const people = [
 ];
 
 export default class Event extends Component {
+    componentDidMount() {
+        console.log(this.props);
+    }
+
     state = {
         modules: ["dateTime", "location", "description", "refundPolicy"]
     };
     _navigateToCreateProfile = () => {
-        this.props.navigation.navigate("BookingStack");
+        this.props.navigation.navigate("BookingStack", {
+            event: this.props.navigation.state.params.event
+        });
     };
 
     render() {
+        let {
+            title,
+            date,
+            distance,
+            price,
+            startTime,
+            description,
+            menu,
+            marker,
+            key
+        } = this.props.navigation.state.params.event;
+        let lat = marker.point.coordinates[0];
+        let lng = marker.point.coordinates[0];
         return (
             <View style={{ flex: 1 }}>
                 <Header title={"Nick's Table"} />
@@ -46,21 +65,30 @@ export default class Event extends Component {
                     contentInset={{ bottom: 100 }}
                     showsVerticalScrollIndicator={false}
                 >
-                    <HeroSection />
+                    <HeroSection
+                        title={title}
+                        chefName={"Nick"}
+                        chefDescription={`Nick is a graduating senior at Yale passionate about food sustainability and agriculture. He recently returned from a gap year in Hong Kong and can’t wait share the incredible new recipes he picked up there!`}
+                    />
                     <Separator />
-                    <InfoSection modules={this.state.modules} />
+                    <InfoSection
+                        modules={this.state.modules}
+                        startTime={startTime}
+                        description={description}
+                        price={price}
+                    />
                     <PeopleRow people={people} />
                     <Separator />
-                    <MenuSection title={"What's cooking?"} />
+                    <MenuSection title={"What's cooking?"} menu={menu} />
                     <Separator />
-                    <LocationSection />
+                    <LocationSection lat={lat} lng={lng} />
                     <Separator />
                     <RatingSection />
                 </ScrollView>
                 <UtilityBar
                     mainTextColor={Color.green}
                     buttonColor={Color.green}
-                    mainText={"$16 / person"}
+                    mainText={`$${price} / person`}
                     subText={"2 seats left"}
                     buttonText={"RSVP"}
                     onPress={this._navigateToCreateProfile}

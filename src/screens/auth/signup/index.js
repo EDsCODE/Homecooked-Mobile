@@ -31,8 +31,6 @@ const SignUpStack = createStackNavigator(
 class SignUp extends Component {
     static router = SignUpStack.router;
 
-    componentDidMount() {}
-
     state = {
         email: "",
         password: "",

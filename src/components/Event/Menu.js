@@ -11,7 +11,11 @@ export default class Menu extends Component {
 
     _renderItem = ({ item }) => {
         return (
-            <Row id={item.id} name={item.name} description={item.description} />
+            <Row
+                key={item.id}
+                name={item.name}
+                description={item.description}
+            />
         );
     };
 
@@ -42,7 +46,7 @@ export default class Menu extends Component {
     }
 }
 const Row = props => (
-    <View style={styles.row}>
+    <View style={styles.row} key={props.key}>
         <SecondaryText>{props.name}</SecondaryText>
         <MinorText>{props.description}</MinorText>
     </View>

@@ -3,6 +3,7 @@ import { createStackNavigator } from "react-navigation";
 import Main from "./main";
 import HostApplication from "./HostApplication";
 import Settings from "./Settings";
+import Profile from "./Profile";
 
 const AccountStack = createStackNavigator(
     {
@@ -14,6 +15,9 @@ const AccountStack = createStackNavigator(
         },
         Settings: {
             screen: Settings
+        },
+        Profile: {
+            screen: Profile
         }
     },
     {

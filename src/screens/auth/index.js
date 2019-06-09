@@ -25,7 +25,7 @@ const AuthStack = createStackNavigator(
         }
     },
     {
-        initialRouteName: "Onboarding",
+        initialRouteName: "Landing",
         headerMode: "none"
     }
 );

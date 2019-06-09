@@ -17,7 +17,6 @@ class FirstName extends Component {
         this.setState({
             firstName: this.props.screenProps.state.firstName
         });
-        this.props.register("eeoneric@gmail.com", "test123", "ERic");
     }
 
     // saga will transition to welcome if register is succesful

@@ -33,19 +33,33 @@ const refreshToken = (email, refreshToken) => {
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({
+        data: {
             email,
-            refreshToken
-        })
+            token: refreshToken
+        }
     });
 };
 
 // TODO: password reset
 
+const signout = refreshToken => {
+    return request({
+        method: "POST",
+        url: "/auth/logout",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        data: {
+            token: refreshToken
+        }
+    });
+};
+
 const AuthService = {
     login,
     register,
-    refreshToken
+    refreshToken,
+    signout
 };
 
 export default AuthService;

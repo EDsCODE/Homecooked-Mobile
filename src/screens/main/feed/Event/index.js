@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { createStackNavigator } from "react-navigation";
 import Event from "./event";
 import ProfileCreationStack from "Homecooked/src/screens/main/common/ProfileCreationStack";
@@ -23,4 +23,13 @@ const EventStack = createStackNavigator(
     }
 );
 
-export default EventStack;
+class EventMain extends Component {
+    static router = EventStack.router;
+
+    render() {
+        const { navigation } = this.props;
+        return <EventStack navigation={navigation} />;
+    }
+}
+
+export default EventMain;

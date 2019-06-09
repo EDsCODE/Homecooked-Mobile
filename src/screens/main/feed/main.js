@@ -1,7 +1,10 @@
 import React, { Component } from "react";
-import { View, FlatList, Text } from "react-native";
+import { View, FlatList, Text, ActivityIndicator } from "react-native";
 import Header from "Homecooked/src/components/Headers/Basic";
 import EventCell from "Homecooked/src/components/Cells/Event";
+import { feedTypes } from "Homecooked/src/modules/types";
+import { connect } from "react-redux";
+import { getActiveEvents } from "Homecooked/src/modules/feed/selectors";
 
 const sample = [
     {
@@ -12,47 +15,70 @@ const sample = [
     }
 ];
 
-export default class Feed extends Component {
+class Feed extends Component {
     state = {
         data: []
     };
 
     componentDidMount() {
-        this.setState({
-            data: sample
-        });
+        console.log(this.props);
+        this.props.loadFeed();
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.log(nextProps);
     }
 
     _keyExtractor = (item, index) => item.id;
 
-    onPress = () => {
-        this.props.navigation.navigate("EventStack");
+    onPress = event => {
+        this.props.navigation.navigate("EventStack", { event });
     };
 
     _renderItem = ({ item }) => {
-        return (
-            <EventCell
-                key={item.id}
-                title={item.title}
-                date={item.date}
-                price={item.price}
-                distance={item.distance}
-                onPress={this.onPress}
-            />
-        );
+        return <EventCell key={item.id} event={item} onPress={this.onPress} />;
     };
 
     render() {
         return (
             <View>
                 <Header title={"Open Tables"} leftComponent={() => null} />
-                <FlatList
-                    keyExtractor={this._keyExtractor}
-                    style={{ height: "100%" }}
-                    data={this.state.data}
-                    renderItem={this._renderItem}
-                />
+                {this.props.initialLoad ? (
+                    <ActivityIndicator />
+                ) : (
+                    <FlatList
+                        keyExtractor={this._keyExtractor}
+                        style={{ height: "100%" }}
+                        data={this.props.events}
+                        extraData={this.props.events}
+                        renderItem={this._renderItem}
+                    />
+                )}
             </View>
         );
     }
 }
+
+const mapStateToProps = state => {
+    const { feed, events, currentBookings } = state;
+    return {
+        initialLoad: feed.initialLoad,
+        events: getActiveEvents(state)
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    const loadFeed = () => {
+        dispatch({
+            type: feedTypes.LOAD_FEED_REQUEST
+        });
+    };
+    return {
+        loadFeed
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Feed);

@@ -90,10 +90,24 @@ class Main extends Component {
         this.props.navigation.navigate("Settings");
     };
 
+    _goToProfile = () => {
+        this.props.navigation.navigate("Profile");
+    };
+
     _renderItem = ({ item, index }) => {
+        let {
+            currentUser: { firstName }
+        } = this.props;
+
         if (index == 0) {
             // render header cell
-            return <HeaderCell id={item.id} name="Eric" />;
+            return (
+                <HeaderCell
+                    onPress={this._goToProfile}
+                    id={item.id}
+                    name={firstName}
+                />
+            );
         } else {
             return (
                 <Cell
@@ -135,7 +149,8 @@ class Main extends Component {
 
 const mapStateToProps = state => {
     return {
-        hostStatus: state.host.status
+        hostStatus: state.host.status,
+        currentUser: state.currentUser
     };
 };
 

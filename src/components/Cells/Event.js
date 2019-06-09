@@ -36,28 +36,34 @@ export default class EventCard extends Component {
         imagesLoaded: false
     };
 
-    _renderCard = ({ item, index }) => (
-        <TouchableOpacity onPress={this.props.onPress} activeOpacity={1.0}>
-            <View
-                style={styles.imageContainer}
-                borderTopLeftRadius={5}
-                borderTopRightRadius={5}
+    _renderCard = ({ item, index }) => {
+        return (
+            <TouchableOpacity
+                key={"eventcell" + index}
+                onPress={this.onPress}
+                activeOpacity={1.0}
             >
-                <ImageBackground
-                    resizeMode="cover"
-                    style={styles.image}
-                    source={require(imageURI)}
+                <View
+                    style={styles.imageContainer}
+                    borderTopLeftRadius={5}
+                    borderTopRightRadius={5}
                 >
-                    <LinearGradient
-                        colors={["rgba(0,0,0,0.8)", "transparent"]}
-                        style={styles.linGradient}
-                        start={{ x: 0.5, y: 1.0 }}
-                        end={{ x: 0.5, y: 0.7 }}
-                    />
-                </ImageBackground>
-            </View>
-        </TouchableOpacity>
-    );
+                    <ImageBackground
+                        resizeMode="cover"
+                        style={styles.image}
+                        source={require(imageURI)}
+                    >
+                        <LinearGradient
+                            colors={["rgba(0,0,0,0.8)", "transparent"]}
+                            style={styles.linGradient}
+                            start={{ x: 0.5, y: 1.0 }}
+                            end={{ x: 0.5, y: 0.7 }}
+                        />
+                    </ImageBackground>
+                </View>
+            </TouchableOpacity>
+        );
+    };
 
     get pagination() {
         const { activeSlide } = this.state;
@@ -88,18 +94,22 @@ export default class EventCard extends Component {
         );
     }
 
+    onPress = () => {
+        this.props.onPress(this.props.event);
+    };
+
     render() {
-        let { title, date, distance, price, onPress, people, key } = this.props;
+        let { title, date, distance, price, people, key } = this.props.event;
         let _dateWithType = dateWithMealType(date);
 
         return (
             <TouchableOpacity
                 style={styles.card}
-                onPress={onPress}
+                onPress={this.onPress}
                 activeOpacity={1.0}
                 key={key}
             >
-                <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
+                <TouchableOpacity onPress={this.onPress} activeOpacity={0.9}>
                     <Carousel
                         data={this.state.data}
                         renderItem={this._renderCard}

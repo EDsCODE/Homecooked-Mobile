@@ -1,14 +1,25 @@
 import request from "Homecooked/src/utils/request";
 
-const updateUser = (userId, userInput) => {
+const updateUser = (id, userInput) => {
     return request({
         method: "PUT",
-        url: `/user/${userId}`
+        url: `/user/${id}`,
+        data: {
+            userInput
+        }
+    });
+};
+
+const getBookingsForUser = id => {
+    return request({
+        method: "GET",
+        url: `/user/${id}/bookings`
     });
 };
 
 const UserService = {
-    updateUser
+    updateUser,
+    getBookingsForUser
 };
 
 export default UserService;

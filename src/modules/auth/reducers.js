@@ -60,6 +60,10 @@ const reducer = (state = initialState, action) => {
                 accessToken: null,
                 error: action.error
             };
+        case types.SIGNOUT_REQUEST:
+            return {
+                ...initialState
+            };
         default:
             return state;
     }

@@ -7,17 +7,15 @@ import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 
 export default class Hero extends Component {
     render() {
+        let { title, chefName, chefDescription } = this.props;
         return (
             <View>
                 <View style={styles.carousel} />
                 <View style={styles.textContainer}>
-                    <PrimaryText>Dimsum and Then Some</PrimaryText>
-                    <MinorText>Hosted by Nick</MinorText>
+                    <PrimaryText>{title}</PrimaryText>
+                    <MinorText>{`Hosted by ${chefName}`}</MinorText>
                     <MinorText style={{ marginTop: Spacing.small }}>
-                        Nick is a graduating senior at Yale passionate about
-                        food sustainability and agriculture. He recently
-                        returned from a gap year in Hong Kong and can’t wait to
-                        share the incredible new recipes he picked up there!
+                        {chefDescription}
                     </MinorText>
                 </View>
             </View>

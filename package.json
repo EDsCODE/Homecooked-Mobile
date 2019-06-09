@@ -9,6 +9,8 @@
   "dependencies": {
     "axios": "^0.18.0",
     "moment": "^2.24.0",
+    "normalizr": "^3.4.0",
+    "qs": "^6.7.0",
     "react": "16.8.3",
     "react-native": "0.59.8",
     "react-native-calendar-picker": "^6.0.0",
@@ -24,6 +26,7 @@
     "react-native-maps": "^0.24.2",
     "react-native-material-textfield": "^0.12.0",
     "react-native-modal-datetime-picker": "^7.4.2",
+    "react-native-sensitive-info": "^5.4.1",
     "react-native-snap-carousel": "^3.8.0",
     "react-native-swiper": "^1.5.14",
     "react-native-vector-icons": "^6.4.2",
@@ -31,7 +34,8 @@
     "react-redux": "^7.0.3",
     "redux": "^4.0.1",
     "redux-logger": "^3.0.6",
-    "redux-saga": "^1.0.2"
+    "redux-saga": "^1.0.2",
+    "reselect": "^4.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.4.4",

@@ -47,9 +47,9 @@ const ModuleScaffold = props => (
 
 const modules = {
     dateTime: props => {
-        let date = new Date();
+        let date = props.startTime;
         let firstLine = moment(date).format("dddd, MMMM Do");
-        let secondLine = `${moment(date).format("h:m a")} - ${moment(
+        let secondLine = `${moment(date).format("h:mm a")} - ${moment(
             date
         ).format("h:m a")}`;
         return (
@@ -64,8 +64,7 @@ const modules = {
     description: props => (
         <ModuleScaffold title={"Description"} iconName={"clipboard"}>
             <MinorText style={{ marginTop: Spacing.small }}>
-                I spent 3 months interning with a Chinese shifu in Hong Kong!
-                Come try the fruits of my labor!
+                {props.description}
             </MinorText>
         </ModuleScaffold>
     ),
@@ -100,7 +99,7 @@ const modules = {
         </ModuleScaffold>
     ),
     price: props => {
-        let price = 20;
+        let price = props.price;
         let tax = (price * 0.07).toFixed(2);
         let total = (parseFloat(price) + parseFloat(tax)).toFixed(2);
         return (

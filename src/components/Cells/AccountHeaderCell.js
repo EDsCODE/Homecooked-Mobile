@@ -6,13 +6,15 @@ const imageURI = "Homecooked/src/assets/img/filledTable.jpg";
 
 export default props => {
     return (
-        <View style={styles.row} key={props.key}>
-            <Image style={styles.image} source={require(imageURI)} />
-            <View style={styles.text}>
-                <Text style={styles.name}>{props.name}</Text>
-                <Text style={styles.prompt}>Edit Profile</Text>
+        <TouchableOpacity onPress={props.onPress}>
+            <View style={styles.row} key={props.key}>
+                <Image style={styles.image} source={require(imageURI)} />
+                <View style={styles.text}>
+                    <Text style={styles.name}>{props.name}</Text>
+                    <Text style={styles.prompt}>Edit Profile</Text>
+                </View>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 };
 

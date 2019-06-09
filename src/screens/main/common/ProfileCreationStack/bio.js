@@ -43,6 +43,7 @@ class Bio extends Component {
                     multiline={true}
                     maxLength={150}
                     onChangeText={bio => this.setState({ bio })}
+                    blurOnSubmit={true}
                 />
 
                 <BarButton
