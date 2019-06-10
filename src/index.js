@@ -14,9 +14,16 @@ import TopLevelNavigator from "./screens";
 import { Provider } from "react-redux";
 import store from "Homecooked/src/modules";
 
+import { UrbanAirship, UACustomEvent } from "urbanairship-react-native";
+
 const AppContainer = createAppContainer(TopLevelNavigator);
 
 export default class App extends Component {
+    constructor(props) {
+        super(props);
+        UrbanAirship.setUserNotificationsEnabled(true);
+    }
+
     render() {
         return (
             <Provider store={store}>

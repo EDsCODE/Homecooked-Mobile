@@ -1,0 +1,16 @@
+PODS:
+  - UrbanAirship-iOS-SDK (10.0.4)
+
+DEPENDENCIES:
+  - UrbanAirship-iOS-SDK (~> 10.0)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - UrbanAirship-iOS-SDK
+
+SPEC CHECKSUMS:
+  UrbanAirship-iOS-SDK: 4f592b47ae8a8b53752644897b8a0d59c93be0d0
+
+PODFILE CHECKSUM: f53f9ddefd00512652e7e4d2e6f4dda6032fe2ed
+
+COCOAPODS: 1.5.3
