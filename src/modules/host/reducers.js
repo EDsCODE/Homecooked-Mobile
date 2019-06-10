@@ -19,7 +19,7 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 id: action.payload.chef.id,
-                status: action.payload.chef.state,
+                status: action.payload.chef.status,
                 stripeAccountId: action.payload.chef.stripeAccountId,
                 loading: false
             };

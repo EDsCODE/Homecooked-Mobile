@@ -2,10 +2,10 @@ import { authSagas } from "./auth/sagas";
 import { all } from "redux-saga/effects";
 import { feedSagas } from "./feed/sagas";
 import { eventSagas } from "./event/sagas";
-// import historySaga from "./history/sagas";
+import { historySagas } from "./history/sagas";
 // import notificationSaga from "./notifications/sagas";
 import { hostSagas } from "./host/sagas";
-import { userSagas } from "./user/sagas";
+import { userSagas } from "./currentUser/sagas";
 
 export default function* rootSaga() {
     yield all([
@@ -13,6 +13,7 @@ export default function* rootSaga() {
         ...hostSagas,
         ...userSagas,
         ...feedSagas,
-        ...eventSagas
+        ...eventSagas,
+        ...historySagas
     ]);
 }

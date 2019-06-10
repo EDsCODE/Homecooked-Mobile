@@ -11,6 +11,16 @@ const getEvents = () => {
     });
 };
 
+const getEventById = eventId => {
+    return request({
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        url: `/event/` + eventId
+    });
+};
+
 const getActiveEvents = () => {
     return request({
         method: "GET",
@@ -34,7 +44,8 @@ const getBookingByEvent = id => {
 const EventService = {
     getEvents,
     getBookingByEvent,
-    getActiveEvents
+    getActiveEvents,
+    getEventById
 };
 
 export default EventService;

@@ -17,9 +17,17 @@ const getBookingsForUser = id => {
     });
 };
 
+const getUserById = id => {
+    return request({
+        method: "GET",
+        url: `/user/${id}`
+    });
+};
+
 const UserService = {
     updateUser,
-    getBookingsForUser
+    getBookingsForUser,
+    getUserById
 };
 
 export default UserService;

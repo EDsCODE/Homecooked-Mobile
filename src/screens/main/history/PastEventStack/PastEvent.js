@@ -33,6 +33,18 @@ const people = [
 
 export default class Feed extends Component {
     render() {
+        let {
+            title,
+            date,
+            distance,
+            price,
+            startTime,
+            description,
+            menu,
+            marker,
+            key
+        } = this.props.navigation.state.params.event;
+
         return (
             <View style={{ flex: 1 }}>
                 <Header title={"Nick's Table"} />
@@ -42,7 +54,7 @@ export default class Feed extends Component {
                     showsVerticalScrollIndicator={false}
                 >
                     <PrimaryText style={{ marginHorizontal: Spacing.large }}>
-                        A Texan Treat
+                        {title}
                     </PrimaryText>
                     <MinorText style={{ marginHorizontal: Spacing.large }}>
                         Dinner on Thursday, March 28th

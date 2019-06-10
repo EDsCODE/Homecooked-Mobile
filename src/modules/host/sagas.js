@@ -1,7 +1,8 @@
-import { takeLatest, call, put } from "redux-saga/effects";
+import { takeLatest, call, put, select } from "redux-saga/effects";
 import { HostService, ImageService } from "Homecooked/src/services/api";
 import types from "./types";
 import NavigationService from "Homecooked/src/utils/NavigationService";
+import * as userSelectors from "Homecooked/src/modules/currentUser/selectors";
 
 function* createApplicationWorkerSaga(action) {
     try {
@@ -48,8 +49,8 @@ function* createApplicationWorkerSaga(action) {
 
 function* getChefWorkerSaga(action) {
     try {
-        let { userId } = action.payload;
-        const { data } = yield call(HostService.getChef, userId);
+        let userId = yield select(userSelectors.userId);
+        const { data } = yield call(HostService.getChefByUserId, userId);
         yield put({ type: types.GET_CHEF_SUCCESS, payload: { chef: data } });
     } catch (error) {
         yield put({ type: types.GET_CHEF_ERROR, error });

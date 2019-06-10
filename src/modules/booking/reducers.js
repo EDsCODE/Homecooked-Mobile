@@ -39,6 +39,23 @@ const reducer = (state = intialState, action) => {
                 ...state,
                 error: action.error
             };
+        case types.UPDATE_BOOKING_STATUS_REQUEST:
+            return {
+                ...state
+            };
+        case types.UPDATE_BOOKING_STATUS_SUCCESS:
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    [action.booking.id]: action.booking
+                }
+            };
+        case types.UPDATE_BOOKING_STATUS_ERROR:
+            return {
+                ...state,
+                error: action.error
+            };
         default:
             return {
                 ...state

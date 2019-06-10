@@ -1,10 +1,17 @@
 import React, { Component } from "react";
-import { View, FlatList, Text } from "react-native";
+import { View, FlatList, Text, ActivityIndicator } from "react-native";
 import Header from "Homecooked/src/components/Headers/Basic";
 import Tabs from "Homecooked/src/components/Headers/Tabs";
 import HistoryCell from "Homecooked/src/components/Cells/History";
 
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
+
+import { historyTypes } from "Homecooked/src/modules/types";
+import { connect } from "react-redux";
+import {
+    getUpcomingEvents,
+    getPastEvents
+} from "Homecooked/src/modules/history/selectors";
 
 const upcoming = [
     {
@@ -42,7 +49,7 @@ const past = [
     }
 ];
 
-export default class HistoryMain extends Component {
+class HistoryMain extends Component {
     state = {
         tabSelected: 0
     };
@@ -52,6 +59,7 @@ export default class HistoryMain extends Component {
             upcoming: upcoming,
             past: past
         });
+        this.props.loadHistory();
     }
 
     _keyExtractor = (item, index) => item.id;
@@ -68,9 +76,11 @@ export default class HistoryMain extends Component {
                 upcoming={true}
                 startTime={startTime}
                 endTime={endTime}
-                title={"A Texan Treat"}
+                title={item.title}
                 onPress={() =>
-                    this.props.navigation.navigate("UpcomingEventStack")
+                    this.props.navigation.navigate("UpcomingEventStack", {
+                        event: item
+                    })
                 }
             />
         );
@@ -111,28 +121,61 @@ export default class HistoryMain extends Component {
         return (
             <View>
                 <Header title={"Your Tables"} leftComponent={() => null} />
-                <Tabs
-                    tabSelected={index => this.changeTab(index)}
-                    activeTab={this.state.tabSelected}
-                />
-                {this.state.tabSelected == 0 ? (
-                    <FlatList
-                        keyExtractor={this._keyExtractor}
-                        style={{ height: "100%" }}
-                        data={this.state.upcoming}
-                        renderItem={this._renderUpcomingItem}
-                        ItemSeparatorComponent={this._renderSeparator}
-                    />
+                {this.props.initialLoad ? (
+                    <ActivityIndicator />
                 ) : (
-                    <FlatList
-                        keyExtractor={this._keyExtractor}
-                        style={{ height: "100%" }}
-                        data={this.state.past}
-                        renderItem={this._renderPastItem}
-                        ItemSeparatorComponent={this._renderSeparator}
-                    />
+                    <View>
+                        <Tabs
+                            tabSelected={index => this.changeTab(index)}
+                            activeTab={this.state.tabSelected}
+                        />
+                        {this.state.tabSelected == 0 ? (
+                            <FlatList
+                                keyExtractor={this._keyExtractor}
+                                style={{ height: "100%" }}
+                                data={this.props.upcomingEvents}
+                                extraData={this.props.upcomingEvents}
+                                renderItem={this._renderUpcomingItem}
+                                ItemSeparatorComponent={this._renderSeparator}
+                            />
+                        ) : (
+                            <FlatList
+                                keyExtractor={this._keyExtractor}
+                                style={{ height: "100%" }}
+                                data={this.props.pastEvents}
+                                extraData={this.props.pastEvents}
+                                renderItem={this._renderPastItem}
+                                ItemSeparatorComponent={this._renderSeparator}
+                            />
+                        )}
+                    </View>
                 )}
             </View>
         );
     }
 }
+
+const mapStateToProps = state => {
+    const { history, events, currentBookings } = state;
+    return {
+        initialLoad: history.initialLoad,
+        upcomingEvents: getUpcomingEvents(state),
+        pastEvents: getPastEvents(state)
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    const loadHistory = () => {
+        dispatch({
+            type: historyTypes.LOAD_HISTORY_REQUEST
+        });
+    };
+    return {
+        loadHistory
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(HistoryMain);

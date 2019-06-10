@@ -24,6 +24,23 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state
             };
+        case types.GET_EVENT_REQUEST:
+            return {
+                ...state
+            };
+        case types.GET_EVENT_SUCCESS:
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    [action.event.id]: action.event
+                }
+            };
+        case types.GET_EVENT_ERROR:
+            return {
+                ...state,
+                error: action.error
+            };
         default:
             return state;
     }

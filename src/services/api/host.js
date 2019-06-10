@@ -17,16 +17,16 @@ const createApplication = (userId, address, lat, lng, reason, experience) => {
     });
 };
 
-const getChef = userId => {
+const getChefByUserId = userId => {
     return request({
         method: "GET",
-        url: `/chef/${userId}`
+        url: `/user/${userId}/chef`
     });
 };
 
 const HostService = {
     createApplication,
-    getChef
+    getChefByUserId
 };
 
 export default HostService;

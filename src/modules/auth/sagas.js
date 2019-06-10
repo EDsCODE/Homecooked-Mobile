@@ -1,7 +1,7 @@
 import { takeLatest, call, put } from "redux-saga/effects";
 import { AuthService } from "Homecooked/src/services/api";
 import types from "./types";
-import { userTypes } from "../types";
+import { currentUserTypes } from "../types";
 import NavigationService from "Homecooked/src/utils/NavigationService";
 import SInfo from "react-native-sensitive-info";
 
@@ -24,7 +24,7 @@ function* loginWorkerSaga(action) {
 
         yield put({ type: types.LOGIN_SUCCESS, accessToken });
         yield put({
-            type: userTypes.UPDATE_USER_SUCCESS,
+            type: currentUserTypes.UPDATE_USER_SUCCESS,
             payload: { ...user }
         });
 
@@ -53,7 +53,7 @@ function* registerWorkerSaga(action) {
         // dispatch a success action to the store with the new access
         yield put({ type: types.SIGNUP_SUCCESS, accessToken });
         yield put({
-            type: userTypes.UPDATE_USER_SUCCESS,
+            type: currentUserTypes.UPDATE_USER_SUCCESS,
             payload: { ...user }
         });
 
@@ -89,7 +89,7 @@ function* refreshTokenWorkerSaga(action) {
 
         yield put({ type: types.LOGIN_SUCCESS, accessToken });
         yield put({
-            type: userTypes.UPDATE_USER_SUCCESS,
+            type: currentUserTypes.UPDATE_USER_SUCCESS,
             payload: { ...user }
         });
         NavigationService.navigate("Main");

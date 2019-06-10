@@ -1,5 +1,11 @@
 import React from "react";
-import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
+import {
+    TouchableOpacity,
+    View,
+    Text,
+    StyleSheet,
+    ActivityIndicator
+} from "react-native";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 
 export default props => (
@@ -11,16 +17,29 @@ export default props => (
             <Text style={styles.subInfo}>{props.subText}</Text>
         </View>
         <View style={styles.buttonContainer}>
-            <TouchableOpacity onPress={props.onPress}>
+            {props.loading ? (
                 <View
                     style={[
                         styles.button,
                         { backgroundColor: props.buttonColor }
                     ]}
                 >
-                    <Text style={styles.buttonText}>{props.buttonText}</Text>
+                    <ActivityIndicator />
                 </View>
-            </TouchableOpacity>
+            ) : (
+                <TouchableOpacity onPress={props.onPress}>
+                    <View
+                        style={[
+                            styles.button,
+                            { backgroundColor: props.buttonColor }
+                        ]}
+                    >
+                        <Text style={styles.buttonText}>
+                            {props.buttonText}
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+            )}
         </View>
     </View>
 );
