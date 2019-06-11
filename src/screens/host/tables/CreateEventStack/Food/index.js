@@ -27,12 +27,7 @@ class CreateEventFood extends Component {
     static router = CreateEventFoodStack.router;
 
     state = {
-        menu: [
-            {
-                name: "test item",
-                description: "test description"
-            }
-        ],
+        menu: [],
         restrictions: {},
         preferences: {}
     };

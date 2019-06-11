@@ -1,10 +1,14 @@
 import React, { Component } from "react";
-import { View, FlatList, Text } from "react-native";
+import { View, FlatList, Text, ActivityIndicator } from "react-native";
 import Header from "Homecooked/src/components/Headers/Basic";
 import Tabs from "Homecooked/src/components/Headers/Tabs";
 import HistoryCell from "Homecooked/src/components/Cells/History";
 
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
+
+import { connect } from "react-redux";
+import { hostTypes } from "Homecooked/src/modules/types";
+import * as hostSelectors from "Homecooked/src/modules/host/selectors";
 
 const upcoming = [
     {
@@ -42,7 +46,7 @@ const past = [
     }
 ];
 
-export default class HostTablesMain extends Component {
+class HostTablesMain extends Component {
     state = {
         tabSelected: 0
     };
@@ -52,6 +56,7 @@ export default class HostTablesMain extends Component {
             upcoming: upcoming,
             past: past
         });
+        this.props.loadHostingEvents();
     }
 
     _keyExtractor = (item, index) => item.id;
@@ -66,7 +71,9 @@ export default class HostTablesMain extends Component {
                 endTime={endTime}
                 title={"A Texan Treat"}
                 onPress={() =>
-                    this.props.navigation.navigate("HostUpcomingEventStack")
+                    this.props.navigation.navigate("HostUpcomingEventStack", {
+                        event: item
+                    })
                 }
             />
         );
@@ -82,7 +89,9 @@ export default class HostTablesMain extends Component {
                 endTime={endTime}
                 title={"A Texan Treat"}
                 onPress={() =>
-                    this.props.navigation.navigate("HostPastEventStack")
+                    this.props.navigation.navigate("HostPastEventStack", {
+                        event: item
+                    })
                 }
             />
         );
@@ -116,28 +125,61 @@ export default class HostTablesMain extends Component {
                         this.props.navigation.navigate("CreateEventStack")
                     }
                 />
-                <Tabs
-                    tabSelected={index => this.changeTab(index)}
-                    activeTab={this.state.tabSelected}
-                />
-                {this.state.tabSelected == 0 ? (
-                    <FlatList
-                        keyExtractor={this._keyExtractor}
-                        style={{ height: "100%" }}
-                        data={this.state.upcoming}
-                        renderItem={this._renderUpcomingItem}
-                        ItemSeparatorComponent={this._renderSeparator}
-                    />
+                {this.props.initialLoad ? (
+                    <ActivityIndicator />
                 ) : (
-                    <FlatList
-                        keyExtractor={this._keyExtractor}
-                        style={{ height: "100%" }}
-                        data={this.state.past}
-                        renderItem={this._renderPastItem}
-                        ItemSeparatorComponent={this._renderSeparator}
-                    />
+                    <View>
+                        <Tabs
+                            tabSelected={index => this.changeTab(index)}
+                            activeTab={this.state.tabSelected}
+                        />
+                        {this.state.tabSelected == 0 ? (
+                            <FlatList
+                                keyExtractor={this._keyExtractor}
+                                style={{ height: "100%" }}
+                                data={this.props.activeEvents}
+                                extraData={this.props.activeEvents}
+                                renderItem={this._renderUpcomingItem}
+                                ItemSeparatorComponent={this._renderSeparator}
+                            />
+                        ) : (
+                            <FlatList
+                                keyExtractor={this._keyExtractor}
+                                style={{ height: "100%" }}
+                                data={this.props.inactiveEvents}
+                                extraData={this.props.inactiveEvents}
+                                renderItem={this._renderPastItem}
+                                ItemSeparatorComponent={this._renderSeparator}
+                            />
+                        )}
+                    </View>
                 )}
             </View>
         );
     }
 }
+
+const mapStateToProps = state => {
+    const { events, host } = state;
+    return {
+        initialLoad: host.initialLoad,
+        activeEvents: hostSelectors.getActiveEvents(state),
+        inactiveEvents: hostSelectors.getInactiveEvents(state)
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    const loadHostingEvents = () => {
+        dispatch({
+            type: hostTypes.LOAD_HOSTING_EVENTS_REQUEST
+        });
+    };
+    return {
+        loadHostingEvents
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(HostTablesMain);

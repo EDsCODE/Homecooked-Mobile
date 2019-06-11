@@ -9,7 +9,7 @@ import NavigationService from "Homecooked/src/utils/NavigationService";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 import TextField from "Homecooked/src/components/TextFields/Material";
 
-import { userTypes } from "Homecooked/src/modules/types";
+import { currentUserTypes } from "Homecooked/src/modules/types";
 import { connect } from "react-redux";
 
 const placeHolderWidth = 140;
@@ -68,7 +68,7 @@ class Bio extends Component {
 const mapDispatchToProps = dispatch => {
     const updateUser = changes => {
         dispatch({
-            type: userTypes.UPDATE_USER_REQUEST,
+            type: currentUserTypes.UPDATE_USER_REQUEST,
             payload: changes
         });
     };

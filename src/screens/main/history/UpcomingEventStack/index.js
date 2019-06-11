@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { createStackNavigator } from "react-navigation";
 import UpcomingEvent from "./UpcomingEvent";
 
@@ -14,4 +14,13 @@ const UpcomingEventStack = createStackNavigator(
     }
 );
 
-export default UpcomingEvent;
+class UpcomingEventMain extends Component {
+    static router = UpcomingEventStack.router;
+
+    render() {
+        const { navigation } = this.props;
+        return <UpcomingEventStack navigation={navigation} />;
+    }
+}
+
+export default UpcomingEventMain;

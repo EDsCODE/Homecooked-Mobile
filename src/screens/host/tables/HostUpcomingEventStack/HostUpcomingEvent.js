@@ -10,6 +10,8 @@ import UtilityBar from "Homecooked/src/components/Buttons/UtilityBar";
 import LocationSection from "Homecooked/src/components/Event/Location";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 import Separator from "Homecooked/src/components/Separator";
+import { hostTypes } from "Homecooked/src/modules/types";
+import { connect } from "react-redux";
 
 const people = [
     {
@@ -40,15 +42,41 @@ const menu = [
             "Sticky rice dumplings with salted egg and pork nestled inside"
     }
 ];
-export default class HostUpcomingEvent extends Component {
+class HostUpcomingEvent extends Component {
     state = {
         modules: ["dateTime", "location", "description", "refundPolicy"]
     };
-    _navigateToCreateProfile = () => {
-        this.props.navigation.navigate("BookingStack");
+
+    componentWillReceiveProps(nextProps) {
+        if (
+            this.props.cancelInProgress &&
+            !nextProps.cancelInProgress &&
+            !nextProps.error
+        ) {
+            NavigationService.navigate("HostTablesMain");
+        }
+    }
+
+    onPress = () => {
+        let eventId = this.props.navigation.state.params.event.id;
+        this.props.cancelEvent(eventId);
     };
 
     render() {
+        let {
+            title,
+            date,
+            distance,
+            price,
+            startTime,
+            description,
+            menu,
+            marker,
+            key
+        } = this.props.navigation.state.params.event;
+        let { refundInProgress } = this.props;
+        let lat = marker.point.coordinates[0];
+        let lng = marker.point.coordinates[1];
         return (
             <View style={{ flex: 1 }}>
                 <Header title={"Nick's Table"} />
@@ -57,14 +85,19 @@ export default class HostUpcomingEvent extends Component {
                     contentInset={{ bottom: 100 }}
                     showsVerticalScrollIndicator={false}
                 >
-                    <HeroSection />
+                    <HeroSection title={title} />
                     <Separator />
-                    <InfoSection modules={this.state.modules} />
+                    <InfoSection
+                        modules={this.state.modules}
+                        startTime={startTime}
+                        description={description}
+                        price={price}
+                    />
                     <PeopleRow people={people} />
                     <Separator />
                     <MenuSection title={"What's cooking"} menu={menu} />
                     <Separator />
-                    <LocationSection />
+                    <LocationSection lat={lat} lng={lng} />
                     <Separator />
                     <RatingSection />
                 </ScrollView>
@@ -74,9 +107,34 @@ export default class HostUpcomingEvent extends Component {
                     mainText={"Status: Upcoming"}
                     subText={"1 week away"}
                     buttonText={"Cancel"}
-                    onPress={this._navigateToCreateProfile}
+                    onPress={this.onPress}
                 />
             </View>
         );
     }
 }
+
+const mapStateToProps = state => {
+    const { history, events, currentBookings, host } = state;
+    return {
+        cancelInProgress: host.cancelInProgress,
+        error: host.error
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    const cancelEvent = eventId => {
+        dispatch({
+            type: hostTypes.CANCEL_EVENT_REQUEST,
+            eventId
+        });
+    };
+    return {
+        cancelEvent
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(HostUpcomingEvent);

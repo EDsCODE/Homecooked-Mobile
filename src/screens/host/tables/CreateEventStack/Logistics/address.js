@@ -26,13 +26,18 @@ export default class Address extends Component {
 
     state = {
         query: "",
+        addressLine2: "",
         results: [],
         selected: null
     };
 
     _goNext = () => {
-        let { eventDescription } = this.state;
-        this.props.screenProps.updateData("eventDescription", eventDescription);
+        let { selected, addressLine2 } = this.state;
+        console.log(selected);
+        this.props.screenProps.updateData("address", {
+            ...selected,
+            addressLine2
+        });
         this._goBack();
     };
 
@@ -42,7 +47,6 @@ export default class Address extends Component {
         });
         if (query.length > 3) {
             let results = await getPossibleMatches(query);
-            console.log(results);
             this.setState({
                 results
             });
@@ -68,13 +72,19 @@ export default class Address extends Component {
         this.setState({
             query: reverse(item.label),
             results: [],
-            selected: item
+            selected: item.address
         });
         Keyboard.dismiss();
     };
 
+    onChangeLine2 = text => {
+        this.setState({
+            addressLine2: text
+        });
+    };
+
     render() {
-        let { query, results } = this.state;
+        let { query, results, addressLine2 } = this.state;
         return (
             <View style={styles.container}>
                 <CloseButton onPress={this._goBack} />
@@ -96,6 +106,16 @@ export default class Address extends Component {
                         keyboardShouldPersistTaps={"handled"}
                     />
                 ) : null}
+                <TextField
+                    label={"Address Line 2 (optional)"}
+                    tintColor="#4A4A4A"
+                    multiline={true}
+                    value={addressLine2}
+                    returnKeyType="done"
+                    blurOnSubmit={true}
+                    onChangeText={this.onChangeLine2}
+                />
+
                 <BarButton
                     title="Confirm"
                     style={{

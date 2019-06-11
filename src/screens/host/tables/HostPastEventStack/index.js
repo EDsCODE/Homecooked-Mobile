@@ -1,8 +1,9 @@
-import React from "react";
+import React, { Component } from "react";
+
 import { createStackNavigator } from "react-navigation";
 import HostPastEvent from "./HostPastEvent";
 
-const EventStack = createStackNavigator(
+const HostPastStack = createStackNavigator(
     {
         HostPastEvent: {
             screen: HostPastEvent
@@ -15,4 +16,13 @@ const EventStack = createStackNavigator(
     }
 );
 
-export default EventStack;
+class HostPast extends Component {
+    static router = HostPastStack.router;
+
+    render() {
+        const { navigation } = this.props;
+        return <HostPastStack navigation={navigation} />;
+    }
+}
+
+export default HostPast;

@@ -13,52 +13,12 @@ import {
     getPastEvents
 } from "Homecooked/src/modules/history/selectors";
 
-const upcoming = [
-    {
-        title: "Simple Classics",
-        date: Date(),
-        price: 16,
-        distance: 0.9
-    },
-    {
-        title: "Simple Classics",
-        date: Date(),
-        price: 16,
-        distance: 0.9
-    }
-];
-
-const past = [
-    {
-        title: "Simple Classics",
-        date: Date(),
-        price: 16,
-        distance: 0.9
-    },
-    {
-        title: "Simple Classics",
-        date: Date(),
-        price: 16,
-        distance: 0.9
-    },
-    {
-        title: "Simple Classics",
-        date: Date(),
-        price: 16,
-        distance: 0.9
-    }
-];
-
 class HistoryMain extends Component {
     state = {
         tabSelected: 0
     };
 
     componentDidMount() {
-        this.setState({
-            upcoming: upcoming,
-            past: past
-        });
         this.props.loadHistory();
     }
 
@@ -95,7 +55,11 @@ class HistoryMain extends Component {
                 startTime={startTime}
                 endTime={endTime}
                 title={"A Texan Treat"}
-                onPress={() => this.props.navigation.navigate("PastEventStack")}
+                onPress={() =>
+                    this.props.navigation.navigate("PastEventStack", {
+                        event: item
+                    })
+                }
             />
         );
     };

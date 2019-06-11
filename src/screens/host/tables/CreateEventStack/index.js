@@ -21,7 +21,7 @@ const CreateEventStack = createStackNavigator(
         }
     },
     {
-        initialRouteName: "CreateEventDetails",
+        initialRouteName: "CreateEventLogistics",
         headerMode: "none"
     }
 );

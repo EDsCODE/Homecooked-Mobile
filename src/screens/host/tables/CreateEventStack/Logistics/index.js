@@ -45,7 +45,7 @@ class CreateEventLogistics extends Component {
     static router = CreateEventLogisticsStack.router;
 
     state = {
-        address: "",
+        address: {},
         specialDirections: "test special directions",
         date: moment(),
         startTime: moment(),

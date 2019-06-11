@@ -11,6 +11,7 @@ import moment from "moment";
 
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 import NavigationService from "Homecooked/src/utils/NavigationService";
+import { objectUtils } from "Homecooked/src/utils";
 
 export default class DetailsMain extends Component {
     _goBack = () => {
@@ -69,6 +70,16 @@ export default class DetailsMain extends Component {
                 " to " +
                 moment(endTime).format("hh:mm a");
         }
+
+        let isActive =
+            address &&
+            specialDirections &&
+            date &&
+            startTime &&
+            duration &&
+            price &&
+            minGuests &&
+            maxGuests;
 
         return (
             <View style={styles.container}>
@@ -135,6 +146,7 @@ export default class DetailsMain extends Component {
                     borderColor={Color.orange}
                     fill={Color.orange}
                     onPress={this._goNext}
+                    active={isActive}
                 />
             </View>
         );

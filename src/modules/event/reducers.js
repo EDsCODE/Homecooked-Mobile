@@ -8,11 +8,11 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case types.GET_ACTIVE_EVENTS_REQUEST:
+        case types.GET_EVENTS_REQUEST:
             return {
                 ...state
             };
-        case types.GET_ACTIVE_EVENTS_SUCCESS:
+        case types.GET_EVENTS_SUCCESS:
             return {
                 ...state,
                 byId: {
@@ -20,7 +20,7 @@ const reducer = (state = initialState, action) => {
                     ...normalize(action.events, "id")
                 }
             };
-        case types.GET_ACTIVE_EVENTS_ERROR:
+        case types.GET_EVENTS_ERROR:
             return {
                 ...state
             };
@@ -37,6 +37,23 @@ const reducer = (state = initialState, action) => {
                 }
             };
         case types.GET_EVENT_ERROR:
+            return {
+                ...state,
+                error: action.error
+            };
+        case types.UPDATE_EVENT_REQUEST:
+            return {
+                ...state
+            };
+        case types.UPDATE_EVENT_SUCCESS:
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    [action.event.id]: action.event
+                }
+            };
+        case types.UPDATE_EVENT_ERROR:
             return {
                 ...state,
                 error: action.error

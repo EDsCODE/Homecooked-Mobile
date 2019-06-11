@@ -12,7 +12,7 @@ import ImagePicker from "react-native-image-picker";
 
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 
-import { userTypes } from "Homecooked/src/modules/types";
+import { currentUserTypes } from "Homecooked/src/modules/types";
 import { connect } from "react-redux";
 
 const placeHolderWidth = Spacing.deviceWidth - 80;
@@ -84,7 +84,7 @@ class Photo extends Component {
 const mapDispatchToProps = dispatch => {
     const uploadImage = image => {
         dispatch({
-            type: userTypes.UPLOAD_USER_IMAGE_REQUEST,
+            type: currentUserTypes.UPLOAD_USER_IMAGE_REQUEST,
             payload: { image }
         });
     };

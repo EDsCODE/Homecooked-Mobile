@@ -10,6 +10,7 @@ import FieldButton from "Homecooked/src/components/TextFields/Button";
 
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 import NavigationService from "Homecooked/src/utils/NavigationService";
+import { objectUtils } from "Homecooked/src/utils";
 
 export default class DetailsMain extends Component {
     _goBack = () => {
@@ -79,6 +80,11 @@ export default class DetailsMain extends Component {
                         bottom: Spacing.largest,
                         right: Spacing.largest
                     }}
+                    active={
+                        menu.length > 0 &&
+                        !objectUtils.isEmpty(restrictions) &&
+                        !objectUtils.isEmpty(preferences)
+                    }
                 />
             </View>
         );

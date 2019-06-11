@@ -5,7 +5,10 @@ const initialState = {
     id: null,
     error: null,
     stripeAccountId: null,
-    loading: false
+    loading: false,
+    eventsLoading: false,
+    initialLoad: true,
+    cancelInProgress: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -39,6 +42,38 @@ const reducer = (state = initialState, action) => {
                 status: "REQ"
             };
         case types.CREATE_APPLICATION_ERROR:
+            return {
+                ...state,
+                error: action.error
+            };
+        case types.LOAD_HOSTING_EVENTS_REQUEST:
+            return {
+                ...state,
+                eventsLoading: true
+            };
+        case types.LOAD_HOSTING_EVENTS_SUCCESS:
+            return {
+                ...state,
+                eventsLoading: false,
+                initialLoad: false
+            };
+        case types.LOAD_HOSTING_EVENTS_ERROR:
+            return {
+                ...state,
+                eventsLoading: false,
+                error: action.error
+            };
+        case types.CANCEL_EVENT_REQUEST:
+            return {
+                ...state,
+                cancelInProgress: true
+            };
+        case types.CANCEL_EVENT_SUCCESS:
+            return {
+                ...state,
+                cancelInProgress: false
+            };
+        case types.CANCEL_EVENT_ERROR:
             return {
                 ...state,
                 error: action.error

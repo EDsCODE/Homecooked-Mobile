@@ -3,7 +3,8 @@ import { TouchableOpacity, View, StyleSheet } from "react-native";
 import { Icon } from "react-native-elements";
 
 export default props => {
-    return (
+    console.log(props.active);
+    return props.active ? (
         <TouchableOpacity onPress={props.onPress} style={props.style}>
             <View style={styles.floatyButton}>
                 <Icon
@@ -14,6 +15,17 @@ export default props => {
                 />
             </View>
         </TouchableOpacity>
+    ) : (
+        <View style={props.style}>
+            <View style={[styles.floatyButton, { backgroundColor: "gray" }]}>
+                <Icon
+                    name="ios-arrow-round-forward"
+                    type="ionicon"
+                    color="white"
+                    size={50}
+                />
+            </View>
+        </View>
     );
 };
 

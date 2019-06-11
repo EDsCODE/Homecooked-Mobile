@@ -59,6 +59,7 @@ export default class DetailsMain extends Component {
                         bottom: Spacing.largest,
                         right: Spacing.largest
                     }}
+                    active={eventTitle && eventDescription}
                 />
             </View>
         );

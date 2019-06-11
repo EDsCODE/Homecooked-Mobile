@@ -41,11 +41,27 @@ const getBookingByEvent = id => {
     });
 };
 
+const getEventsByChefId = chefId => {
+    return request({
+        method: "GET",
+        url: `/chef/${chefId}/events`
+    });
+};
+
+const cancelEvent = id => {
+    return request({
+        method: "PATCH",
+        url: `/event/${id}/cancel`
+    });
+};
+
 const EventService = {
     getEvents,
     getBookingByEvent,
     getActiveEvents,
-    getEventById
+    getEventById,
+    getEventsByChefId,
+    cancelEvent
 };
 
 export default EventService;
