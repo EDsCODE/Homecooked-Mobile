@@ -1,14 +1,18 @@
 import types from "./types";
+import { normalize } from "Homecooked/src/utils/normalize";
 
 const initialState = {
     status: null,
     id: null,
+    type: null,
     error: null,
     stripeAccountId: null,
-    loading: false,
     eventsLoading: false,
     initialLoad: true,
-    cancelInProgress: false
+    cancelInProgress: false,
+    postingInProgress: false,
+    preferences: {},
+    loading: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -19,11 +23,32 @@ const reducer = (state = initialState, action) => {
                 loading: true
             };
         case types.GET_CHEF_SUCCESS:
+            let fields = [];
+            for (
+                let i = 0;
+                i < action.payload.preferences.preferences.length;
+                i++
+            ) {
+                let values =
+                    action.payload.preferences.preferences[i].allowedValues;
+                values = normalize(values, "itemValue");
+                fields.push({
+                    ...action.payload.preferences.preferences[i],
+                    allowedValues: values
+                });
+            }
+            let media = normalize(action.payload.media, "type");
             return {
                 ...state,
                 id: action.payload.chef.id,
                 status: action.payload.chef.status,
                 stripeAccountId: action.payload.chef.stripeAccountId,
+                type: action.payload.chef.type,
+                preferences: {
+                    ...action.payload.preferences,
+                    fields: normalize(fields, "fieldType")
+                },
+                media: media,
                 loading: false
             };
         case types.GET_CHEF_ERROR:
@@ -76,6 +101,22 @@ const reducer = (state = initialState, action) => {
         case types.CANCEL_EVENT_ERROR:
             return {
                 ...state,
+                error: action.error
+            };
+        case types.POST_EVENT_REQUEST:
+            return {
+                ...state,
+                postingInProgress: true
+            };
+        case types.POST_EVENT_SUCCESS:
+            return {
+                ...state,
+                postingInProgress: false
+            };
+        case types.POST_EVENT_ERROR:
+            return {
+                ...state,
+                postingInProgress: false,
                 error: action.error
             };
         default:

@@ -75,6 +75,7 @@ class Photo extends Component {
                         bottom: Spacing.largest,
                         right: Spacing.largest
                     }}
+                    active={this.state.image}
                 />
             </View>
         );

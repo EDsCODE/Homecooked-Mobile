@@ -33,7 +33,7 @@ export default class CheckBoxes extends Component {
                                     style={{ paddingRight: 10 }}
                                     checkBoxColor={Color.lightGray}
                                     checkedCheckBoxColor={Color.orange}
-                                    isChecked={dict[key]}
+                                    isChecked={dict[key].selected}
                                     onClick={() => {
                                         this.selectBox(key);
                                     }}

@@ -57,6 +57,15 @@ export function* updateEventStatusSaga(eventId, status) {
     }
 }
 
+export function* createEventWorkerSaga(eventData) {
+    try {
+        let { data: event } = yield call(EventService.createEvent, eventData);
+        yield put({ type: types.UPDATE_EVENT_SUCCESS, event });
+    } catch (error) {
+        yield put({ type: types.UPDATE_EVENT_ERROR, error });
+    }
+}
+
 export const eventSagas = [
     takeLatest(types.GET_EVENTS_REQUEST, getActiveEventsWorkerSaga)
 ];

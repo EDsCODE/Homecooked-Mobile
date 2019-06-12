@@ -42,14 +42,12 @@ const GeneralizedMap = ({
                 />
             </MapView>
 
-            <PrimaryText style={{ marginTop: Spacing.base }}>
-                Special Directions
-            </PrimaryText>
-            <MinorText>
-                {
-                    "I live in the house with the brown Welcome mat and purple door!"
-                }
-            </MinorText>
+            {specialDirections ? (
+                <PrimaryText style={{ marginTop: Spacing.base }}>
+                    Special Directions
+                </PrimaryText>
+            ) : null}
+            <MinorText>{specialDirections}</MinorText>
         </View>
     );
 };

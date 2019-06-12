@@ -80,6 +80,7 @@ export default class Landing extends Component {
                             <FloatyButton
                                 onPress={() => this._swiper.scrollBy(1)}
                                 style={{ marginTop: 10 }}
+                                active={true}
                             />
                         </LinearGradient>
                     </ImageBackground>
@@ -105,6 +106,7 @@ export default class Landing extends Component {
                             <FloatyButton
                                 onPress={() => this._swiper.scrollBy(1)}
                                 style={{ marginTop: 10 }}
+                                active={true}
                             />
                         </LinearGradient>
                     </ImageBackground>

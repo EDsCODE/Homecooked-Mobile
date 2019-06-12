@@ -49,9 +49,9 @@ const modules = {
     dateTime: props => {
         let date = props.startTime;
         let firstLine = moment(date).format("dddd, MMMM Do");
-        let secondLine = `${moment(date).format("h:mm a")} - ${moment(
-            date
-        ).format("h:m a")}`;
+        let secondLine = `${moment(date).format("h:mm a")} - ${moment(date)
+            .add(props.duration, "hours")
+            .format("h:mm a")}`;
         return (
             <ModuleScaffold title={"Date and Time"} iconName={"calendar"}>
                 <MinorText style={{ marginTop: Spacing.small }}>

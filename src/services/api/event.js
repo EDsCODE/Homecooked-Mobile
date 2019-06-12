@@ -55,13 +55,30 @@ const cancelEvent = id => {
     });
 };
 
+const getEventSettingsByType = type => {
+    return request({
+        method: "GET",
+        url: `/event/settings/${type}`
+    });
+};
+
+const createEvent = eventData => {
+    return request({
+        method: "POST",
+        url: "/event",
+        data: eventData
+    });
+};
+
 const EventService = {
     getEvents,
     getBookingByEvent,
     getActiveEvents,
     getEventById,
     getEventsByChefId,
-    cancelEvent
+    cancelEvent,
+    getEventSettingsByType,
+    createEvent
 };
 
 export default EventService;

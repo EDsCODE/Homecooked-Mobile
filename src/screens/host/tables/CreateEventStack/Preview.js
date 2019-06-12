@@ -9,6 +9,9 @@ import Header from "Homecooked/src/components/Headers/Basic";
 import LocationSection from "Homecooked/src/components/Event/Location";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 import Separator from "Homecooked/src/components/Separator";
+import { connect } from "react-redux";
+import * as hostSelectors from "Homecooked/src/modules/host/selectors";
+import NavigationService from "Homecooked/src/utils/NavigationService";
 
 const people = [
     {
@@ -28,13 +31,24 @@ const people = [
     }
 ];
 
-export default class Preview extends Component {
+class Preview extends Component {
     state = {
         modules: ["dateTime", "location", "description", "refundPolicy"]
     };
 
     componentDidMount() {
-        console.log(this.props.screenProps.state);
+        console.log(this.props);
+    }
+
+    componentWillRecieveProps(nextProps) {
+        console.log(nextProps);
+        if (
+            this.props.postingInProgress &&
+            !nextProps.postingInProgress &&
+            !nextProps.error
+        ) {
+            NavigationService.navigate("HostTablesMain");
+        }
     }
 
     _goNext = () => {
@@ -43,6 +57,7 @@ export default class Preview extends Component {
 
     render() {
         let { logistics, food, details } = this.props.screenProps.state;
+        let { eventTitle, eventDescription } = details;
         return (
             <View style={{ flex: 1 }}>
                 <Header title={"Nick's Table"} />
@@ -51,10 +66,12 @@ export default class Preview extends Component {
                     contentInset={{ bottom: 100 }}
                     showsVerticalScrollIndicator={false}
                 >
-                    <HeroSection />
+                    <HeroSection title={eventTitle} media={this.props.media} />
                     <Separator />
-                    <InfoSection modules={this.state.modules} />
-                    <PeopleRow people={people} />
+                    <InfoSection
+                        modules={this.state.modules}
+                        description={eventDescription}
+                    />
                     <Separator />
                     <MenuSection title={"What's cooking"} menu={food.menu} />
                     <Separator />
@@ -75,3 +92,16 @@ export default class Preview extends Component {
         );
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        media: hostSelectors.media(state),
+        postingInProgress: state.host.postingInProgress,
+        error: state.host.error
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    null
+)(Preview);

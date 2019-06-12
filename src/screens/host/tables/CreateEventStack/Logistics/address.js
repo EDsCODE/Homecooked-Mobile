@@ -14,7 +14,13 @@ import CloseButton from "Homecooked/src/components/Buttons/Close";
 import BarButton from "Homecooked/src/components/Buttons/BarButton";
 import TextField from "Homecooked/src/components/TextFields/Material";
 
-import { getPossibleMatches } from "Homecooked/src/services/location";
+import uuid4 from "uuid4";
+
+import {
+    getPossibleMatches,
+    getLatLong,
+    getPlaceDetails
+} from "Homecooked/src/services/location";
 import { reverse } from "Homecooked/src/utils/Strings";
 
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
@@ -26,18 +32,29 @@ export default class Address extends Component {
 
     state = {
         query: "",
-        addressLine2: "",
+        secondaryAddress: "",
         results: [],
         selected: null
     };
 
-    _goNext = () => {
-        let { selected, addressLine2 } = this.state;
-        console.log(selected);
-        this.props.screenProps.updateData("address", {
-            ...selected,
-            addressLine2
+    componentDidMount() {
+        let sessionToken = uuid4();
+        this.setState({
+            sessionToken
         });
+    }
+
+    _goNext = async () => {
+        let { selected, secondaryAddress, query } = this.state;
+        console.log(selected);
+
+        let address = {
+            formattedAddress: query,
+            secondaryAddress,
+            geometry: selected.geometry.location
+        };
+
+        this.props.screenProps.updateData("address", address);
         this._goBack();
     };
 
@@ -46,7 +63,11 @@ export default class Address extends Component {
             query
         });
         if (query.length > 3) {
-            let results = await getPossibleMatches(query);
+            let results = await getPossibleMatches(
+                query,
+                this.state.sessionToken
+            );
+            console.log(results);
             this.setState({
                 results
             });
@@ -62,29 +83,34 @@ export default class Address extends Component {
                         marginVertical: Spacing.smallest
                     }}
                 >
-                    {reverse(item.label)}
+                    {item.description}
                 </Text>
             </TouchableOpacity>
         );
     };
 
-    onRowPressed = item => {
+    onRowPressed = async item => {
+        let data = await getPlaceDetails(
+            item.place_id,
+            this.state.sessionToken
+        );
+        console.log(data);
         this.setState({
-            query: reverse(item.label),
+            query: data.result.formatted_address,
             results: [],
-            selected: item.address
+            selected: data.result
         });
         Keyboard.dismiss();
     };
 
     onChangeLine2 = text => {
         this.setState({
-            addressLine2: text
+            secondaryAddress: text
         });
     };
 
     render() {
-        let { query, results, addressLine2 } = this.state;
+        let { query, results, secondaryAddress } = this.state;
         return (
             <View style={styles.container}>
                 <CloseButton onPress={this._goBack} />
@@ -110,7 +136,7 @@ export default class Address extends Component {
                     label={"Address Line 2 (optional)"}
                     tintColor="#4A4A4A"
                     multiline={true}
-                    value={addressLine2}
+                    value={secondaryAddress}
                     returnKeyType="done"
                     blurOnSubmit={true}
                     onChangeText={this.onChangeLine2}

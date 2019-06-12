@@ -30,7 +30,25 @@ export default class Menu extends Component {
     );
 
     render() {
-        let { title, menu, containerStyle } = this.props;
+        let {
+            title,
+            menu,
+            containerStyle,
+            dietaryRestriction,
+            mealType
+        } = this.props;
+
+        let parsedRestrictions = dietaryRestriction
+            ? formatArrayAttributes(dietaryRestriction)
+            : null;
+        let parsedmealType = mealType ? formatArrayAttributes(mealType) : null;
+
+        let dietaryInfo =
+            (parsedRestrictions
+                ? "Contains: " +
+                  parsedRestrictions +
+                  (parsedmealType ? "\n" : "")
+                : "") + (parsedmealType ? parsedmealType : "");
         return (
             <View style={containerStyle ? containerStyle : styles.container}>
                 {title ? <PrimaryText>{title}</PrimaryText> : null}
@@ -41,10 +59,17 @@ export default class Menu extends Component {
                     ItemSeparatorComponent={this._renderSeparator}
                     bounces={false}
                 />
+                {dietaryInfo ? <MinorText>{dietaryInfo}</MinorText> : null}
             </View>
         );
     }
 }
+
+function formatArrayAttributes(arr) {
+    let values = arr.map(item => item.itemValue);
+    return values.join(", ");
+}
+
 const Row = props => (
     <View style={styles.row} key={props.key}>
         <SecondaryText>{props.name}</SecondaryText>

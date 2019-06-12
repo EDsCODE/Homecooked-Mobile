@@ -24,9 +24,32 @@ const getChefByUserId = userId => {
     });
 };
 
+const createChefMedia = (chefId, key, type) => {
+    return request({
+        method: "POST",
+        url: `/chef/${chefId}/media`,
+        data: {
+            key,
+            type
+        }
+    });
+};
+
+const createChef = userId => {
+    return request({
+        method: "POST",
+        url: "/chef",
+        data: {
+            userId
+        }
+    });
+};
+
 const HostService = {
     createApplication,
-    getChefByUserId
+    getChefByUserId,
+    createChefMedia,
+    createChef
 };
 
 export default HostService;

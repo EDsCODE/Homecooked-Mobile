@@ -28,7 +28,7 @@ const HostApplicationStack = createStackNavigator(
         }
     },
     {
-        initialRouteName: "Photos",
+        initialRouteName: "Prompt",
         headerMode: "none"
     }
 );
@@ -37,12 +37,12 @@ class HostApplication extends Component {
     static router = HostApplicationStack.router;
 
     state = {
-        address: null,
-        phoneNumber: null,
-        reason: null,
-        experience: null,
-        lat: null,
-        lng: null,
+        address: "klnasd",
+        phoneNumber: "+17328775160",
+        reason: "test reason",
+        experience: "test experience",
+        lat: 5.12390123,
+        lng: 50.108923,
         images: null
     };
 

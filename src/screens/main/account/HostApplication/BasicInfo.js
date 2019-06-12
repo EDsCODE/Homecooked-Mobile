@@ -18,6 +18,15 @@ export default class BasicInfo extends Component {
         address: "",
         phoneNumber: ""
     };
+
+    componentDidMount() {
+        let { address, phoneNumber } = this.props.screenProps.state;
+        this.setState({
+            address,
+            phoneNumber
+        });
+    }
+
     _goBack = () => {
         NavigationService.navigate("AccountMain");
     };
@@ -64,6 +73,7 @@ export default class BasicInfo extends Component {
                         bottom: Spacing.largest,
                         right: Spacing.largest
                     }}
+                    active={address && phoneNumber}
                 />
             </View>
         );

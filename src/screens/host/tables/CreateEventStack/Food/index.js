@@ -29,7 +29,7 @@ class CreateEventFood extends Component {
     state = {
         menu: [],
         restrictions: {},
-        preferences: {}
+        mealType: {}
     };
 
     updateData = (key, value, cb) => {
@@ -54,6 +54,7 @@ class CreateEventFood extends Component {
             <CreateEventFoodStack
                 navigation={navigation}
                 screenProps={{
+                    ...this.props.screenProps,
                     updateData: this.updateData,
                     state: this.state,
                     submit: this.submit

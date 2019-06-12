@@ -66,10 +66,12 @@ export default class DetailsMain extends Component {
         if (startTime) {
             endTime = moment(startTime).add(duration, "hours");
             parsedTime =
-                moment(startTime).format("hh:mm a") +
+                moment(startTime).format("h:mm a") +
                 " to " +
-                moment(endTime).format("hh:mm a");
+                moment(endTime).format("h:mm a");
         }
+
+        let formattedAddress = address.formattedAddress;
 
         let isActive =
             address &&
@@ -97,7 +99,7 @@ export default class DetailsMain extends Component {
                     <FieldButton
                         containerStyle={{ marginVertical: Spacing.smaller }}
                         title={"Address"}
-                        value={address}
+                        value={formattedAddress}
                         onPress={this._navigateToAddressField}
                     />
                     <FieldButton

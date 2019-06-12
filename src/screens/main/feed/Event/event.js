@@ -48,13 +48,15 @@ export default class Event extends Component {
             title,
             date,
             distance,
-            price,
+            attributes,
             startTime,
             description,
             menu,
             marker,
+            duration,
             key
         } = this.props.navigation.state.params.event;
+        let { price, mealType, dietaryRestriction } = attributes;
         let lat = marker.point.coordinates[0];
         let lng = marker.point.coordinates[1];
         return (
@@ -76,10 +78,16 @@ export default class Event extends Component {
                         startTime={startTime}
                         description={description}
                         price={price}
+                        duration={duration}
                     />
                     <PeopleRow people={people} />
                     <Separator />
-                    <MenuSection title={"What's cooking?"} menu={menu} />
+                    <MenuSection
+                        title={"What's cooking?"}
+                        menu={menu}
+                        mealType={mealType}
+                        dietaryRestriction={dietaryRestriction}
+                    />
                     <Separator />
                     <LocationSection lat={lat} lng={lng} />
                     <Separator />

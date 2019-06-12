@@ -18,8 +18,16 @@ const uploadImage = file => {
     });
 };
 
+const getImage = key => {
+    return request({
+        method: "GET",
+        url: `/image/${key}`
+    });
+};
+
 const ImageService = {
-    uploadImage
+    uploadImage,
+    getImage
 };
 
 export default ImageService;

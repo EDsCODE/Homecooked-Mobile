@@ -1,6 +1,10 @@
 import { createSelector } from "reselect";
 
 export const chefId = state => state.host.id;
+export const media = state => {
+    let mediaDict = state.host.media;
+    return Object.values(mediaDict);
+};
 const getEvents = state => state.events.byId;
 const getUsers = state => state.users.byId;
 
@@ -54,3 +58,5 @@ export const getInactiveEvents = createSelector(
         return inactiveEvents;
     }
 );
+
+export const getEventFields = state => state.host.preferences.fields;

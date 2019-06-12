@@ -99,7 +99,15 @@ export default class EventCard extends Component {
     };
 
     render() {
-        let { title, date, distance, price, people, key } = this.props.event;
+        let {
+            title,
+            date,
+            distance,
+            attributes,
+            people,
+            key
+        } = this.props.event;
+        let { price } = attributes;
         let _dateWithType = dateWithMealType(date);
 
         return (
