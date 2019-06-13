@@ -9,19 +9,14 @@ import MinorText from "Homecooked/src/components/Text/Minor";
 const GeneralizedMap = ({
     lat,
     lng,
-    address = null,
-    city = null,
+    formattedAddress = null,
+    secondaryAddress = null,
     state = null,
     specialDirections = null
 }) => {
     return (
         <View style={styles.container}>
             <PrimaryText>Location</PrimaryText>
-            {address && city && state ? (
-                <Text style={styles.info}>
-                    {address + " " + city + ", " + state}
-                </Text>
-            ) : null}
             <MapView
                 initialRegion={{
                     latitude: lat,

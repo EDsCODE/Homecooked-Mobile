@@ -31,6 +31,9 @@ const people = [
     }
 ];
 
+const BUTTON_TITLE = "Post Event";
+const MENU_TITLE = "What's Cooking";
+
 class Preview extends Component {
     state = {
         modules: ["dateTime", "location", "description", "refundPolicy"]
@@ -73,12 +76,12 @@ class Preview extends Component {
                         description={eventDescription}
                     />
                     <Separator />
-                    <MenuSection title={"What's cooking"} menu={food.menu} />
+                    <MenuSection title={MENU_TITLE} menu={food.menu} />
                     <Separator />
                     <LocationSection />
                 </ScrollView>
                 <BarButton
-                    title="Post Event"
+                    title={BUTTON_TITLE}
                     style={{
                         position: "absolute",
                         bottom: Spacing.large,

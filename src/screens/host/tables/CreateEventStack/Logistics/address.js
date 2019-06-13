@@ -21,9 +21,10 @@ import {
     getLatLong,
     getPlaceDetails
 } from "Homecooked/src/services/location";
-import { reverse } from "Homecooked/src/utils/Strings";
 
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
+
+const HEADER_TEXT = "Where is your event happening?";
 
 export default class Address extends Component {
     _goBack = () => {
@@ -114,7 +115,7 @@ export default class Address extends Component {
         return (
             <View style={styles.container}>
                 <CloseButton onPress={this._goBack} />
-                <HeadingText>Where is your event happening?</HeadingText>
+                <HeadingText>{HEADER_TEXT}</HeadingText>
                 <TextField
                     label={""}
                     tintColor="#4A4A4A"

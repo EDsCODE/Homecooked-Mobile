@@ -69,6 +69,7 @@ class UpcomingEvent extends Component {
             key
         } = this.props.navigation.state.params.event;
         let { refundInProgress } = this.props;
+        let { formattedAddress, secondaryAddress } = marker;
         let lat = marker.point.coordinates[0];
         let lng = marker.point.coordinates[1];
         return (
@@ -90,6 +91,8 @@ class UpcomingEvent extends Component {
                         startTime={startTime}
                         description={description}
                         price={price}
+                        formattedAddress={formattedAddress}
+                        secondaryAddress={secondaryAddress}
                     />
                     <PeopleRow people={people} />
                     <Separator />

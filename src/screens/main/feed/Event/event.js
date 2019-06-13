@@ -29,13 +29,15 @@ const people = [
     }
 ];
 
+const TITLE = "What's cooking?";
+
 export default class Event extends Component {
     componentDidMount() {
         console.log(this.props);
     }
 
     state = {
-        modules: ["dateTime", "location", "description", "refundPolicy"]
+        modules: ["dateTime", "description", "refundPolicy"]
     };
     _navigateToCreateProfile = () => {
         this.props.navigation.navigate("BookingStack", {
@@ -57,8 +59,10 @@ export default class Event extends Component {
             key
         } = this.props.navigation.state.params.event;
         let { price, mealType, dietaryRestriction } = attributes;
+        let { formattedAddress, secondaryAddress } = marker;
         let lat = marker.point.coordinates[0];
         let lng = marker.point.coordinates[1];
+
         return (
             <View style={{ flex: 1 }}>
                 <Header title={"Nick's Table"} />
@@ -83,13 +87,18 @@ export default class Event extends Component {
                     <PeopleRow people={people} />
                     <Separator />
                     <MenuSection
-                        title={"What's cooking?"}
+                        title={TITLE}
                         menu={menu}
                         mealType={mealType}
                         dietaryRestriction={dietaryRestriction}
                     />
                     <Separator />
-                    <LocationSection lat={lat} lng={lng} />
+                    <LocationSection
+                        lat={lat}
+                        lng={lng}
+                        formattedAddress={formattedAddress}
+                        secondaryAddress={secondaryAddress}
+                    />
                     <Separator />
                     <RatingSection />
                 </ScrollView>

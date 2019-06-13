@@ -29,7 +29,7 @@ class HistoryMain extends Component {
     };
 
     _renderUpcomingItem = ({ item, index }) => {
-        let startTime = new Date();
+        let startTime = new Date(item.startTime);
         let endTime = new Date(startTime.getTime() + 60 * 60000);
         return (
             <HistoryCell
@@ -47,14 +47,14 @@ class HistoryMain extends Component {
     };
 
     _renderPastItem = ({ item }) => {
-        let startTime = new Date();
+        let startTime = new Date(item.startTime);
         let endTime = new Date(startTime.getTime() + 60 * 60000);
         return (
             <HistoryCell
                 upcoming={false}
                 startTime={startTime}
                 endTime={endTime}
-                title={"A Texan Treat"}
+                title={item.title}
                 onPress={() =>
                     this.props.navigation.navigate("PastEventStack", {
                         event: item

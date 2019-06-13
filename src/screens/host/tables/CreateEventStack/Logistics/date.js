@@ -10,6 +10,9 @@ import CalendarPicker from "react-native-calendar-picker";
 
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 
+const HEADER_TEXT = "What day is your event happening?";
+const PROMPT_TEXT = "Most Homecooked meals are scheduled 10 days in advance.";
+
 export default class Date extends Component {
     _goBack = () => {
         this.props.navigation.goBack();
@@ -37,9 +40,9 @@ export default class Date extends Component {
         return (
             <View style={styles.container}>
                 <CloseButton onPress={this._goBack} />
-                <HeadingText>What day is your event happening?</HeadingText>
+                <HeadingText>{HEADER_TEXT}</HeadingText>
                 <PromptText style={{ marginTop: Spacing.large }}>
-                    Most Homecooked meals are scheduled 10 days in advance.
+                    {PROMPT_TEXT}
                 </PromptText>
                 <CalendarPicker
                     style={{ width: "100%" }}

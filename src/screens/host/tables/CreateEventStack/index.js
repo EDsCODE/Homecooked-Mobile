@@ -8,6 +8,7 @@ import moment from "moment";
 import { connect } from "react-redux";
 import { hostTypes } from "Homecooked/src/modules/types";
 import * as hostSelectors from "Homecooked/src/modules/host/selectors";
+import { EventTypes } from "Homecooked/src/types";
 
 const CreateEventStack = createStackNavigator(
     {
@@ -47,45 +48,40 @@ class CreateEvent extends Component {
 
     submit = () => {
         let fields = this.props.fields;
-        console.log(this.props);
-        console.log(this.state);
+
         let payload = {
             ...this.state.details,
             ...this.state.food,
             ...this.state.logistics,
-            endTime: moment(this.state.startTime).add(
-                this.state.duration,
-                "hours"
-            ),
-            price: [
+            [EventTypes.PRICE]: [
                 {
-                    settingId: fields["price"].id,
+                    settingId: fields[EventTypes.PRICE].id,
                     allowedSettingValueId: null,
                     unconstrainedValue: this.state.logistics.price
                 }
             ],
-            tableSizeMin: [
+            [EventTypes.TABLE_SIZE_MIN]: [
                 {
-                    settingId: fields["tableSizeMin"].id,
+                    settingId: fields[EventTypes.TABLE_SIZE_MIN].id,
                     unconstrainedValue: this.state.logistics.minGuests
                 }
             ],
-            tableSizeMax: [
+            [EventTypes.TABLE_SIZE_MAX]: [
                 {
-                    settingId: fields["tableSizeMax"].id,
+                    settingId: fields[EventTypes.TABLE_SIZE_MAX].id,
                     unconstrainedValue: this.state.logistics.maxGuests
                 }
             ],
-            dietaryRestriction: formatDynamicPayload(
+            [EventTypes.DIETARY_RESTRICTION]: formatConstrainedValue(
                 this.state.food.restrictions,
-                fields["dietaryRestriction"]
+                fields[EventTypes.DIETARY_RESTRICTION]
             ),
-            mealType: formatDynamicPayload(
+            [EventTypes.MEAL_TYPE]: formatConstrainedValue(
                 this.state.food.mealType,
-                fields["mealType"]
+                fields[EventTypes.MEAL_TYPE]
             )
         };
-        console.log(payload);
+
         this.props.postEvent(payload);
     };
 
@@ -131,7 +127,7 @@ export default connect(
 
 // utils for formatting payload
 
-function formatDynamicPayload(dictToFormat, field) {
+function formatConstrainedValue(dictToFormat, field) {
     let result = [];
     Object.keys(dictToFormat).map(key => {
         if (dictToFormat[key].selected) {
@@ -144,3 +140,5 @@ function formatDynamicPayload(dictToFormat, field) {
     });
     return result;
 }
+
+function formatUnconstrainedValue(dictToFormat, field) {}

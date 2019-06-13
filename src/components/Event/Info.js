@@ -79,8 +79,7 @@ const modules = {
     location: props => (
         <ModuleScaffold title={"Location"} iconName={"pin"}>
             <MinorText style={{ marginTop: Spacing.small }}>
-                I spent 3 months interning with a Chinese shifu in Hong Kong!
-                Come try the fruits of my labor!
+                {props.formattedAddress}
             </MinorText>
         </ModuleScaffold>
     ),
