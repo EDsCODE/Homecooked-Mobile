@@ -138,6 +138,7 @@ android {
 }
 
 dependencies {
+    implementation project(':urbanairship-react-native')
     implementation project(':react-native-sensitive-info')
     implementation project(':react-native-image-picker')
     implementation project(':react-native-maps')
