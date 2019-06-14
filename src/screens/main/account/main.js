@@ -49,7 +49,8 @@ class Main extends Component {
             {},
             this.hostRow(this.props.hostStatus),
             {
-                title: "Payment"
+                title: "Payment",
+                onPress: () => this._goToPayment()
             },
             {
                 title: "Invite Friends",
@@ -92,6 +93,10 @@ class Main extends Component {
 
     _goToProfile = () => {
         this.props.navigation.navigate("Profile");
+    };
+
+    _goToPayment = () => {
+        this.props.navigation.navigate("Payment");
     };
 
     _renderItem = ({ item, index }) => {
