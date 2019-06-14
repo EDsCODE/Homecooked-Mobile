@@ -62,19 +62,25 @@ class HostUpcomingEvent extends Component {
         this.props.cancelEvent(eventId);
     };
 
+    _navigateToPerson = person => {
+        this.props.navigation.navigate("HostUpcomingEventPerson", person);
+    };
+
     render() {
         let {
             title,
             date,
             distance,
-            price,
             startTime,
             description,
             menu,
             marker,
-            key
+            key,
+            attributes
         } = this.props.navigation.state.params.event;
         let { refundInProgress } = this.props;
+        let { price, mealType, dietaryRestriction } = attributes;
+        let { formattedAddress, secondaryAddress } = marker;
         let lat = marker.point.coordinates[0];
         let lng = marker.point.coordinates[1];
         return (
@@ -92,12 +98,26 @@ class HostUpcomingEvent extends Component {
                         startTime={startTime}
                         description={description}
                         price={price}
+                        formattedAddress={formattedAddress}
                     />
-                    <PeopleRow people={people} />
+                    <PeopleRow
+                        people={people}
+                        onPress={this._navigateToPerson}
+                    />
                     <Separator />
-                    <MenuSection title={"What's cooking"} menu={menu} />
+                    <MenuSection
+                        title={"What's cooking"}
+                        menu={menu}
+                        mealType={mealType}
+                        dietaryRestriction={dietaryRestriction}
+                    />
                     <Separator />
-                    <LocationSection lat={lat} lng={lng} />
+                    <LocationSection
+                        lat={lat}
+                        lng={lng}
+                        formattedAddress={formattedAddress}
+                        secondaryAddress={secondaryAddress}
+                    />
                     <Separator />
                     <RatingSection />
                 </ScrollView>

@@ -56,6 +56,14 @@ class UpcomingEvent extends Component {
         this.props.refundBooking(id);
     };
 
+    _navigateToPerson = person => {
+        this.props.navigation.navigate("PastEventPerson", person);
+    };
+
+    _goBack = () => {
+        NavigationService.navigate("HistoryMain");
+    };
+
     render() {
         let {
             title,
@@ -74,7 +82,7 @@ class UpcomingEvent extends Component {
         let lng = marker.point.coordinates[1];
         return (
             <View style={{ flex: 1 }}>
-                <Header title={"Nick's Table"} />
+                <Header title={"Nick's Table"} leftOnPress={this._goBack} />
                 <ScrollView
                     bounces={false}
                     contentInset={{ bottom: 100 }}
@@ -94,7 +102,10 @@ class UpcomingEvent extends Component {
                         formattedAddress={formattedAddress}
                         secondaryAddress={secondaryAddress}
                     />
-                    <PeopleRow people={people} />
+                    <PeopleRow
+                        people={people}
+                        onPress={this._navigateToPerson}
+                    />
                     <Separator />
                     <MenuSection title={"What's cooking?"} menu={menu} />
                     <Separator />

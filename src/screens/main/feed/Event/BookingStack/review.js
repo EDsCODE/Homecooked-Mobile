@@ -6,14 +6,17 @@ import CloseButton from "Homecooked/src/components/Buttons/Close";
 import BarButton from "Homecooked/src/components/Buttons/BarButton";
 import InfoSection from "Homecooked/src/components/Event/Info";
 
+import { createToken, formatCardDetails } from "Homecooked/src/services/stripe";
 import { feedTypes } from "Homecooked/src/modules/types";
 import { connect } from "react-redux";
+import { LiteCreditCardInput } from "react-native-credit-card-input";
 
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 
 class Review extends Component {
     state = {
-        modules: ["dateTime", "price"]
+        modules: ["dateTime", "price"],
+        cardDetails: {}
     };
 
     componentDidMount() {
@@ -34,6 +37,11 @@ class Review extends Component {
         }
     }
 
+    _onChange = form =>
+        this.setState({
+            cardDetails: form
+        });
+
     _goNext = () => {
         let { id } = this.props.navigation.state.params.event;
         // TODO: payment token placeholder
@@ -49,6 +57,10 @@ class Review extends Component {
                     <HeadingText>Review</HeadingText>
                 </View>
                 <InfoSection modules={this.state.modules} />
+                <View style={styles.cardInputContainer}>
+                    <LiteCreditCardInput onChange={this._onChange} />
+                </View>
+
                 <BarButton
                     title="RSVP"
                     style={{
@@ -97,5 +109,8 @@ export default connect(
 const styles = StyleSheet.create({
     headerContainer: {
         paddingHorizontal: Spacing.large
+    },
+    cardInputContainer: {
+        marginHorizontal: Spacing.large
     }
 });

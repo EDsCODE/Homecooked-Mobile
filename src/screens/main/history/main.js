@@ -10,7 +10,9 @@ import { historyTypes } from "Homecooked/src/modules/types";
 import { connect } from "react-redux";
 import {
     getUpcomingEvents,
-    getPastEvents
+    getPastEvents,
+    orderEventsByDateEarliest,
+    orderEventsByDateLatest
 } from "Homecooked/src/modules/history/selectors";
 
 class HistoryMain extends Component {
@@ -92,6 +94,7 @@ class HistoryMain extends Component {
                         <Tabs
                             tabSelected={index => this.changeTab(index)}
                             activeTab={this.state.tabSelected}
+                            tabs={["Upcoming", "Past"]}
                         />
                         {this.state.tabSelected == 0 ? (
                             <FlatList
@@ -123,8 +126,8 @@ const mapStateToProps = state => {
     const { history, events, currentBookings } = state;
     return {
         initialLoad: history.initialLoad,
-        upcomingEvents: getUpcomingEvents(state),
-        pastEvents: getPastEvents(state)
+        upcomingEvents: orderEventsByDateEarliest(getUpcomingEvents(state)),
+        pastEvents: orderEventsByDateLatest(getPastEvents(state))
     };
 };
 

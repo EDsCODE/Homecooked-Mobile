@@ -12,6 +12,7 @@ import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 import Separator from "Homecooked/src/components/Separator";
 import PrimaryText from "Homecooked/src/components/Text/Primary";
 import MinorText from "Homecooked/src/components/Text/Minor";
+import NavigationService from "Homecooked/src/utils/NavigationService";
 
 const people = [
     {
@@ -32,10 +33,18 @@ const people = [
 ];
 
 export default class HostPastEvent extends Component {
+    _navigateToPerson = person => {
+        this.props.navigation.navigate("HostPastEventPerson", person);
+    };
+
+    _goBack = () => {
+        NavigationService.navigate("HostTablesMain");
+    };
+
     render() {
         return (
             <View style={{ flex: 1 }}>
-                <Header title={"Nick's Table"} />
+                <Header title={"Nick's Table"} leftOnPress={this._goBack} />
                 <ScrollView
                     bounces={false}
                     contentInset={{ bottom: 100 }}
@@ -47,7 +56,10 @@ export default class HostPastEvent extends Component {
                     <MinorText style={{ marginHorizontal: Spacing.large }}>
                         Dinner on Thursday, March 28th
                     </MinorText>
-                    <PeopleRow people={people} />
+                    <PeopleRow
+                        people={people}
+                        onPress={this._navigateToPerson}
+                    />
                     <Separator />
                     <MenuSection />
                 </ScrollView>

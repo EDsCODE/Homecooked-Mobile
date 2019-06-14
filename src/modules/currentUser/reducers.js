@@ -68,6 +68,22 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state
             };
+        case types.SAVE_PAYMENT_REQUEST:
+            return {
+                ...state
+            };
+        case types.SAVE_PAYMENT_SUCCESS:
+            return {
+                ...state,
+                stripeCustomerId: action.payload
+                    ? action.payload.stripeCustomerId
+                    : state.stripeCustomerId
+            };
+        case types.SAVE_PAYMENT_ERROR:
+            return {
+                ...state,
+                error
+            };
         default:
             return state;
     }

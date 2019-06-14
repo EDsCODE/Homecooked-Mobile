@@ -12,6 +12,7 @@ import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 import Separator from "Homecooked/src/components/Separator";
 import PrimaryText from "Homecooked/src/components/Text/Primary";
 import MinorText from "Homecooked/src/components/Text/Minor";
+import { extendedDateWithMealType } from "Homecooked/src/utils/Date";
 
 const people = [
     {
@@ -31,7 +32,17 @@ const people = [
     }
 ];
 
+const MENU_TITLE = "What was served";
+
 export default class Feed extends Component {
+    _navigateToPerson = person => {
+        this.props.navigation.navigate("PastEventPerson", person);
+    };
+
+    _goBack = () => {
+        NavigationService.navigate("HistoryMain");
+    };
+
     render() {
         let {
             title,
@@ -44,10 +55,11 @@ export default class Feed extends Component {
             marker,
             key
         } = this.props.navigation.state.params.event;
+        let DATE_TEXT = extendedDateWithMealType(startTime);
 
         return (
             <View style={{ flex: 1 }}>
-                <Header title={"Nick's Table"} />
+                <Header title={title} leftOnPress={this._goBack} />
                 <ScrollView
                     bounces={false}
                     contentInset={{ bottom: 100 }}
@@ -57,11 +69,14 @@ export default class Feed extends Component {
                         {title}
                     </PrimaryText>
                     <MinorText style={{ marginHorizontal: Spacing.large }}>
-                        Dinner on Thursday, March 28th
+                        {DATE_TEXT}
                     </MinorText>
-                    <PeopleRow people={people} />
+                    <PeopleRow
+                        people={people}
+                        onPress={this._navigateToPerson}
+                    />
                     <Separator />
-                    <MenuSection />
+                    <MenuSection title={MENU_TITLE} menu={menu} />
                 </ScrollView>
             </View>
         );

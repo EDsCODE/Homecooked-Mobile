@@ -5,6 +5,20 @@ import { createSelector } from "reselect";
 const getBookings = state => state.currentBookings.byId;
 const getEvents = state => state.events.byId;
 
+export const orderEventsByDateEarliest = events => {
+    let sorted = events.sort((a, b) => {
+        return new Date(a.startTime) - new Date(b.startTime);
+    });
+    return sorted;
+};
+
+export const orderEventsByDateLatest = events => {
+    let sorted = events.sort((a, b) => {
+        return new Date(b.startTime) - new Date(a.startTime);
+    });
+    return sorted;
+};
+
 export const getUpcomingEvents = createSelector(
     [getEvents, getBookings],
     (events, bookings) => {
@@ -36,5 +50,3 @@ export const getPastEvents = createSelector(
         return pastEvents;
     }
 );
-
-export const orderBy = {};

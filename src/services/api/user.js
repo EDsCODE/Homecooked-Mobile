@@ -24,10 +24,34 @@ const getUserById = id => {
     });
 };
 
+const savePaymentDetails = (id, source, email) => {
+    return request({
+        method: "POST",
+        url: `/user/${id}/payment`,
+        data: {
+            source,
+            email
+        }
+    });
+};
+
+const updatePaymentDetails = (id, source, customer) => {
+    return request({
+        method: "PUT",
+        url: `/user/${id}/payment`,
+        data: {
+            source,
+            customer
+        }
+    });
+};
+
 const UserService = {
     updateUser,
     getBookingsForUser,
-    getUserById
+    getUserById,
+    savePaymentDetails,
+    updatePaymentDetails
 };
 
 export default UserService;

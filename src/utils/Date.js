@@ -25,4 +25,13 @@ function dateWithMealType(date) {
     return `${type} at ${hour} ${period}`;
 }
 
-export { dateWithMealType, mealType };
+function extendedDateWithMealType(date) {
+    let parsed = moment(date);
+    let hour24 = parsed.format("H");
+    let type = _mealType(hour24);
+    let dateString = parsed.format("dddd, MMMM Do");
+
+    return `${type} on ${dateString}`;
+}
+
+export { dateWithMealType, mealType, extendedDateWithMealType };

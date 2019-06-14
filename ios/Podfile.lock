@@ -1,0 +1,30 @@
+PODS:
+  - React (0.11.0):
+    - React/Core (= 0.11.0)
+  - React/Core (0.11.0)
+  - Stripe (14.0.0)
+  - tipsi-stripe (7.5.0):
+    - React
+    - Stripe (~> 14.0.0)
+
+DEPENDENCIES:
+  - Stripe (~> 14.0.0)
+  - tipsi-stripe (from `../node_modules/tipsi-stripe`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - React
+    - Stripe
+
+EXTERNAL SOURCES:
+  tipsi-stripe:
+    :path: "../node_modules/tipsi-stripe"
+
+SPEC CHECKSUMS:
+  React: ab1a2e21deb34965c38328d5ec40cc7d12c6050a
+  Stripe: db29ad197c74aca6fb981e4e8355cf7ebd0fca5a
+  tipsi-stripe: 237cab79699eb7d354bfc09238b3284e3b8dad84
+
+PODFILE CHECKSUM: 713c6ffa40c7fe8c3179406a175dae07ea455aec
+
+COCOAPODS: 1.5.3

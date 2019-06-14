@@ -1,11 +1,17 @@
 import React, { Component } from "react";
 import { createStackNavigator } from "react-navigation";
 import UpcomingEvent from "./UpcomingEvent";
+import Person from "Homecooked/src/screens/main/common/Person";
 
 const UpcomingEventStack = createStackNavigator(
     {
         UpcomingEvent: {
             screen: UpcomingEvent
+        },
+        PastEventPerson: {
+            screen: ({ navigation }) => (
+                <Person navigation={navigation} parentRoute={"Event"} />
+            )
         }
     },
     {
