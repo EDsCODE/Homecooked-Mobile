@@ -3,7 +3,7 @@ import { createStackNavigator } from "react-navigation";
 import Event from "./event";
 import ProfileCreationStack from "Homecooked/src/screens/main/common/ProfileCreationStack";
 import BookingStack from "./BookingStack";
-
+import Person from "Homecooked/src/screens/main/common/Person";
 const EventStack = createStackNavigator(
     {
         Event: {
@@ -14,6 +14,11 @@ const EventStack = createStackNavigator(
         },
         BookingStack: {
             screen: BookingStack
+        },
+        EventPerson: {
+            screen: ({ navigation }) => (
+                <Person navigation={navigation} parentRoute={"Event"} />
+            )
         }
     },
     {

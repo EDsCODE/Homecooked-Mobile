@@ -1,50 +1,22 @@
 import React, { Component } from "react";
-import { View, FlatList, Text, ActivityIndicator } from "react-native";
+import {
+    View,
+    FlatList,
+    Text,
+    ActivityIndicator,
+    Alert,
+    Linking
+} from "react-native";
 import Header from "Homecooked/src/components/Headers/Basic";
 import Tabs from "Homecooked/src/components/Headers/Tabs";
 import HistoryCell from "Homecooked/src/components/Cells/History";
+import { STRIPE_HOST_ACCOUNT_URL } from "Homecooked/src/config/constants";
 
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 
 import { connect } from "react-redux";
 import { hostTypes } from "Homecooked/src/modules/types";
 import * as hostSelectors from "Homecooked/src/modules/host/selectors";
-
-const upcoming = [
-    {
-        title: "Simple Classics",
-        date: Date(),
-        price: 16,
-        distance: 0.9
-    },
-    {
-        title: "Simple Classics",
-        date: Date(),
-        price: 16,
-        distance: 0.9
-    }
-];
-
-const past = [
-    {
-        title: "Simple Classics",
-        date: Date(),
-        price: 16,
-        distance: 0.9
-    },
-    {
-        title: "Simple Classics",
-        date: Date(),
-        price: 16,
-        distance: 0.9
-    },
-    {
-        title: "Simple Classics",
-        date: Date(),
-        price: 16,
-        distance: 0.9
-    }
-];
 
 class HostTablesMain extends Component {
     state = {
@@ -53,8 +25,11 @@ class HostTablesMain extends Component {
 
     componentDidMount() {
         this.setState({
-            upcoming: upcoming,
-            past: past
+            stripeurl: STRIPE_HOST_ACCOUNT_URL(
+                this.props.host.id,
+                this.props.currentUser.email,
+                this.props.currentUser.firstName
+            )
         });
         this.props.loadHostingEvents();
     }
@@ -69,7 +44,7 @@ class HostTablesMain extends Component {
                 upcoming={true}
                 startTime={startTime}
                 endTime={endTime}
-                title={"A Texan Treat"}
+                title={item.title}
                 onPress={() =>
                     this.props.navigation.navigate("HostUpcomingEventStack", {
                         event: item
@@ -87,7 +62,7 @@ class HostTablesMain extends Component {
                 upcoming={false}
                 startTime={startTime}
                 endTime={endTime}
-                title={"A Texan Treat"}
+                title={item.title}
                 onPress={() =>
                     this.props.navigation.navigate("HostPastEventStack", {
                         event: item
@@ -114,6 +89,28 @@ class HostTablesMain extends Component {
         />
     );
 
+    _navigateToCreateEvent = () => {
+        if (this.props.host.stripeAccountId) {
+            this.props.navigation.navigate("CreateEventStack");
+        } else {
+            Alert.alert(
+                "Payment Account",
+                "Please add a payment account before you start hosting events.",
+                [
+                    {
+                        text: "Continue",
+                        onPress: () => Linking.openURL(this.state.stripeurl)
+                    },
+                    {
+                        text: "Cancel",
+                        onPress: () => console.log("Cancel Pressed"),
+                        style: "cancel"
+                    }
+                ]
+            );
+        }
+    };
+
     render() {
         return (
             <View>
@@ -121,9 +118,7 @@ class HostTablesMain extends Component {
                     title={"Your Tables"}
                     leftComponent={() => null}
                     rightComponent={"new"}
-                    rightOnPress={() =>
-                        this.props.navigation.navigate("CreateEventStack")
-                    }
+                    rightOnPress={this._navigateToCreateEvent}
                 />
                 {this.props.initialLoad ? (
                     <ActivityIndicator />
@@ -160,8 +155,10 @@ class HostTablesMain extends Component {
 }
 
 const mapStateToProps = state => {
-    const { events, host } = state;
+    const { host, currentUser } = state;
     return {
+        currentUser,
+        host: host,
         initialLoad: host.initialLoad,
         activeEvents: hostSelectors.getActiveEvents(state),
         inactiveEvents: hostSelectors.getInactiveEvents(state)

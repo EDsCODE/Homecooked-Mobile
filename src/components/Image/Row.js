@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { View, Text, Image, ImageBackground, StyleSheet } from "react-native";
+import {
+    View,
+    Text,
+    Image,
+    ImageBackground,
+    StyleSheet,
+    TouchableOpacity
+} from "react-native";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 import { Icon } from "react-native-elements";
 
@@ -16,21 +23,24 @@ export default class Row extends Component {
     };
     _renderProfiles = width => {
         let imageWidth = width / 5 - Spacing.smallest;
-        let { people } = this.props;
+        let { people, onPress } = this.props;
         return (
             <View style={styles.imageContainer}>
                 {people.slice(0, 4).map((person, index) => (
-                    <Image
-                        style={{
-                            width: imageWidth,
-                            height: imageWidth,
-                            borderRadius: imageWidth / 2,
-                            backgroundColor: "blue",
-                            borderColor: Color.orange,
-                            borderWidth: 1
-                        }}
-                        source={person.imageUri}
-                    />
+                    <TouchableOpacity onPress={onPress}>
+                        <Image
+                            key={index.toString()}
+                            style={{
+                                width: imageWidth,
+                                height: imageWidth,
+                                borderRadius: imageWidth / 2,
+                                backgroundColor: "blue",
+                                borderColor: Color.orange,
+                                borderWidth: 1
+                            }}
+                            source={person.imageUri}
+                        />
+                    </TouchableOpacity>
                 ))}
                 {people.length > 4 ? this._renderExtraTile(imageWidth) : null}
             </View>

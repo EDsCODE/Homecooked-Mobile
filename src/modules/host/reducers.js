@@ -119,6 +119,11 @@ const reducer = (state = initialState, action) => {
                 postingInProgress: false,
                 error: action.error
             };
+        case types.UPDATE_ACCOUNT_ID:
+            return {
+                ...state,
+                stripeAccountId: action.payload.stripeAccountId
+            };
         default:
             return state;
     }

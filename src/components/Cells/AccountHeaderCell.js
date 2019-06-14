@@ -11,7 +11,9 @@ export default props => {
                 <Image style={styles.image} source={require(imageURI)} />
                 <View style={styles.text}>
                     <Text style={styles.name}>{props.name}</Text>
-                    <Text style={styles.prompt}>Edit Profile</Text>
+                    <Text style={styles.prompt}>
+                        {props.prompt ? props.prompt : "Edit Profile"}
+                    </Text>
                 </View>
             </View>
         </TouchableOpacity>

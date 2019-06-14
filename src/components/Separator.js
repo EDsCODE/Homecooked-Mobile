@@ -8,7 +8,8 @@ export default props => (
         style={{
             borderBottomColor: Color.lightGray,
             borderBottomWidth: 1,
-            width: "100%"
+            width: "100%",
+            ...props.style
         }}
     />
 );

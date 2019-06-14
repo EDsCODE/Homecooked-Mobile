@@ -45,6 +45,10 @@ export default class Event extends Component {
         });
     };
 
+    _navigateToPerson = person => {
+        this.props.navigation.navigate("EventPerson", person);
+    };
+
     render() {
         let {
             title,
@@ -84,7 +88,10 @@ export default class Event extends Component {
                         price={price}
                         duration={duration}
                     />
-                    <PeopleRow people={people} />
+                    <PeopleRow
+                        people={people}
+                        onPress={this._navigateToPerson}
+                    />
                     <Separator />
                     <MenuSection
                         title={TITLE}
