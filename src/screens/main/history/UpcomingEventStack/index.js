@@ -10,13 +10,14 @@ const UpcomingEventStack = createStackNavigator(
         },
         PastEventPerson: {
             screen: ({ navigation }) => (
-                <Person navigation={navigation} parentRoute={"Event"} />
+                <Person navigation={navigation} parentRoute={"UpcomingEvent"} />
             )
         }
     },
     {
         initialRouteName: "UpcomingEvent",
-        headerMode: "none"
+        headerMode: "none",
+        mode: "modal"
     }
 );
 

@@ -5,16 +5,12 @@ import EventCell from "Homecooked/src/components/Cells/Event";
 import Tabs from "Homecooked/src/components/Headers/Tabs";
 import { feedTypes } from "Homecooked/src/modules/types";
 import { connect } from "react-redux";
-import { getActiveEvents } from "Homecooked/src/modules/feed/selectors";
+import {
+    getActiveEvents,
+    getEventsForCity
+} from "Homecooked/src/modules/feed/selectors";
 
-const sample = [
-    {
-        title: "Simple Classics",
-        date: Date(),
-        price: 16,
-        distance: 0.9
-    }
-];
+import { CityFilter } from "Homecooked/src/types";
 
 class Feed extends Component {
     state = {
@@ -42,31 +38,40 @@ class Feed extends Component {
     };
 
     changeTab = index => {
+        this.props.selectCity(index);
         this.setState({
             tabSelected: index
         });
     };
 
+    displayList = () => {
+        if (this.props.initialLoad) {
+            return <ActivityIndicator />;
+        } else {
+            return (
+                <FlatList
+                    keyExtractor={this._keyExtractor}
+                    style={{ height: "100%" }}
+                    data={this.props.events}
+                    extraData={this.props.events}
+                    renderItem={this._renderItem}
+                />
+            );
+        }
+    };
+
     render() {
+        let FILTERS = Object.values(CityFilter);
+
         return (
             <View>
                 <Header title={"Open Tables"} leftComponent={() => null} />
                 <Tabs
                     tabSelected={index => this.changeTab(index)}
                     activeTab={this.state.tabSelected}
-                    tabs={["All", "New York", "New Haven"]}
+                    tabs={FILTERS}
                 />
-                {this.props.initialLoad ? (
-                    <ActivityIndicator />
-                ) : (
-                    <FlatList
-                        keyExtractor={this._keyExtractor}
-                        style={{ height: "100%" }}
-                        data={this.props.events}
-                        extraData={this.props.events}
-                        renderItem={this._renderItem}
-                    />
-                )}
+                {this.displayList()}
             </View>
         );
     }
@@ -76,7 +81,7 @@ const mapStateToProps = state => {
     const { feed, events, currentBookings } = state;
     return {
         initialLoad: feed.initialLoad,
-        events: getActiveEvents(state)
+        events: getEventsForCity(state)
     };
 };
 
@@ -86,8 +91,18 @@ const mapDispatchToProps = dispatch => {
             type: feedTypes.LOAD_FEED_REQUEST
         });
     };
+
+    const selectCity = city => {
+        dispatch({
+            type: feedTypes.CITY_FILTER_SELECTED,
+            payload: {
+                city
+            }
+        });
+    };
     return {
-        loadFeed
+        loadFeed,
+        selectCity
     };
 };
 

@@ -10,6 +10,8 @@ import { connect } from "react-redux";
 
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 
+const PROFILE_PLACEHOLDER_IMAGE = "Homecooked/src/assets/img/filledTable.jpg";
+
 class Main extends Component {
     constructor() {
         super();
@@ -53,12 +55,7 @@ class Main extends Component {
                 onPress: () => this._goToPayment()
             },
             {
-                title: "Invite Friends",
-                prompt: "Earn $3 for each friend who attends a meal"
-            },
-            {
-                title: "Refer a host",
-                prompt: "Earn $8 for each new host you refer"
+                title: "Invite Friends"
             },
             {
                 title: "FAQ"
@@ -99,6 +96,16 @@ class Main extends Component {
         this.props.navigation.navigate("Payment");
     };
 
+    _renderProfileImage = () => {
+        if (this.props.currentUser.profileImageSignedUrl) {
+            return {
+                uri: this.props.currentUser.profileImageSignedUrl
+            };
+        } else {
+            return require(PROFILE_PLACEHOLDER_IMAGE);
+        }
+    };
+
     _renderItem = ({ item, index }) => {
         let {
             currentUser: { firstName }
@@ -111,6 +118,8 @@ class Main extends Component {
                     onPress={this._goToProfile}
                     id={item.id}
                     name={firstName}
+                    source={this._renderProfileImage()}
+                    loading={this.props.currentUser.loadingAvatar}
                 />
             );
         } else {

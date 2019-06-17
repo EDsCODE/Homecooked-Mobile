@@ -35,7 +35,8 @@ export default class HistoryCell extends Component {
             key,
             style,
             onPress,
-            upcoming
+            upcoming,
+            tintColor
         } = this.props;
         let dayOfWeek = moment(startTime).format("dddd");
         let type = mealType(startTime);
@@ -48,8 +49,6 @@ export default class HistoryCell extends Component {
 
         let subTitle = `${dayOfWeek} ${type}, ${startTimeParsed} to ${endTimeParsed}`;
 
-        let color = upcoming ? Color.green : Color.orange;
-
         return (
             <TouchableOpacity onPress={onPress} style={style} key={title}>
                 <View style={styles.row}>
@@ -61,7 +60,7 @@ export default class HistoryCell extends Component {
                             alignItems: "center"
                         }}
                     >
-                        <Text style={[styles.dateMonth, { color: color }]}>
+                        <Text style={[styles.dateMonth, { color: tintColor }]}>
                             {month}
                         </Text>
                         <Text style={styles.dateNumber}>{day}</Text>
@@ -100,7 +99,6 @@ const styles = StyleSheet.create({
         color: Color.lightGray
     },
     dateMonth: {
-        color: Color.green,
         fontSize: Typography.smallFontSize,
         fontFamily: Typography.fontFamily,
         fontWeight: Typography.heavy

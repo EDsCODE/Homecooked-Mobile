@@ -41,7 +41,7 @@ class HostTablesMain extends Component {
         let endTime = new Date(startTime.getTime() + 60 * 60000);
         return (
             <HistoryCell
-                upcoming={true}
+                tintColor={Color.green}
                 startTime={startTime}
                 endTime={endTime}
                 title={item.title}
@@ -59,7 +59,25 @@ class HostTablesMain extends Component {
         let endTime = new Date(startTime.getTime() + 60 * 60000);
         return (
             <HistoryCell
-                upcoming={false}
+                tintColor={Color.orange}
+                startTime={startTime}
+                endTime={endTime}
+                title={item.title}
+                onPress={() =>
+                    this.props.navigation.navigate("HostPastEventStack", {
+                        event: item
+                    })
+                }
+            />
+        );
+    };
+
+    _renderInReviewItem = ({ item }) => {
+        let startTime = new Date();
+        let endTime = new Date(startTime.getTime() + 60 * 60000);
+        return (
+            <HistoryCell
+                tintColor={Color.yellow}
                 startTime={startTime}
                 endTime={endTime}
                 title={item.title}
@@ -90,6 +108,8 @@ class HostTablesMain extends Component {
     );
 
     _navigateToCreateEvent = () => {
+        this.props.navigation.navigate("CreateEventStack");
+        return;
         if (this.props.host.stripeAccountId) {
             this.props.navigation.navigate("CreateEventStack");
         } else {
@@ -111,6 +131,43 @@ class HostTablesMain extends Component {
         }
     };
 
+    displayList = tabSelected => {
+        if (tabSelected == 0) {
+            return (
+                <FlatList
+                    keyExtractor={this._keyExtractor}
+                    style={{ height: "100%" }}
+                    data={this.props.activeEvents}
+                    extraData={this.props.activeEvents}
+                    renderItem={this._renderUpcomingItem}
+                    ItemSeparatorComponent={this._renderSeparator}
+                />
+            );
+        } else if (tabSelected == 1) {
+            return (
+                <FlatList
+                    keyExtractor={this._keyExtractor}
+                    style={{ height: "100%" }}
+                    data={this.props.inReviewEvents}
+                    extraData={this.props.inReviewEvents}
+                    renderItem={this._renderInReviewItem}
+                    ItemSeparatorComponent={this._renderSeparator}
+                />
+            );
+        } else {
+            return (
+                <FlatList
+                    keyExtractor={this._keyExtractor}
+                    style={{ height: "100%" }}
+                    data={this.props.inactiveEvents}
+                    extraData={this.props.inactiveEvents}
+                    renderItem={this._renderPastItem}
+                    ItemSeparatorComponent={this._renderSeparator}
+                />
+            );
+        }
+    };
+
     render() {
         return (
             <View>
@@ -127,26 +184,9 @@ class HostTablesMain extends Component {
                         <Tabs
                             tabSelected={index => this.changeTab(index)}
                             activeTab={this.state.tabSelected}
+                            tabs={["Upcoming", "In Review", "Past"]}
                         />
-                        {this.state.tabSelected == 0 ? (
-                            <FlatList
-                                keyExtractor={this._keyExtractor}
-                                style={{ height: "100%" }}
-                                data={this.props.activeEvents}
-                                extraData={this.props.activeEvents}
-                                renderItem={this._renderUpcomingItem}
-                                ItemSeparatorComponent={this._renderSeparator}
-                            />
-                        ) : (
-                            <FlatList
-                                keyExtractor={this._keyExtractor}
-                                style={{ height: "100%" }}
-                                data={this.props.inactiveEvents}
-                                extraData={this.props.inactiveEvents}
-                                renderItem={this._renderPastItem}
-                                ItemSeparatorComponent={this._renderSeparator}
-                            />
-                        )}
+                        {this.displayList(this.state.tabSelected)}
                     </View>
                 )}
             </View>
@@ -161,7 +201,8 @@ const mapStateToProps = state => {
         host: host,
         initialLoad: host.initialLoad,
         activeEvents: hostSelectors.getActiveEvents(state),
-        inactiveEvents: hostSelectors.getInactiveEvents(state)
+        inactiveEvents: hostSelectors.getInactiveEvents(state),
+        inReviewEvents: hostSelectors.getInReviewEvents(state)
     };
 };
 

@@ -15,6 +15,10 @@ export default class Row extends Component {
         width: 0
     };
 
+    componentDidMount() {
+        console.log(this.props);
+    }
+
     _onLayout = event => {
         let { width } = event.nativeEvent.layout;
         this.setState({
@@ -26,8 +30,8 @@ export default class Row extends Component {
         let { people, onPress } = this.props;
         return (
             <View style={styles.imageContainer}>
-                {people.slice(0, 4).map((person, index) => (
-                    <TouchableOpacity onPress={onPress}>
+                {people.slice(0, 4 || people.length).map((person, index) => (
+                    <TouchableOpacity onPress={() => onPress(person.user)}>
                         <Image
                             key={index.toString()}
                             style={{
@@ -36,9 +40,10 @@ export default class Row extends Component {
                                 borderRadius: imageWidth / 2,
                                 backgroundColor: "blue",
                                 borderColor: Color.orange,
-                                borderWidth: 1
+                                borderWidth: 1,
+                                marginRight: Spacing.smallest
                             }}
-                            source={person.imageUri}
+                            source={{ uri: person.user.profileImageSignedUrl }}
                         />
                     </TouchableOpacity>
                 ))}
@@ -104,7 +109,7 @@ const styles = StyleSheet.create({
     },
     imageContainer: {
         flexDirection: "row",
-        justifyContent: "space-between"
+        justifyContent: "flex-start"
     },
     extraPeopleText: {
         fontFamily: Typography.fontFamily,

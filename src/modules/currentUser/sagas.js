@@ -3,6 +3,27 @@ import types from "./types";
 import { ImageService, UserService } from "Homecooked/src/services/api";
 import * as selectors from "./selectors";
 
+function* getAvatarWorkerSaga(action) {
+    try {
+        let currentUser = yield select(selectors.currentUser);
+        if (!currentUser.profileImageUrl) {
+            throw new Error("No profile image key");
+        }
+        let { data: url } = yield call(
+            ImageService.getImage,
+            currentUser.profileImageUrl
+        );
+        yield put({
+            type: types.GET_AVATAR_SUCCESS,
+            payload: {
+                profileImageSignedUrl: url
+            }
+        });
+    } catch (error) {
+        yield put({ type: types.GET_AVATAR_ERROR, error });
+    }
+}
+
 function* uploadImageWorkerSaga(action) {
     try {
         // upload image
@@ -30,6 +51,7 @@ function* updateUserWorkerSaga(action) {
             type: types.UPDATE_USER_SUCCESS,
             payload: { ...userInput }
         });
+        yield put({ type: types.GET_AVATAR_REQUEST });
     } catch (error) {
         yield put({ type: types.UPDATE_USER_ERROR, error });
     }
@@ -89,5 +111,6 @@ export const userSagas = [
     takeLatest(types.UPLOAD_USER_IMAGE_REQUEST, uploadImageWorkerSaga),
     takeLatest(types.UPDATE_USER_REQUEST, updateUserWorkerSaga),
     takeLatest(types.GET_BOOKINGS_REQUEST, getBookingsForUserWorkerSaga),
-    takeLatest(types.SAVE_PAYMENT_REQUEST, savePaymentWorkerSaga)
+    takeLatest(types.SAVE_PAYMENT_REQUEST, savePaymentWorkerSaga),
+    takeLatest(types.GET_AVATAR_REQUEST, getAvatarWorkerSaga)
 ];

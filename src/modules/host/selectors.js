@@ -38,6 +38,24 @@ export const getActiveEvents = createSelector(
     }
 );
 
+export const getInReviewEvents = createSelector(
+    [getEventsbyChefId, getUsers],
+    (events, users) => {
+        let activeEvents = events.filter(event => event.status == "REV");
+
+        activeEvents.forEach((event, i) => {
+            let bookings = event.bookings.filter(
+                booking => booking.status == "CNF"
+            );
+            bookings.forEach((booking, j) => {
+                bookings[j].user = users[booking.userId];
+            });
+            activeEvents[i].bookings = bookings;
+        });
+        return activeEvents;
+    }
+);
+
 export const getInactiveEvents = createSelector(
     [getEventsbyChefId, getUsers],
     (events, users) => {

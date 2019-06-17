@@ -5,11 +5,13 @@ const initialState = {
     firstName: null,
     lastName: null,
     id: null,
-    profileImageURL: null,
+    profileImageUrl: null,
+    profileImageSignedUrl: null,
     stripeCustomerId: null,
     bio: null,
     isVerified: null,
     loading: false,
+    loadingAvatar: false,
     isComplete: false,
     imageKey: null,
     imageURL: null,
@@ -40,7 +42,7 @@ const reducer = (state = initialState, action) => {
                 firstName: firstName ? firstName : state.firstName,
                 lastName: lastName ? lastName : state.lastName,
                 id: id ? id : state.id,
-                profileImageURL: profileImageURL
+                profileImageUrl: profileImageURL
                     ? profileImageURL
                     : state.profileImageURL,
                 stripeCustomerId: stripeCustomerId
@@ -83,6 +85,23 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 error
+            };
+        case types.GET_AVATAR_REQUEST:
+            return {
+                ...state,
+                loadingAvatar: true
+            };
+        case types.GET_AVATAR_SUCCESS:
+            return {
+                ...state,
+                loadingAvatar: false,
+                profileImageSignedUrl: action.payload.profileImageSignedUrl
+            };
+        case types.GET_AVATAR_ERROR:
+            return {
+                ...state,
+                loadingAvatar: false,
+                error: action.error
             };
         default:
             return state;

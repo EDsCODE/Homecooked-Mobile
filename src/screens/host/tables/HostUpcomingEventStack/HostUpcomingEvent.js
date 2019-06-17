@@ -76,6 +76,7 @@ class HostUpcomingEvent extends Component {
             menu,
             marker,
             key,
+            bookings,
             attributes
         } = this.props.navigation.state.params.event;
         let { refundInProgress } = this.props;
@@ -101,7 +102,7 @@ class HostUpcomingEvent extends Component {
                         formattedAddress={formattedAddress}
                     />
                     <PeopleRow
-                        people={people}
+                        people={bookings}
                         onPress={this._navigateToPerson}
                     />
                     <Separator />

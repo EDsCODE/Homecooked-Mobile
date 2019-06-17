@@ -27,6 +27,7 @@ function* loginWorkerSaga(action) {
             type: currentUserTypes.UPDATE_USER_SUCCESS,
             payload: { ...user }
         });
+        yield put({ type: currentUserTypes.GET_AVATAR_REQUEST });
 
         // navigate to main
         NavigationService.navigate("Main");
@@ -92,6 +93,8 @@ function* refreshTokenWorkerSaga(action) {
             type: currentUserTypes.UPDATE_USER_SUCCESS,
             payload: { ...user }
         });
+        yield put({ type: currentUserTypes.GET_AVATAR_REQUEST });
+
         NavigationService.navigate("Main");
     } catch (error) {
         SInfo.setItem("email", "", {});

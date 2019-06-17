@@ -47,12 +47,10 @@ export default class Address extends Component {
 
     _goNext = async () => {
         let { selected, secondaryAddress, query } = this.state;
-        console.log(selected);
 
         let address = {
-            formattedAddress: query,
-            secondaryAddress,
-            geometry: selected.geometry.location
+            ...selected,
+            secondaryAddress
         };
 
         this.props.screenProps.updateData("address", address);
@@ -97,9 +95,9 @@ export default class Address extends Component {
         );
         console.log(data);
         this.setState({
-            query: data.result.formatted_address,
+            query: data.formattedAddress,
             results: [],
-            selected: data.result
+            selected: data
         });
         Keyboard.dismiss();
     };

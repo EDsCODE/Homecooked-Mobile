@@ -1,40 +1,20 @@
 import React, { Component } from "react";
 import { View, ScrollView } from "react-native";
-import HeroSection from "Homecooked/src/components/Event/Hero";
 import MenuSection from "Homecooked/src/components/Event/Menu";
-import InfoSection from "Homecooked/src/components/Event/Info";
 import PeopleRow from "Homecooked/src/components/Image/Row";
-import RatingSection from "Homecooked/src/components/Event/Ratings";
 import Header from "Homecooked/src/components/Headers/Basic";
-import UtilityBar from "Homecooked/src/components/Buttons/UtilityBar";
-import LocationSection from "Homecooked/src/components/Event/Location";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 import Separator from "Homecooked/src/components/Separator";
 import PrimaryText from "Homecooked/src/components/Text/Primary";
 import MinorText from "Homecooked/src/components/Text/Minor";
 import { extendedDateWithMealType } from "Homecooked/src/utils/Date";
 
-const people = [
-    {
-        imageUri: require("Homecooked/src/assets/img/filledTable.jpg")
-    },
-    {
-        imageUri: require("Homecooked/src/assets/img/filledTable.jpg")
-    },
-    {
-        imageUri: require("Homecooked/src/assets/img/filledTable.jpg")
-    },
-    {
-        imageUri: require("Homecooked/src/assets/img/filledTable.jpg")
-    },
-    {
-        imageUri: require("Homecooked/src/assets/img/filledTable.jpg")
-    }
-];
-
 const MENU_TITLE = "What was served";
 
 export default class Feed extends Component {
+    componentDidMount() {
+        console.log(this.props);
+    }
     _navigateToPerson = person => {
         this.props.navigation.navigate("PastEventPerson", person);
     };
@@ -53,7 +33,8 @@ export default class Feed extends Component {
             description,
             menu,
             marker,
-            key
+            key,
+            bookings
         } = this.props.navigation.state.params.event;
         let DATE_TEXT = extendedDateWithMealType(startTime);
 
@@ -72,7 +53,7 @@ export default class Feed extends Component {
                         {DATE_TEXT}
                     </MinorText>
                     <PeopleRow
-                        people={people}
+                        people={bookings}
                         onPress={this._navigateToPerson}
                     />
                     <Separator />

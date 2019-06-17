@@ -34,4 +34,10 @@ function extendedDateWithMealType(date) {
     return `${type} on ${dateString}`;
 }
 
-export { dateWithMealType, mealType, extendedDateWithMealType };
+function eventCardDate(date) {
+    let parsed = moment(date);
+    let day = parsed.format("ddd, MMM D");
+    return day;
+}
+
+export { eventCardDate, dateWithMealType, mealType, extendedDateWithMealType };

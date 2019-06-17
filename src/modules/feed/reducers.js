@@ -6,7 +6,8 @@ const initialState = {
     bookings: [],
     initialLoad: true,
     bookingInProgress: false,
-    error: null
+    error: null,
+    filterByCity: 0
 };
 
 const reducer = (state = initialState, action) => {
@@ -75,6 +76,11 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 error: action.error
+            };
+        case types.CITY_FILTER_SELECTED:
+            return {
+                ...state,
+                filterByCity: action.payload.city
             };
         default: {
             return state;

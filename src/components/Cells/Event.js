@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 
-import { dateWithMealType } from "Homecooked/src/utils/Date";
+import { dateWithMealType, eventCardDate } from "Homecooked/src/utils/Date";
 import TitleText from "Homecooked/src/components/Text/Title";
 import MinorText from "Homecooked/src/components/Text/Minor";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
@@ -105,11 +105,15 @@ export default class EventCard extends Component {
             distance,
             attributes,
             people,
-            key
+            key,
+            marker,
+            guestCount
         } = this.props.event;
         let { price } = attributes;
-        let _dateWithType = dateWithMealType(date);
-
+        let MEALTYPE_TIME = dateWithMealType(date);
+        let LOCATION = `${marker.city}, ${marker.state}`;
+        let SEATS_LEFT = attributes.tableSizeMax - guestCount + " seats left";
+        let EVENT_CARD_DATE = eventCardDate(date);
         return (
             <TouchableOpacity
                 style={styles.card}
@@ -146,8 +150,8 @@ export default class EventCard extends Component {
                                 justifyContent: "space-between"
                             }}
                         >
-                            <MinorText>{_dateWithType}</MinorText>
-                            <MinorText>{distance + " mi away"}</MinorText>
+                            <MinorText>{MEALTYPE_TIME}</MinorText>
+                            <MinorText>{LOCATION}</MinorText>
                         </View>
                     </View>
                     <View style={styles.badgeContainer}>
@@ -162,12 +166,12 @@ export default class EventCard extends Component {
                             ]}
                         >
                             <MinorText style={{ color: "white" }}>
-                                {`Thu, Sept 28`}
+                                {EVENT_CARD_DATE}
                             </MinorText>
                         </View>
                         <View style={[styles.badge]}>
                             <MinorText style={{ color: "white" }}>
-                                {`5 seats left`}
+                                {SEATS_LEFT}
                             </MinorText>
                         </View>
                     </View>

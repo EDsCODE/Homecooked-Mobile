@@ -32,11 +32,26 @@ export const getPlaceDetails = async (placeid, sessiontoken) => {
                 }
             }
         );
-        return results.data;
+        let address = {
+            addressComponents: _formatAddressComponents(
+                results.data.result.address_components
+            ),
+            formattedAddress: results.data.result.formatted_address,
+            geometry: results.data.result.geometry.location
+        };
+        return address;
     } catch (err) {
         return err;
     }
 };
+
+function _formatAddressComponents(components) {
+    let addressComponents = {};
+    components.forEach(element => {
+        addressComponents[element.types[0]] = element.short_name;
+    });
+    return addressComponents;
+}
 
 export const getLatLong = async (
     houseNumber = "",

@@ -1,3 +1,3 @@
 import * as EventTypes from "./event";
-
-export { EventTypes };
+import { cityFilter as CityFilter } from "./filters";
+export { EventTypes, CityFilter };

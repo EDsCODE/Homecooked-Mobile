@@ -7,24 +7,36 @@ import Separator from "Homecooked/src/components/Separator";
 import CloseButton from "Homecooked/src/components/Buttons/Close";
 
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
+import NavigationService from "Homecooked/src/utils/NavigationService";
 
 const SAMPLE_IMAGE = "Homecooked/src/assets/img/filledTable.jpg";
 
 export default class Person extends Component {
     _goBack = () => {
-        this.props.navigation.goBack();
+        let { parentRoute } = this.props;
+        NavigationService.navigate(parentRoute);
     };
 
+    componentDidMount() {
+        console.log(this.props);
+    }
+
     render() {
+        let {
+            bio,
+            profileImageSignedUrl,
+            firstName
+        } = this.props.navigation.state.params;
         return (
             <View style={styles.container}>
-                <Image source={require(SAMPLE_IMAGE)} style={styles.image} />
+                <Image
+                    source={{ uri: profileImageSignedUrl }}
+                    style={styles.image}
+                />
                 <View style={styles.infoContainer}>
-                    <HeadingText>{"Eric"}</HeadingText>
+                    <HeadingText>{firstName}</HeadingText>
                     <Separator style={styles.separatorSpacing} />
-                    <MinorText style={styles.separatorSpacing}>
-                        {"I’m Kevin, a student from Miami. "}
-                    </MinorText>
+                    <MinorText style={styles.separatorSpacing}>{bio}</MinorText>
                 </View>
                 <View style={styles.headerContainer}>
                     <CloseButton onPress={this._goBack} color={Color.white} />

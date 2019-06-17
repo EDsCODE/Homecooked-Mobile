@@ -4,6 +4,7 @@ export const black = "black";
 export const gray = "#4A4A4A";
 export const lightGray = "#9B9B9B";
 export const white = "white";
+export const yellow = "#FFFF00";
 export const transparent = "transparent";
 export const facebookBlue = "#084A93";
 

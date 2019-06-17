@@ -11,24 +11,6 @@ import LocationSection from "Homecooked/src/components/Event/Location";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 import Separator from "Homecooked/src/components/Separator";
 
-const people = [
-    {
-        imageUri: require("Homecooked/src/assets/img/filledTable.jpg")
-    },
-    {
-        imageUri: require("Homecooked/src/assets/img/filledTable.jpg")
-    },
-    {
-        imageUri: require("Homecooked/src/assets/img/filledTable.jpg")
-    },
-    {
-        imageUri: require("Homecooked/src/assets/img/filledTable.jpg")
-    },
-    {
-        imageUri: require("Homecooked/src/assets/img/filledTable.jpg")
-    }
-];
-
 const TITLE = "What's cooking?";
 
 export default class Event extends Component {
@@ -60,6 +42,7 @@ export default class Event extends Component {
             menu,
             marker,
             duration,
+            bookings,
             key
         } = this.props.navigation.state.params.event;
         let { price, mealType, dietaryRestriction } = attributes;
@@ -89,7 +72,7 @@ export default class Event extends Component {
                         duration={duration}
                     />
                     <PeopleRow
-                        people={people}
+                        people={bookings}
                         onPress={this._navigateToPerson}
                     />
                     <Separator />

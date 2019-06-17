@@ -23,10 +23,25 @@ class Bio extends Component {
     };
 
     _goNext = () => {
-        this.props.updateUser({
-            bio: this.state.bio
-        });
-        this.props.navigation.navigate("ProfilePreview");
+        if (this.state.bio) {
+            this.props.updateUser({
+                bio: this.state.bio
+            });
+        }
+        this.props.navigation.navigate(
+            "ProfilePreview",
+            this.props.currentUser
+        );
+    };
+
+    displayBio = () => {
+        if (this.state.bio) {
+            return this.state.bio;
+        } else if (this.props.currentUser.bio) {
+            return this.props.currentUser.bio;
+        } else {
+            return "";
+        }
     };
 
     render() {
@@ -42,7 +57,7 @@ class Bio extends Component {
                 <TextField
                     tintColor={Color.gray}
                     label="Bio"
-                    value={bio}
+                    value={this.displayBio()}
                     multiline={true}
                     maxLength={150}
                     onChangeText={bio => this.setState({ bio })}
@@ -65,6 +80,13 @@ class Bio extends Component {
     }
 }
 
+const mapStateToProps = state => {
+    let { currentUser } = state;
+    return {
+        currentUser
+    };
+};
+
 const mapDispatchToProps = dispatch => {
     const updateUser = changes => {
         dispatch({
@@ -78,7 +100,7 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(Bio);
 
