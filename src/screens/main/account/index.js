@@ -4,6 +4,7 @@ import Main from "./main";
 import HostApplication from "./HostApplication";
 import Settings from "./Settings";
 import Profile from "./Profile";
+import Share from "./Share";
 
 const AccountStack = createStackNavigator(
     {
@@ -18,6 +19,9 @@ const AccountStack = createStackNavigator(
         },
         Profile: {
             screen: Profile
+        },
+        Share: {
+            screen: Share
         }
     },
     {

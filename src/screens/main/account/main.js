@@ -65,6 +65,10 @@ class Main extends Component {
             {
                 title: "Settings",
                 onPress: () => this._goToSettings()
+            }, 
+            {
+                title: "Share",
+                onPress: () => this._goToShare()
             }
         ];
         this.setState({
@@ -93,6 +97,10 @@ class Main extends Component {
     _goToProfile = () => {
         this.props.navigation.navigate("Profile");
     };
+
+    _goToShare = () => {
+        this.props.navigation.navigate("Share");
+    }
 
     getReferralLink = async () => {
         //branch.setIdentity('theUserId') // <- Identifiy the user in branch
