@@ -73,7 +73,6 @@ export const getLatLong = async (
                 }
             }
         );
-        console.log(results);
         return results;
     } catch (error) {
         return err;

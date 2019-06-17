@@ -1,5 +1,5 @@
 import { takeLatest, call, put, fork, all, select } from "redux-saga/effects";
-import { EventService } from "Homecooked/src/services/api";
+import { EventService, ImageService } from "Homecooked/src/services/api";
 import types from "./types";
 import { getUsersOfEventSaga } from "Homecooked/src/modules/user/sagas";
 import * as hostSelectors from "Homecooked/src/modules/host/selectors";
@@ -12,6 +12,24 @@ export function* getActiveEventsWorkerSaga(action) {
         }
 
         yield call(getUsersOfEventSaga, data);
+
+        // get chef media
+        // TODO: refactor
+        yield all(
+            data.map((event, i) => {
+                return all(
+                    event.chef.media.map((media, j) => {
+                        return call(function*() {
+                            let { data: url } = yield call(
+                                ImageService.getImage,
+                                media.key
+                            );
+                            data[i].chef.media[j]["signedURL"] = url;
+                        });
+                    })
+                );
+            })
+        );
 
         yield put({ type: types.GET_EVENTS_SUCCESS, events: data });
     } catch (error) {

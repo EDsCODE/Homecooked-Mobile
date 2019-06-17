@@ -8,35 +8,6 @@ import {
     createBookingWorkerSaga
 } from "Homecooked/src/modules/booking/sagas";
 
-function* getEventsWorkerSaga(action) {
-    try {
-        const { data } = yield call(EventService.getEvents);
-        if (!data) {
-            throw new Error("Could not retrieve events");
-        }
-        // TODO: get all other data related
-        // yield all(data.map(event => call(getBookingsWorkerSaga, event.id)));
-        yield put({ type: types.RETRIEVE_EVENTS_SUCCESS, events: data });
-    } catch (error) {
-        yield put({ type: types.RETRIEVE_EVENTS_ERROR, error });
-    }
-}
-
-function* getBookingsWorkerSaga(id) {
-    try {
-        const { data } = yield call(EventService.getBookingByEvent, id);
-        // TODO: get all other data related
-        yield put({
-            type: types.RETRIEVE_BOOKINGS_SUCCESS,
-            bookings: {
-                [id]: data
-            }
-        });
-    } catch (error) {
-        yield put({ type: types.RETRIEVE_BOOKINGS_ERROR, error });
-    }
-}
-
 function* loadFeedWorkerSaga(action) {
     try {
         // load bookings for user
@@ -64,7 +35,6 @@ function* bookEventWorkerSaga(action) {
 }
 
 export const feedSagas = [
-    takeLatest(types.RETRIEVE_EVENTS_REQUEST, getEventsWorkerSaga),
     takeLatest(types.LOAD_FEED_REQUEST, loadFeedWorkerSaga),
     takeLatest(types.BOOK_EVENT_REQUEST, bookEventWorkerSaga)
 ];

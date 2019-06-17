@@ -12,9 +12,6 @@ import { extendedDateWithMealType } from "Homecooked/src/utils/Date";
 const MENU_TITLE = "What was served";
 
 export default class Feed extends Component {
-    componentDidMount() {
-        console.log(this.props);
-    }
     _navigateToPerson = person => {
         this.props.navigation.navigate("PastEventPerson", person);
     };

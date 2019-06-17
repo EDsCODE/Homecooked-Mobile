@@ -19,10 +19,6 @@ class Review extends Component {
         cardDetails: {}
     };
 
-    componentDidMount() {
-        console.log(this.props);
-    }
-
     _goBack = () => {
         NavigationService.navigate("Event");
     };

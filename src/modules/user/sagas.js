@@ -9,7 +9,6 @@ export function* getUserById(action) {
             UserService.getUserById,
             action.userId
         );
-        console.log("getting image:", user);
         if (user["profileImageURL"]) {
             let { data: url } = yield call(
                 ImageService.getImage,

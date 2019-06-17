@@ -37,7 +37,7 @@ export default class DietaryRestriction extends Component {
     };
 
     componentDidMount() {
-        console.log(this.props.screenProps);
+        this.props.screenProps;
         let restrictions = this.props.screenProps.fields.dietaryRestriction
             .allowedValues;
         let mealType = this.props.screenProps.fields.mealType.allowedValues;

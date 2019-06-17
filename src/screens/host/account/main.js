@@ -57,7 +57,6 @@ class Host_Settings_Main extends Component {
     }
 
     _renderItem = ({ item, index }) => {
-        console.log(index);
         if (index == 0) {
             // render header cell
             return <HeaderCell id={item.id} name="Eric" prompt={PROMPT} />;

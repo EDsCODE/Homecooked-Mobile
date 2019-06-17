@@ -39,12 +39,7 @@ class Preview extends Component {
         modules: ["dateTime", "location", "description", "refundPolicy"]
     };
 
-    componentDidMount() {
-        console.log(this.props);
-    }
-
     componentWillRecieveProps(nextProps) {
-        console.log(nextProps);
         if (
             this.props.postingInProgress &&
             !nextProps.postingInProgress &&

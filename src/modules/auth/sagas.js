@@ -1,5 +1,5 @@
 import { takeLatest, call, put } from "redux-saga/effects";
-import { AuthService } from "Homecooked/src/services/api";
+import { AuthService, ImageService } from "Homecooked/src/services/api";
 import types from "./types";
 import { currentUserTypes } from "../types";
 import NavigationService from "Homecooked/src/utils/NavigationService";
@@ -17,7 +17,6 @@ function* loginWorkerSaga(action) {
             password
         );
 
-        console.log(user);
         // dispatch a success action to the store with the new accesstoken
         SInfo.setItem("email", user.email, {});
         SInfo.setItem("refreshToken", refreshToken, {});
@@ -28,6 +27,44 @@ function* loginWorkerSaga(action) {
             payload: { ...user }
         });
         yield put({ type: currentUserTypes.GET_AVATAR_REQUEST });
+
+        // navigate to main
+        NavigationService.navigate("Main");
+    } catch (error) {
+        // dispatch a failure action to the store with the error
+        yield put({ type: types.LOGIN_ERROR, error });
+    }
+}
+
+function* facebookLoginWorkerSaga(action) {
+    try {
+        let { email, firstName, lastName, image } = action.payload;
+        const { accessToken, user, message, refreshToken } = yield call(
+            AuthService.facebookLogin,
+            email,
+            firstName,
+            lastName
+        );
+        // dispatch a success action to the store with the new accesstoken
+        SInfo.setItem("email", user.email, {});
+        SInfo.setItem("refreshToken", refreshToken, {});
+
+        yield put({ type: types.LOGIN_SUCCESS, accessToken });
+        yield put({
+            type: currentUserTypes.UPDATE_USER_SUCCESS,
+            payload: { ...user }
+        });
+
+        if (!user.profileImageURL) {
+            // TODO: upload image
+            let { data: key } = yield call(ImageService.uploadImage, image);
+            yield put({
+                type: currentUserTypes.UPDATE_USER_REQUEST,
+                payload: { profileImageURL: key }
+            });
+        } else {
+            yield put({ type: currentUserTypes.GET_AVATAR_REQUEST });
+        }
 
         // navigate to main
         NavigationService.navigate("Main");
@@ -69,7 +106,7 @@ function* registerWorkerSaga(action) {
 function* logoutWorkerSaga(action) {
     try {
         let refreshToken = yield call(SInfo.getItem, "refreshToken", {});
-        console.log(refreshToken);
+
         yield call(AuthService.signout, refreshToken);
         yield put({ type: types.SIGNOUT_SUCCESS });
         SInfo.setItem("email", "", {});
@@ -110,5 +147,6 @@ export const authSagas = [
     takeLatest(types.LOGIN_REQUEST, loginWorkerSaga),
     takeLatest(types.SIGNUP_REQUEST, registerWorkerSaga),
     takeLatest(types.REFRESH_TOKEN_REQUEST, refreshTokenWorkerSaga),
-    takeLatest(types.SIGNOUT_REQUEST, logoutWorkerSaga)
+    takeLatest(types.SIGNOUT_REQUEST, logoutWorkerSaga),
+    takeLatest(types.FACEBOOK_LOGIN_REQUEST, facebookLoginWorkerSaga)
 ];

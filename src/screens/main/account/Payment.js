@@ -27,7 +27,6 @@ class Payment extends Component {
         let details = formatCardDetails(this.state.cardDetails.values);
         try {
             let token = await createToken(details);
-            console.log(token);
             this.props.savePaymentInfo(token.id);
         } catch (error) {
             console.log(error);

@@ -14,32 +14,10 @@ import { historyTypes } from "Homecooked/src/modules/types";
 import { connect } from "react-redux";
 import NavigationService from "Homecooked/src/utils/NavigationService";
 
-const people = [
-    {
-        imageUri: require("Homecooked/src/assets/img/filledTable.jpg")
-    },
-    {
-        imageUri: require("Homecooked/src/assets/img/filledTable.jpg")
-    },
-    {
-        imageUri: require("Homecooked/src/assets/img/filledTable.jpg")
-    },
-    {
-        imageUri: require("Homecooked/src/assets/img/filledTable.jpg")
-    },
-    {
-        imageUri: require("Homecooked/src/assets/img/filledTable.jpg")
-    }
-];
-
 class UpcomingEvent extends Component {
     state = {
         modules: ["dateTime", "location", "description", "refundPolicy"]
     };
-
-    componentDidMount() {
-        console.log(this.props.navigation.state.params.event);
-    }
 
     componentWillReceiveProps(nextProps) {
         if (

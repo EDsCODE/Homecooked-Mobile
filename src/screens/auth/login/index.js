@@ -11,6 +11,7 @@ import Button from "Homecooked/src/components/Buttons/BarButton";
 import TextField from "Homecooked/src/components/TextFields/Material";
 
 import NavigationService from "Homecooked/src/utils/NavigationService";
+import { FacebookService } from "Homecooked/src/services";
 
 const coverImageUri = "Homecooked/src/assets/img/filledTable.jpg";
 
@@ -22,13 +23,26 @@ class Login extends Component {
 
     login = () => {
         let { email, password } = this.state;
-        console.log("email:", email);
-        console.log("Password:", password);
         this.props.login(email, password);
     };
 
     _back = () => {
         NavigationService.navigate("Landing");
+    };
+
+    _facebookOnPress = () => {
+        onSuccess = result => {
+            // TODO: call redux login with facebook
+            result;
+        };
+
+        onError = error => {
+            this.setState({
+                error: error
+            });
+        };
+
+        new FacebookService(onSuccess, onError).login();
     };
 
     render() {
@@ -62,6 +76,7 @@ class Login extends Component {
                         marginHorizontal: Spacing.large,
                         marginTop: Spacing.largest
                     }}
+                    onPress={this._facebookOnPress}
                 />
                 <Button
                     title="Login"

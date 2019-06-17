@@ -99,10 +99,7 @@ function* getChefWorkerSaga(action) {
 }
 
 function* getChefMedia(item) {
-    let { data } = yield call(ImageService.getImage, item.key);
-    // TODO: remove
-    let url = data;
-    url = url.replace("host.docker.internal", "172.27.6.220");
+    let { data: url } = yield call(ImageService.getImage, item.key);
 
     return {
         ...item,

@@ -58,7 +58,6 @@ export default class DetailsMain extends Component {
             minGuests,
             maxGuests
         } = this.props.screenProps.state;
-        console.log(date);
 
         // format time
         let endTime;

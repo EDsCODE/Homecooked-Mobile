@@ -3,7 +3,6 @@ import { TouchableOpacity, View, StyleSheet } from "react-native";
 import { Icon } from "react-native-elements";
 
 export default props => {
-    console.log(props.active);
     return props.active ? (
         <TouchableOpacity onPress={props.onPress} style={props.style}>
             <View style={styles.floatyButton}>

@@ -15,10 +15,6 @@ export default class Row extends Component {
         width: 0
     };
 
-    componentDidMount() {
-        console.log(this.props);
-    }
-
     _onLayout = event => {
         let { width } = event.nativeEvent.layout;
         this.setState({

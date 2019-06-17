@@ -38,7 +38,7 @@ class HostMain extends Component {
 
     _handleOpenURL = event => {
         let parsed = stringUtils.parseURL(event.url);
-        console.log(parsed);
+        parsed;
         if (parsed.params.stripe_account_id) {
             this.props.updateStripeAccountId(parsed.params.stripe_account_id);
         }

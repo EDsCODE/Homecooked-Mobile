@@ -19,12 +19,7 @@ class Feed extends Component {
     };
 
     componentDidMount() {
-        console.log(this.props);
         this.props.loadFeed();
-    }
-
-    componentWillReceiveProps(nextProps) {
-        console.log(nextProps);
     }
 
     _keyExtractor = (item, index) => item.id;

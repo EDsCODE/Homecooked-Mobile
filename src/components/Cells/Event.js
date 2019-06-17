@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import {
     View,
     TouchableOpacity,
@@ -17,19 +17,9 @@ import LinearGradient from "react-native-linear-gradient";
 
 const imageURI = "Homecooked/src/assets/img/filledTable.jpg";
 
-export default class EventCard extends Component {
+export default class EventCard extends PureComponent {
     state = {
         activeSlide: 0,
-        data: [
-            {
-                title: "hello",
-                image: imageURI
-            },
-            {
-                title: "hello",
-                image: imageURI
-            }
-        ],
         image: "",
         distance: "",
         loadingDistance: false,
@@ -51,7 +41,7 @@ export default class EventCard extends Component {
                     <ImageBackground
                         resizeMode="cover"
                         style={styles.image}
-                        source={require(imageURI)}
+                        source={{ uri: item.signedURL }}
                     >
                         <LinearGradient
                             colors={["rgba(0,0,0,0.8)", "transparent"]}
@@ -67,10 +57,10 @@ export default class EventCard extends Component {
 
     get pagination() {
         const { activeSlide } = this.state;
-        const length = this.state.data.length;
+        let { chef } = this.props.event;
         return (
             <Pagination
-                dotsLength={length}
+                dotsLength={chef.media.length}
                 activeDotIndex={activeSlide}
                 containerStyle={{
                     backgroundColor: "rgba(0, 0, 0, 0)",
@@ -107,6 +97,7 @@ export default class EventCard extends Component {
             people,
             key,
             marker,
+            chef,
             guestCount
         } = this.props.event;
         let { price } = attributes;
@@ -123,7 +114,7 @@ export default class EventCard extends Component {
             >
                 <TouchableOpacity onPress={this.onPress} activeOpacity={0.9}>
                     <Carousel
-                        data={this.state.data}
+                        data={chef.media}
                         renderItem={this._renderCard}
                         sliderWidth={Spacing.deviceWidth - 30}
                         itemWidth={Spacing.deviceWidth - 30}

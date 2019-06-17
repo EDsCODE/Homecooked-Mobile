@@ -26,8 +26,6 @@ class FirstName extends Component {
 
         this.props.screenProps.updateData("firstName", firstName);
         this.props.register(email, password, firstName);
-
-        console.log(this.props);
     };
 
     _back = () => {

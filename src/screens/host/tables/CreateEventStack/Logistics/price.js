@@ -31,7 +31,6 @@ export default class Price extends Component {
 
     componentDidMount() {
         let { price } = this.props.screenProps.state;
-        console.log(price);
         this.setState({
             price
         });

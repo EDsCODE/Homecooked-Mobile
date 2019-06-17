@@ -17,10 +17,6 @@ export default class Person extends Component {
         NavigationService.navigate(parentRoute);
     };
 
-    componentDidMount() {
-        console.log(this.props);
-    }
-
     render() {
         let {
             bio,

@@ -66,7 +66,7 @@ export default class Address extends Component {
                 query,
                 this.state.sessionToken
             );
-            console.log(results);
+            results;
             this.setState({
                 results
             });
@@ -93,7 +93,7 @@ export default class Address extends Component {
             item.place_id,
             this.state.sessionToken
         );
-        console.log(data);
+        data;
         this.setState({
             query: data.formattedAddress,
             results: [],

@@ -57,7 +57,6 @@ export default class Time extends Component {
     };
 
     handleDatePicked = time => {
-        console.log("A date has been picked: ", time);
         this.setState({
             startTime: time
         });

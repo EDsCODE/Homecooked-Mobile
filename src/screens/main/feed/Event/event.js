@@ -14,10 +14,6 @@ import Separator from "Homecooked/src/components/Separator";
 const TITLE = "What's cooking?";
 
 export default class Event extends Component {
-    componentDidMount() {
-        console.log(this.props);
-    }
-
     state = {
         modules: ["dateTime", "description", "refundPolicy"]
     };
@@ -43,7 +39,8 @@ export default class Event extends Component {
             marker,
             duration,
             bookings,
-            key
+            key,
+            chef
         } = this.props.navigation.state.params.event;
         let { price, mealType, dietaryRestriction } = attributes;
         let { formattedAddress, secondaryAddress } = marker;
@@ -62,6 +59,7 @@ export default class Event extends Component {
                         title={title}
                         chefName={"Nick"}
                         chefDescription={`Nick is a graduating senior at Yale passionate about food sustainability and agriculture. He recently returned from a gap year in Hong Kong and can’t wait share the incredible new recipes he picked up there!`}
+                        media={chef.media}
                     />
                     <Separator />
                     <InfoSection

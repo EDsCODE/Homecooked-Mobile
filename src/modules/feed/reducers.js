@@ -2,8 +2,6 @@ import types from "./types";
 
 const initialState = {
     loading: false,
-    events: [],
-    bookings: [],
     initialLoad: true,
     bookingInProgress: false,
     error: null,
@@ -12,39 +10,6 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case types.RETRIEVE_EVENTS_REQUEST:
-            return {
-                ...state,
-                loading: true
-            };
-        case types.RETRIEVE_EVENTS_SUCCESS:
-            return {
-                ...state,
-                events: action.events,
-                loading: false,
-                initialLoad: false
-            };
-        case types.RETRIEVE_EVENTS_ERROR:
-            return {
-                ...state
-            };
-        case types.RETRIEVE_BOOKINGS_REQUEST:
-            return {
-                ...state
-            };
-        case types.RETRIEVE_BOOKINGS_SUCCESS:
-            return {
-                ...state,
-                bookings: {
-                    ...state.bookings,
-                    ...action.bookings
-                }
-            };
-        case types.RETRIEVE_BOOKINGS_ERROR:
-            return {
-                ...state
-            };
-
         case types.LOAD_FEED_REQUEST:
             return {
                 ...state,

@@ -13,12 +13,15 @@ export default class Hero extends Component {
         activeSlide: 0
     };
 
-    componentDidMount() {
-        console.log(this.props.media);
-    }
-
     _renderImage = item => {
-        return <Image source={require(imageURI)} style={styles.image} />;
+        console.log(item);
+        return (
+            <Image
+                resizeMode="cover"
+                style={styles.image}
+                source={{ uri: item.signedURL }}
+            />
+        );
     };
 
     render() {
@@ -28,6 +31,7 @@ export default class Hero extends Component {
                 <View style={styles.carousel}>
                     <Carousel
                         data={media}
+                        extraData={media}
                         renderItem={this._renderImage}
                         sliderWidth={Spacing.deviceWidth}
                         itemWidth={Spacing.deviceWidth}
@@ -56,11 +60,17 @@ const styles = StyleSheet.create({
         width: Spacing.deviceWidth,
         height: Spacing.deviceWidth
     },
-    image: {
-        width: Spacing.deviceWidth,
-        height: Spacing.deviceWidth
-    },
     textContainer: {
         margin: Spacing.large
+    },
+    imageContainer: {
+        flex: 1,
+        alignItems: "center",
+        overflow: "hidden"
+    },
+    image: {
+        flex: 1,
+        width: Spacing.deviceWidth,
+        height: Spacing.deviceWidth
     }
 });
