@@ -1,19 +1,33 @@
 import { takeLatest, call, put, fork, all, select } from "redux-saga/effects";
-import { UserService, BookingService } from "Homecooked/src/services/api";
+import {
+    UserService,
+    BookingService,
+    EventService
+} from "Homecooked/src/services/api";
 import types from "./types";
+
+import { getUserById } from "Homecooked/src/modules/user/sagas";
 
 import * as userSelectors from "Homecooked/src/modules/currentUser/selectors";
 
-export function* getCurrentBookingsWorkerSaga() {
+export function* getBookingsForEvent(eventId) {
     try {
-        let userId = yield select(userSelectors.userId);
-        const { data, status, error } = yield call(
-            UserService.getBookingsForUser,
-            userId
+        const { data: bookings } = yield call(
+            EventService.getBookingByEvent,
+            eventId
         );
-        yield put({ type: types.GET_CURRENT_BOOKINGS_SUCCESS, bookings: data });
+
+        yield all(bookings.map(booking => call(getUserById, booking.userId)));
+
+        yield put({
+            type: types.GET_BOOKINGS_BY_EVENT_SUCCESS,
+            payload: {
+                eventId,
+                bookings
+            }
+        });
     } catch (error) {
-        yield put({ type: types.GET_CURRENT_BOOKINGS_ERROR, error });
+        yield put({ type: types.GET_BOOKINGS_ERROR, error });
     }
 }
 

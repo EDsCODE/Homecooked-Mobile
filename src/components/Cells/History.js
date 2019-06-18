@@ -3,27 +3,8 @@ import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 
-import OverlappingIcons from "Homecooked/src/components/Image/OverlappingIcons";
 import { mealType } from "Homecooked/src/utils/Date";
 import moment from "moment";
-
-const people = [
-    {
-        imageUri: require("Homecooked/src/assets/img/filledTable.jpg")
-    },
-    {
-        imageUri: require("Homecooked/src/assets/img/filledTable.jpg")
-    },
-    {
-        imageUri: require("Homecooked/src/assets/img/filledTable.jpg")
-    },
-    {
-        imageUri: require("Homecooked/src/assets/img/filledTable.jpg")
-    },
-    {
-        imageUri: require("Homecooked/src/assets/img/filledTable.jpg")
-    }
-];
 
 export default class HistoryCell extends Component {
     render() {
@@ -35,7 +16,8 @@ export default class HistoryCell extends Component {
             key,
             style,
             onPress,
-            upcoming
+            upcoming,
+            tintColor
         } = this.props;
         let dayOfWeek = moment(startTime).format("dddd");
         let type = mealType(startTime);
@@ -48,8 +30,6 @@ export default class HistoryCell extends Component {
 
         let subTitle = `${dayOfWeek} ${type}, ${startTimeParsed} to ${endTimeParsed}`;
 
-        let color = upcoming ? Color.green : Color.orange;
-
         return (
             <TouchableOpacity onPress={onPress} style={style} key={title}>
                 <View style={styles.row}>
@@ -61,7 +41,7 @@ export default class HistoryCell extends Component {
                             alignItems: "center"
                         }}
                     >
-                        <Text style={[styles.dateMonth, { color: color }]}>
+                        <Text style={[styles.dateMonth, { color: tintColor }]}>
                             {month}
                         </Text>
                         <Text style={styles.dateNumber}>{day}</Text>
@@ -71,11 +51,6 @@ export default class HistoryCell extends Component {
                             <Text style={styles.title}>{title}</Text>
                             <Text style={styles.subTitle}>{subTitle}</Text>
                         </View>
-
-                        <OverlappingIcons
-                            people={people}
-                            containerStyle={{ flex: 1 }}
-                        />
                     </View>
                 </View>
             </TouchableOpacity>
@@ -88,7 +63,7 @@ const styles = StyleSheet.create({
         paddingVertical: Spacing.base,
         paddingHorizontal: Spacing.small,
         flexDirection: "row",
-        height: 130
+        height: 100
     },
     title: {
         fontFamily: Typography.fontFamily,
@@ -100,7 +75,6 @@ const styles = StyleSheet.create({
         color: Color.lightGray
     },
     dateMonth: {
-        color: Color.green,
         fontSize: Typography.smallFontSize,
         fontFamily: Typography.fontFamily,
         fontWeight: Typography.heavy

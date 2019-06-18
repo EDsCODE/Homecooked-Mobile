@@ -6,48 +6,16 @@ import HistoryCell from "Homecooked/src/components/Cells/History";
 
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 
-import { historyTypes } from "Homecooked/src/modules/types";
+import { historyTypes, eventTypes } from "Homecooked/src/modules/types";
 import { connect } from "react-redux";
 import {
     getUpcomingEvents,
-    getPastEvents
+    getPastEvents,
+    orderEventsByDateEarliest,
+    orderEventsByDateLatest
 } from "Homecooked/src/modules/history/selectors";
 
-const upcoming = [
-    {
-        title: "Simple Classics",
-        date: Date(),
-        price: 16,
-        distance: 0.9
-    },
-    {
-        title: "Simple Classics",
-        date: Date(),
-        price: 16,
-        distance: 0.9
-    }
-];
-
-const past = [
-    {
-        title: "Simple Classics",
-        date: Date(),
-        price: 16,
-        distance: 0.9
-    },
-    {
-        title: "Simple Classics",
-        date: Date(),
-        price: 16,
-        distance: 0.9
-    },
-    {
-        title: "Simple Classics",
-        date: Date(),
-        price: 16,
-        distance: 0.9
-    }
-];
+import { EventViewTypes } from "Homecooked/src/types";
 
 class HistoryMain extends Component {
     state = {
@@ -55,10 +23,6 @@ class HistoryMain extends Component {
     };
 
     componentDidMount() {
-        this.setState({
-            upcoming: upcoming,
-            past: past
-        });
         this.props.loadHistory();
     }
 
@@ -69,33 +33,38 @@ class HistoryMain extends Component {
     };
 
     _renderUpcomingItem = ({ item, index }) => {
-        let startTime = new Date();
+        let startTime = new Date(item.startTime);
         let endTime = new Date(startTime.getTime() + 60 * 60000);
         return (
             <HistoryCell
+                tintColor={Color.green}
                 upcoming={true}
                 startTime={startTime}
                 endTime={endTime}
                 title={item.title}
                 onPress={() =>
-                    this.props.navigation.navigate("UpcomingEventStack", {
-                        event: item
-                    })
+                    this.props.selectEvent(
+                        item.id,
+                        EventViewTypes.HISTORY_UPCOMING
+                    )
                 }
             />
         );
     };
 
     _renderPastItem = ({ item }) => {
-        let startTime = new Date();
+        let startTime = new Date(item.startTime);
         let endTime = new Date(startTime.getTime() + 60 * 60000);
         return (
             <HistoryCell
+                tintColor={Color.orange}
                 upcoming={false}
                 startTime={startTime}
                 endTime={endTime}
-                title={"A Texan Treat"}
-                onPress={() => this.props.navigation.navigate("PastEventStack")}
+                title={item.title}
+                onPress={() =>
+                    this.props.selectEvent(item.id, EventViewTypes.HISTORY_PAST)
+                }
             />
         );
     };
@@ -118,6 +87,7 @@ class HistoryMain extends Component {
     );
 
     render() {
+        console.log(this.props);
         return (
             <View>
                 <Header title={"Your Tables"} leftComponent={() => null} />
@@ -128,6 +98,7 @@ class HistoryMain extends Component {
                         <Tabs
                             tabSelected={index => this.changeTab(index)}
                             activeTab={this.state.tabSelected}
+                            tabs={["Upcoming", "Past"]}
                         />
                         {this.state.tabSelected == 0 ? (
                             <FlatList
@@ -159,19 +130,31 @@ const mapStateToProps = state => {
     const { history, events, currentBookings } = state;
     return {
         initialLoad: history.initialLoad,
-        upcomingEvents: getUpcomingEvents(state),
-        pastEvents: getPastEvents(state)
+        upcomingEvents: orderEventsByDateEarliest(getUpcomingEvents(state)),
+        pastEvents: orderEventsByDateLatest(getPastEvents(state))
     };
 };
 
 const mapDispatchToProps = dispatch => {
+    const selectEvent = (eventId, mode) => {
+        dispatch({
+            type: eventTypes.SELECT_EVENT,
+            payload: {
+                eventId,
+                mode,
+                parentRoute: "HistoryMain"
+            }
+        });
+    };
+
     const loadHistory = () => {
         dispatch({
             type: historyTypes.LOAD_HISTORY_REQUEST
         });
     };
     return {
-        loadHistory
+        loadHistory,
+        selectEvent
     };
 };
 

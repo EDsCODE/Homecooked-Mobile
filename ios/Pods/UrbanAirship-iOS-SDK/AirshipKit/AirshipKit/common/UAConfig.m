@@ -1,4 +1,4 @@
-/* Copyright 2018 Urban Airship and Contributors */
+/* Copyright Urban Airship and Contributors */
 
 #import <objc/runtime.h>
 
@@ -24,10 +24,14 @@
         self.productionLogLevel = UALogLevelError;
         self.inProduction = NO;
         self.detectProvisioningMode = NO;
+        self.requestAuthorizationToUseNotifications = YES;
         self.automaticSetupEnabled = YES;
         self.analyticsEnabled = YES;
         self.profilePath = [[NSBundle mainBundle] pathForResource:@"embedded" ofType:@"mobileprovision"];
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
         self.cacheDiskSizeInMB = 100;
+#pragma GCC diagnostic pop
         self.clearUserOnAppRestore = NO;
         self.whitelist = @[];
         self.clearNamedUserOnAppRestore = NO;
@@ -63,11 +67,15 @@
 
         _inProduction = config.inProduction;
         _detectProvisioningMode = config.detectProvisioningMode;
+        _requestAuthorizationToUseNotifications = config.requestAuthorizationToUseNotifications;
 
         _automaticSetupEnabled = config.automaticSetupEnabled;
         _analyticsEnabled = config.analyticsEnabled;
         _profilePath = config.profilePath;
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
         _cacheDiskSizeInMB = config.cacheDiskSizeInMB;
+#pragma GCC diagnostic pop
         _clearUserOnAppRestore = config.clearUserOnAppRestore;
         _whitelist = config.whitelist;
         _clearNamedUserOnAppRestore = config.clearNamedUserOnAppRestore;
@@ -96,6 +104,7 @@
             "Production Log Level: %ld\n"
             "Resolved Log Level: %ld\n"
             "Detect Provisioning Mode: %d\n"
+            "Request Authorization To Use Notifications: %@\n"
             "Analytics Enabled: %d\n"
             "Analytics URL: %@\n"
             "Device API URL: %@\n"
@@ -124,11 +133,15 @@
             (long)self.productionLogLevel,
             (long)self.logLevel,
             self.detectProvisioningMode,
+            self.requestAuthorizationToUseNotifications ? @"YES" : @"NO",
             self.analyticsEnabled,
             self.analyticsURL,
             self.deviceAPIURL,
             self.remoteDataAPIURL,
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
             (unsigned long)self.cacheDiskSizeInMB,
+#pragma GCC diagnostic pop
             self.landingPageContentURL,
             self.automaticSetupEnabled,
             self.clearUserOnAppRestore,

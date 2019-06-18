@@ -1,4 +1,4 @@
-/* Copyright 2018 Urban Airship and Contributors */
+/* Copyright Urban Airship and Contributors */
 
 #import <UIKit/UIKit.h>
 
@@ -26,9 +26,11 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * @note This method will be called on the main thread.
  *
- * @return registration payload for channel
+ * @param completionHandler A completion handler which will be passed the created registration payload.
+ * @param dispatcher The dispatcher to call the completion handler on.
  */
-- (UAChannelRegistrationPayload *)createChannelPayload;
+- (void)createChannelPayload:(void (^)(UAChannelRegistrationPayload *))completionHandler
+                  dispatcher:(nullable UADispatcher *)dispatcher;
 
 /**
  * Called when the channel registrar failed to register.
@@ -94,6 +96,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)cancelAllRequests;
 
+/**
+* Removes the existing channel and forces a registration to create a new one.
+*/
+- (void)resetChannel;
+
 ///---------------------------------------------------------------------------------------
 /// @name Channel Registrar Properties
 ///---------------------------------------------------------------------------------------
@@ -115,6 +122,7 @@ NS_ASSUME_NONNULL_BEGIN
  * @param channelAPIClient The channel API client.
  * @param date The UADate object.
  * @param dispatcher The dispatcher to dispatch main queue blocks.
+ * @param application The application.
  * @return A new channel registrar instance.
  */
 + (instancetype)channelRegistrarWithConfig:(UAConfig *)config
@@ -124,7 +132,8 @@ NS_ASSUME_NONNULL_BEGIN
                            channelLocation:(NSString *)channelLocation
                           channelAPIClient:(UAChannelAPIClient *)channelAPIClient
                                       date:(UADate *)date
-                                dispatcher:(UADispatcher *)dispatcher;
+                                dispatcher:(UADispatcher *)dispatcher
+                               application:(UIApplication *)application;
 
 ///---------------------------------------------------------------------------------------
 /// @name Channel Registrar Properties (for testing)

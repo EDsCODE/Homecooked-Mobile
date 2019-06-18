@@ -15,8 +15,10 @@ import FloatyButton from "Homecooked/src/components/Buttons/FloatyButton";
 import { Color, Spacing } from "Homecooked/src/components/styles";
 import Button from "Homecooked/src/components/Buttons/BarButton";
 
-// import { connect } from "react-redux";
-// import { authOperations } from "./duck";
+import { FacebookService } from "Homecooked/src/services";
+
+import { authTypes } from "Homecooked/src/modules/types";
+import { connect } from "react-redux";
 
 const firstPageImageURI = "Homecooked/src/assets/img/filledTable.jpg";
 const secondPageImageURI = "Homecooked/src/assets/img/filledTable.jpg";
@@ -24,7 +26,7 @@ const thirdPageImageURI = "Homecooked/src/assets/img/filledTable.jpg";
 
 const { width, height } = Dimensions.get("window");
 
-export default class Landing extends Component {
+class Landing extends Component {
     openTerms = () => {
         this.setState({
             showWebView:
@@ -50,6 +52,26 @@ export default class Landing extends Component {
 
     navigateToSignUp = () => {
         this.props.navigation.navigate("SignUp");
+    };
+
+    _facebookOnPress = () => {
+        onSuccess = result => {
+            let image = {
+                uri: result.picture.data.url,
+                fileName: result.id + "_avatar",
+                type: "image/jpeg"
+            };
+            let { email, first_name: firstName, last_name: lastName } = result;
+            this.props.facebookLogin(email, firstName, lastName, image);
+        };
+
+        onError = error => {
+            this.setState({
+                error: error
+            });
+        };
+
+        new FacebookService(onSuccess, onError).login();
     };
 
     render() {
@@ -80,6 +102,7 @@ export default class Landing extends Component {
                             <FloatyButton
                                 onPress={() => this._swiper.scrollBy(1)}
                                 style={{ marginTop: 10 }}
+                                active={true}
                             />
                         </LinearGradient>
                     </ImageBackground>
@@ -105,6 +128,7 @@ export default class Landing extends Component {
                             <FloatyButton
                                 onPress={() => this._swiper.scrollBy(1)}
                                 style={{ marginTop: 10 }}
+                                active={true}
                             />
                         </LinearGradient>
                     </ImageBackground>
@@ -132,6 +156,7 @@ export default class Landing extends Component {
                                 style={{ marginTop: 11 }}
                                 borderColor={Color.facebookBlue}
                                 fill={Color.facebookBlue}
+                                onPress={this._facebookOnPress}
                             />
                             <Button
                                 title="Sign Up"
@@ -205,6 +230,23 @@ const LogInButton = props => (
         </Text>
     </TouchableOpacity>
 );
+
+const mapDispatchToProps = dispatch => {
+    const facebookLogin = (email, firstName, lastName, image) => {
+        dispatch({
+            type: authTypes.FACEBOOK_LOGIN_REQUEST,
+            payload: { email, firstName, lastName, image }
+        });
+    };
+    return {
+        facebookLogin
+    };
+};
+
+export default connect(
+    null,
+    mapDispatchToProps
+)(Landing);
 
 const styles = StyleSheet.create({
     wrapper: {},

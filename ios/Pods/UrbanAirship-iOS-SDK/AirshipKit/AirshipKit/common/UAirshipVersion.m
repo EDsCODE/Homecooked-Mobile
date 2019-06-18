@@ -1,8 +1,8 @@
-/* Copyright 2018 Urban Airship and Contributors */
+/* Copyright Urban Airship and Contributors */
 
 #import "UAirshipVersion.h"
 
-NSString *const versionString = @"10.0.4";
+NSString *const versionString = @"10.2.2";
 
 @implementation UAirshipVersion
 

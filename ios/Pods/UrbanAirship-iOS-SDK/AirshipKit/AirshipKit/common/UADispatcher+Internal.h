@@ -1,4 +1,4 @@
-/* Copyright 2018 Urban Airship and Contributors */
+/* Copyright Urban Airship and Contributors */
 
 
 #import <Foundation/Foundation.h>
@@ -52,6 +52,15 @@ NS_ASSUME_NONNULL_BEGIN
  * @param block The block to dispatch.
  */
 - (void)doSync:(void (^)(void))block;
+
+/**
+ * Performs a block, either by dispatching onto
+ * the associated queue asynchronously or by runnning the block directly if
+ * already on that queue.
+ *
+ * @param block The block to dispatch.
+ */
+- (void)dispatchAsyncIfNecessary:(void (^)(void))block;
 
 NS_ASSUME_NONNULL_END
 

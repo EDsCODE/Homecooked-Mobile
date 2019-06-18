@@ -14,10 +14,17 @@ import CloseButton from "Homecooked/src/components/Buttons/Close";
 import BarButton from "Homecooked/src/components/Buttons/BarButton";
 import TextField from "Homecooked/src/components/TextFields/Material";
 
-import { getPossibleMatches } from "Homecooked/src/services/location";
-import { reverse } from "Homecooked/src/utils/Strings";
+import uuid4 from "uuid4";
+
+import {
+    getPossibleMatches,
+    getLatLong,
+    getPlaceDetails
+} from "Homecooked/src/services/location";
 
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
+
+const HEADER_TEXT = "Where is your event happening?";
 
 export default class Address extends Component {
     _goBack = () => {
@@ -26,13 +33,27 @@ export default class Address extends Component {
 
     state = {
         query: "",
+        secondaryAddress: "",
         results: [],
         selected: null
     };
 
-    _goNext = () => {
-        let { eventDescription } = this.state;
-        this.props.screenProps.updateData("eventDescription", eventDescription);
+    componentDidMount() {
+        let sessionToken = uuid4();
+        this.setState({
+            sessionToken
+        });
+    }
+
+    _goNext = async () => {
+        let { selected, secondaryAddress, query } = this.state;
+
+        let address = {
+            ...selected,
+            secondaryAddress
+        };
+
+        this.props.screenProps.updateData("address", address);
         this._goBack();
     };
 
@@ -41,8 +62,11 @@ export default class Address extends Component {
             query
         });
         if (query.length > 3) {
-            let results = await getPossibleMatches(query);
-            console.log(results);
+            let results = await getPossibleMatches(
+                query,
+                this.state.sessionToken
+            );
+            results;
             this.setState({
                 results
             });
@@ -58,27 +82,38 @@ export default class Address extends Component {
                         marginVertical: Spacing.smallest
                     }}
                 >
-                    {reverse(item.label)}
+                    {item.description}
                 </Text>
             </TouchableOpacity>
         );
     };
 
-    onRowPressed = item => {
+    onRowPressed = async item => {
+        let data = await getPlaceDetails(
+            item.place_id,
+            this.state.sessionToken
+        );
+        data;
         this.setState({
-            query: reverse(item.label),
+            query: data.formattedAddress,
             results: [],
-            selected: item
+            selected: data
         });
         Keyboard.dismiss();
     };
 
+    onChangeLine2 = text => {
+        this.setState({
+            secondaryAddress: text
+        });
+    };
+
     render() {
-        let { query, results } = this.state;
+        let { query, results, secondaryAddress } = this.state;
         return (
             <View style={styles.container}>
                 <CloseButton onPress={this._goBack} />
-                <HeadingText>Where is your event happening?</HeadingText>
+                <HeadingText>{HEADER_TEXT}</HeadingText>
                 <TextField
                     label={""}
                     tintColor="#4A4A4A"
@@ -96,6 +131,16 @@ export default class Address extends Component {
                         keyboardShouldPersistTaps={"handled"}
                     />
                 ) : null}
+                <TextField
+                    label={"Address Line 2 (optional)"}
+                    tintColor="#4A4A4A"
+                    multiline={true}
+                    value={secondaryAddress}
+                    returnKeyType="done"
+                    blurOnSubmit={true}
+                    onChangeText={this.onChangeLine2}
+                />
+
                 <BarButton
                     title="Confirm"
                     style={{

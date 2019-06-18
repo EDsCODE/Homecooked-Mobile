@@ -9,6 +9,8 @@ import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 const imageURI = "Homecooked/src/assets/img/filledTable.jpg";
 
 export default class Ratings extends Component {
+    _keyExtractor = (item, index) => index;
+
     reviews = [
         {
             name: "John",
@@ -24,7 +26,7 @@ export default class Ratings extends Component {
         }
     ];
 
-    _renderItem = ({ item }) => {
+    _renderItem = ({ item, index }) => {
         return <Row name={item.name} date={item.date} review={item.review} />;
     };
 
@@ -59,6 +61,7 @@ export default class Ratings extends Component {
                 <PrimaryText>Ratings and Reviews</PrimaryText>
                 <MinorText>What to expect</MinorText>
                 <FlatList
+                    keyExtractor={this._keyExtractor}
                     style={{ marginTop: Spacing.base }}
                     data={this.reviews}
                     renderItem={this._renderItem}

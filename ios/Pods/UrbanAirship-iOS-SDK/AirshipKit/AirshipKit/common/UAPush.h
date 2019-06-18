@@ -1,4 +1,4 @@
-/* Copyright 2018 Urban Airship and Contributors */
+/* Copyright Urban Airship and Contributors */
 
 #import "UAGlobal.h"
 #import "UAirship.h"
@@ -25,6 +25,24 @@ extern NSString *const UAChannelCreatedEvent;
  * will contain the channel ID under `UAChannelUpdatedEventChannelKey`
  */
 extern NSString *const UAChannelUpdatedEvent;
+
+/**
+ * NSNotification event when a notification response is received.
+ * The event will contain the payload dictionary as user info.
+ */
+extern NSString *const UAReceivedNotificationResponseEvent;
+
+/**
+ * NSNotification event when a foreground notification is received.
+ * The event will contain the payload dictionary as user info.
+ */
+extern NSString *const UAReceivedForegroundNotificationEvent;
+
+/**
+ * NSNotification event when a background notification is received.
+ * The event will contain the payload dictionary as user info.
+ */
+extern NSString *const UAReceivedBackgroundNotificationEvent;
 
 /**
  * Channel ID key for the channel created event.
@@ -131,7 +149,7 @@ static const UANotificationOptions UANotificationOptionNone =  0;
  * @param status The authorization status.
  */
 - (void)notificationRegistrationFinishedWithAuthorizedSettings:(UAAuthorizedNotificationSettings)authorizedSettings
-                                                    categories:(NSSet *)categories
+                                                    categories:(NSSet<UANotificationCategory *> *)categories
                                                         status:(UAAuthorizationStatus)status;
 
 /**
@@ -141,7 +159,7 @@ static const UANotificationOptions UANotificationOptionNone =  0;
  * @param categories NSSet of the categories that were most recently registered.
  */
 - (void)notificationRegistrationFinishedWithAuthorizedSettings:(UAAuthorizedNotificationSettings)authorizedSettings
-                                                    categories:(NSSet *)categories;
+                                                    categories:(NSSet<UANotificationCategory *> *)categories;
 
 /**
  * Called when notification authentication changes with the new authorized settings.
@@ -237,7 +255,7 @@ static const UANotificationOptions UANotificationOptionNone =  0;
  * @param notification The notification.
  * @return a UNNotificationPresentationOptions enum value indicating the presentation options for the notification.
  */
-- (UNNotificationPresentationOptions)presentationOptionsForNotification:(UNNotification *)notification NS_AVAILABLE_IOS(10.0);
+- (UNNotificationPresentationOptions)presentationOptionsForNotification:(UNNotification *)notification;
 
 @end
 
@@ -381,7 +399,7 @@ static const UANotificationOptions UANotificationOptionNone =  0;
  *
  * Note: this property is relevant only for iOS 10 and above.
  */
-@property (nonatomic, assign) UNNotificationPresentationOptions defaultPresentationOptions NS_AVAILABLE_IOS(10.0);
+@property (nonatomic, assign) UNNotificationPresentationOptions defaultPresentationOptions;
 
 ///---------------------------------------------------------------------------------------
 /// @name Autobadge

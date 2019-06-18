@@ -52,7 +52,7 @@ export default class Menu extends Component {
     };
 
     render() {
-        let { itemDescription, itemName } = this.state;
+        let { itemDescription, itemName, menu } = this.state;
         return (
             <View style={styles.container}>
                 <CloseButton onPress={this._goBack} />
@@ -70,7 +70,7 @@ export default class Menu extends Component {
                         tap to edit.
                     </PromptText>
                     <MenuSection
-                        menu={this.state.menu}
+                        menu={menu}
                         containerStyle={{ marginHorizontal: 0 }}
                     />
                     <TextField

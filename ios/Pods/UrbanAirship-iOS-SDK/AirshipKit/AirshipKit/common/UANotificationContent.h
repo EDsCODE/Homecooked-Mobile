@@ -1,4 +1,4 @@
-/* Copyright 2018 Urban Airship and Contributors */
+/* Copyright Urban Airship and Contributors */
 
 #import <Foundation/Foundation.h>
 
@@ -81,7 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
  * This will be nil on iOS versions prior to 10.0, or when receiving silent,
  * `content-available` pushes in the background.
  */
-@property (nonatomic, strong, nullable, readonly) UNNotification *notification NS_AVAILABLE_IOS(10.0);
+@property (nonatomic, strong, nullable, readonly) UNNotification *notification;
 
 ///---------------------------------------------------------------------------------------
 /// @name Notification Content Utilities
@@ -103,7 +103,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * @return UANotification instance
  */
-+ (instancetype)notificationWithUNNotification:(UNNotification *)notification NS_AVAILABLE_IOS(10.0);
++ (instancetype)notificationWithUNNotification:(UNNotification *)notification;
 
 @end
 

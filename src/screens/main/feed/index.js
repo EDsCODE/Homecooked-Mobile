@@ -1,13 +1,13 @@
 import React from "react";
 import { createStackNavigator } from "react-navigation";
 import Main from "./main";
-import Event from "./Event";
+import Event from "Homecooked/src/screens/common/Event";
 const FeedStack = createStackNavigator(
     {
         Feed: {
             screen: Main
         },
-        EventStack: {
+        FeedEvent: {
             screen: Event
         }
     },

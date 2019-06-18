@@ -41,11 +41,44 @@ const getBookingByEvent = id => {
     });
 };
 
+const getEventsByChefId = chefId => {
+    return request({
+        method: "GET",
+        url: `/chef/${chefId}/events`
+    });
+};
+
+const cancelEvent = id => {
+    return request({
+        method: "PATCH",
+        url: `/event/${id}/cancel`
+    });
+};
+
+const getEventSettingsByType = type => {
+    return request({
+        method: "GET",
+        url: `/event/settings/${type}`
+    });
+};
+
+const createEvent = eventData => {
+    return request({
+        method: "POST",
+        url: "/event",
+        data: eventData
+    });
+};
+
 const EventService = {
     getEvents,
     getBookingByEvent,
     getActiveEvents,
-    getEventById
+    getEventById,
+    getEventsByChefId,
+    cancelEvent,
+    getEventSettingsByType,
+    createEvent
 };
 
 export default EventService;

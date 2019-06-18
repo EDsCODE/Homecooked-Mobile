@@ -55,11 +55,27 @@ const signout = refreshToken => {
     });
 };
 
+const facebookLogin = (email, firstName, lastName) => {
+    return request({
+        method: "POST",
+        url: "/auth/facebook/login",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        data: {
+            email,
+            firstName,
+            lastName
+        }
+    });
+};
+
 const AuthService = {
     login,
     register,
     refreshToken,
-    signout
+    signout,
+    facebookLogin
 };
 
 export default AuthService;

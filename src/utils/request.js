@@ -9,7 +9,6 @@ const client = axios.create({
 
 const request = options => {
     const onSuccess = res => {
-        console.log(res);
         if (res.status == "error") {
             return Promise.reject(res.error);
         } else {

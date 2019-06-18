@@ -19,7 +19,6 @@ export default class Email extends Component {
     }
 
     _navigateNext = () => {
-        console.log(this.state);
         this.props.screenProps.updateData("email", this.state.email);
         this.props.navigation.navigate("Password");
     };

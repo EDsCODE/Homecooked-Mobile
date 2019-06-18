@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import {
     View,
     TouchableOpacity,
@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 
-import { dateWithMealType } from "Homecooked/src/utils/Date";
+import { dateWithMealType, eventCardDate } from "Homecooked/src/utils/Date";
 import TitleText from "Homecooked/src/components/Text/Title";
 import MinorText from "Homecooked/src/components/Text/Minor";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
@@ -17,19 +17,9 @@ import LinearGradient from "react-native-linear-gradient";
 
 const imageURI = "Homecooked/src/assets/img/filledTable.jpg";
 
-export default class EventCard extends Component {
+export default class EventCard extends PureComponent {
     state = {
         activeSlide: 0,
-        data: [
-            {
-                title: "hello",
-                image: imageURI
-            },
-            {
-                title: "hello",
-                image: imageURI
-            }
-        ],
         image: "",
         distance: "",
         loadingDistance: false,
@@ -51,7 +41,7 @@ export default class EventCard extends Component {
                     <ImageBackground
                         resizeMode="cover"
                         style={styles.image}
-                        source={require(imageURI)}
+                        source={{ uri: item }}
                     >
                         <LinearGradient
                             colors={["rgba(0,0,0,0.8)", "transparent"]}
@@ -67,10 +57,10 @@ export default class EventCard extends Component {
 
     get pagination() {
         const { activeSlide } = this.state;
-        const length = this.state.data.length;
+        let { media } = this.props.event;
         return (
             <Pagination
-                dotsLength={length}
+                dotsLength={media.length}
                 activeDotIndex={activeSlide}
                 containerStyle={{
                     backgroundColor: "rgba(0, 0, 0, 0)",
@@ -99,9 +89,23 @@ export default class EventCard extends Component {
     };
 
     render() {
-        let { title, date, distance, price, people, key } = this.props.event;
-        let _dateWithType = dateWithMealType(date);
-
+        let {
+            title,
+            date,
+            distance,
+            attributes,
+            people,
+            key,
+            marker,
+            chef,
+            media,
+            guestCount
+        } = this.props.event;
+        let { price } = attributes;
+        let MEALTYPE_TIME = dateWithMealType(date);
+        let LOCATION = `${marker.city}, ${marker.state}`;
+        let SEATS_LEFT = attributes.tableSizeMax - guestCount + " seats left";
+        let EVENT_CARD_DATE = eventCardDate(date);
         return (
             <TouchableOpacity
                 style={styles.card}
@@ -111,7 +115,7 @@ export default class EventCard extends Component {
             >
                 <TouchableOpacity onPress={this.onPress} activeOpacity={0.9}>
                     <Carousel
-                        data={this.state.data}
+                        data={media}
                         renderItem={this._renderCard}
                         sliderWidth={Spacing.deviceWidth - 30}
                         itemWidth={Spacing.deviceWidth - 30}
@@ -138,8 +142,8 @@ export default class EventCard extends Component {
                                 justifyContent: "space-between"
                             }}
                         >
-                            <MinorText>{_dateWithType}</MinorText>
-                            <MinorText>{distance + " mi away"}</MinorText>
+                            <MinorText>{MEALTYPE_TIME}</MinorText>
+                            <MinorText>{LOCATION}</MinorText>
                         </View>
                     </View>
                     <View style={styles.badgeContainer}>
@@ -154,12 +158,12 @@ export default class EventCard extends Component {
                             ]}
                         >
                             <MinorText style={{ color: "white" }}>
-                                {`Thu, Sept 28`}
+                                {EVENT_CARD_DATE}
                             </MinorText>
                         </View>
                         <View style={[styles.badge]}>
                             <MinorText style={{ color: "white" }}>
-                                {`5 seats left`}
+                                {SEATS_LEFT}
                             </MinorText>
                         </View>
                     </View>

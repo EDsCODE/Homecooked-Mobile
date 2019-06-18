@@ -12,7 +12,7 @@ import ImagePicker from "react-native-image-picker";
 
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 
-import { userTypes } from "Homecooked/src/modules/types";
+import { currentUserTypes } from "Homecooked/src/modules/types";
 import { connect } from "react-redux";
 
 const placeHolderWidth = Spacing.deviceWidth - 80;
@@ -27,7 +27,9 @@ class Photo extends Component {
     };
 
     _goNext = () => {
-        this.props.uploadImage(this.state.image);
+        if (this.state.image) {
+            this.props.uploadImage(this.state.image);
+        }
         this.props.navigation.navigate("EditBio");
     };
 
@@ -44,6 +46,24 @@ class Photo extends Component {
                 image: response
             });
         });
+    };
+
+    displayImage = () => {
+        if (this.state.image) {
+            return this.state.image.uri;
+        } else if (this.props.currentUser.profileImageSignedUrl) {
+            return this.props.currentUser.profileImageSignedUrl;
+        } else {
+            return null;
+        }
+    };
+
+    availableAction = () => {
+        if (this.state.image || this.props.currentUser.profileImageSignedUrl) {
+            return true;
+        } else {
+            return false;
+        }
     };
 
     render() {
@@ -65,7 +85,7 @@ class Photo extends Component {
                     caption={"Picture"}
                     onPress={this.openPicker}
                     source={{
-                        uri: this.state.image ? this.state.image.uri : null
+                        uri: this.displayImage()
                     }}
                 />
                 <FloatyButton
@@ -75,16 +95,24 @@ class Photo extends Component {
                         bottom: Spacing.largest,
                         right: Spacing.largest
                     }}
+                    active={this.availableAction()}
                 />
             </View>
         );
     }
 }
 
+const mapStateToProps = state => {
+    let { currentUser } = state;
+    return {
+        currentUser
+    };
+};
+
 const mapDispatchToProps = dispatch => {
     const uploadImage = image => {
         dispatch({
-            type: userTypes.UPLOAD_USER_IMAGE_REQUEST,
+            type: currentUserTypes.UPLOAD_USER_IMAGE_REQUEST,
             payload: { image }
         });
     };
@@ -94,7 +122,7 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(Photo);
 

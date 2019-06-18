@@ -11,6 +11,7 @@ import moment from "moment";
 
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 import NavigationService from "Homecooked/src/utils/NavigationService";
+import { objectUtils } from "Homecooked/src/utils";
 
 export default class DetailsMain extends Component {
     _goBack = () => {
@@ -43,7 +44,7 @@ export default class DetailsMain extends Component {
 
     _goNext = async () => {
         await this.props.screenProps.submit();
-        this.props.navigation.navigate("Preview");
+        this.props.screenProps.preview();
     };
 
     render() {
@@ -57,7 +58,6 @@ export default class DetailsMain extends Component {
             minGuests,
             maxGuests
         } = this.props.screenProps.state;
-        console.log(date);
 
         // format time
         let endTime;
@@ -65,10 +65,22 @@ export default class DetailsMain extends Component {
         if (startTime) {
             endTime = moment(startTime).add(duration, "hours");
             parsedTime =
-                moment(startTime).format("hh:mm a") +
+                moment(startTime).format("h:mm a") +
                 " to " +
-                moment(endTime).format("hh:mm a");
+                moment(endTime).format("h:mm a");
         }
+
+        let formattedAddress = address.formattedAddress;
+
+        let isActive =
+            address &&
+            specialDirections &&
+            date &&
+            startTime &&
+            duration &&
+            price &&
+            minGuests &&
+            maxGuests;
 
         return (
             <View style={styles.container}>
@@ -86,7 +98,7 @@ export default class DetailsMain extends Component {
                     <FieldButton
                         containerStyle={{ marginVertical: Spacing.smaller }}
                         title={"Address"}
-                        value={address}
+                        value={formattedAddress}
                         onPress={this._navigateToAddressField}
                     />
                     <FieldButton
@@ -135,6 +147,7 @@ export default class DetailsMain extends Component {
                     borderColor={Color.orange}
                     fill={Color.orange}
                     onPress={this._goNext}
+                    active={isActive}
                 />
             </View>
         );

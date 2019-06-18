@@ -1,13 +1,18 @@
 import React, { Component } from "react";
-import { View, FlatList, Text, StyleSheet } from "react-native";
+import { View, FlatList, Text, StyleSheet, Linking } from "react-native";
 
 import HeaderCell from "Homecooked/src/components/Cells/AccountHeaderCell";
 import Cell from "Homecooked/src/components/Cells/AccountCell";
 import NavigationService from "Homecooked/src/utils/NavigationService";
-
+import { STRIPE_HOST_ACCOUNT_URL } from "Homecooked/src/config/constants";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 
-export default class Host_Settings_Main extends Component {
+import { connect } from "react-redux";
+import { hostTypes } from "Homecooked/src/modules/types";
+
+const PROMPT = "Edit Host Profile";
+
+class Host_Settings_Main extends Component {
     constructor() {
         super();
         this.state = {
@@ -15,42 +20,46 @@ export default class Host_Settings_Main extends Component {
         };
     }
 
-    settingRows = [
-        {},
-        {
-            title: "Switch to Guest Mode",
-            onPress: () => NavigationService.navigate("Main")
-        },
-        {
-            title: "Payouts"
-        },
-        {
-            title: "Invite Friends",
-            prompt: "Earn $3 for each friend who attends a meal"
-        },
-        {
-            title: "Refer a host",
-            prompt: "Earn $8 for each new host you refer"
-        },
-        {
-            title: "FAQ"
-        },
-        {
-            title: "Settings"
-        }
-    ];
-
     componentDidMount() {
+        const STRIPE_URL = STRIPE_HOST_ACCOUNT_URL(
+            this.props.host.id,
+            this.props.currentUser.email,
+            this.props.currentUser.firstName
+        );
+        const SETTING_ROWS = [
+            {},
+            {
+                title: "Switch to Guest Mode",
+                onPress: () => NavigationService.navigate("Main")
+            },
+            {
+                title: "Payment Settings",
+                onPress: () => Linking.openURL(STRIPE_URL)
+            },
+            {
+                title: "Invite Friends",
+                prompt: "Earn $3 for each friend who attends a meal"
+            },
+            {
+                title: "Refer a host",
+                prompt: "Earn $8 for each new host you refer"
+            },
+            {
+                title: "FAQ"
+            },
+            {
+                title: "Settings"
+            }
+        ];
         this.setState({
-            data: this.settingRows
+            data: SETTING_ROWS
         });
     }
 
     _renderItem = ({ item, index }) => {
-        console.log(index);
         if (index == 0) {
             // render header cell
-            return <HeaderCell id={item.id} name="Eric" />;
+            return <HeaderCell id={item.id} name="Eric" prompt={PROMPT} />;
         } else {
             return (
                 <Cell
@@ -88,6 +97,19 @@ export default class Host_Settings_Main extends Component {
         );
     }
 }
+
+const mapStateToProps = state => {
+    const { host, currentUser } = state;
+    return {
+        host,
+        currentUser
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    null
+)(Host_Settings_Main);
 
 const styles = StyleSheet.create({
     container: {

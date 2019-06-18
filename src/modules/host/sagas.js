@@ -1,38 +1,62 @@
-import { takeLatest, call, put, select } from "redux-saga/effects";
-import { HostService, ImageService } from "Homecooked/src/services/api";
+import { takeLatest, call, put, select, all } from "redux-saga/effects";
+import {
+    HostService,
+    ImageService,
+    EventService
+} from "Homecooked/src/services/api";
 import types from "./types";
 import NavigationService from "Homecooked/src/utils/NavigationService";
 import * as userSelectors from "Homecooked/src/modules/currentUser/selectors";
+import {
+    getEventsByChefIdWorkerSaga,
+    updateEventStatusSaga,
+    createEventWorkerSaga
+} from "Homecooked/src/modules/event/sagas";
+
+import * as currentUserSelectors from "Homecooked/src/modules/currentUser/selectors";
+import * as hostSelectors from "Homecooked/src/modules/host/selectors";
 
 function* createApplicationWorkerSaga(action) {
     try {
-        let {
-            userId,
-            address,
-            lat,
-            lng,
-            images,
-            reason,
-            experience
-        } = action.payload;
-        let imageKeys = { 0: null, 1: null, 2: null, 3: null };
-        for (let i = 0; i <= 4; i++) {
+        let { address, lat, lng, images, reason, experience } = action.payload;
+        let imageKeys = { 1: null, 2: null, 3: null, 4: null };
+        for (let i = 0; i <= 3; i++) {
             if (images[i] && images[i].data) {
                 let { data } = yield call(ImageService.uploadImage, images[i]);
-                imageKeys[i] = data;
+
+                imageKeys[i + 1] = data;
             }
         }
 
-        console.log(imageKeys);
-        const { message } = yield call(
+        let chefId = yield select(hostSelectors.chefId);
+        let userId = yield select(currentUserSelectors.userId);
+        // if no chefId create a chef id
+        if (!chefId) {
+            let { data } = yield call(HostService.createChef, userId);
+            chefId = data;
+        }
+
+        const { data } = yield call(
             HostService.createApplication,
-            userId,
+            chefId,
             address,
             lat,
             lng,
             reason,
-            experience,
-            imageKeys
+            experience
+        );
+
+        yield all(
+            Object.keys(imageKeys).map(type => {
+                if (imageKeys[type]) {
+                    return call(
+                        HostService.createChefMedia,
+                        chefId,
+                        imageKeys[type],
+                        type
+                    );
+                }
+            })
         );
 
         yield put({ type: types.CREATE_APPLICATION_SUCCESS });
@@ -50,14 +74,94 @@ function* createApplicationWorkerSaga(action) {
 function* getChefWorkerSaga(action) {
     try {
         let userId = yield select(userSelectors.userId);
-        const { data } = yield call(HostService.getChefByUserId, userId);
-        yield put({ type: types.GET_CHEF_SUCCESS, payload: { chef: data } });
+        const { data: chef } = yield call(HostService.getChefByUserId, userId);
+        const { data: preferences } = yield call(
+            EventService.getEventSettingsByType,
+            chef.type
+        );
+        let medias = formatMedia(chef.media);
+        const imageURLS = yield all(
+            Object.keys(medias)
+                .map(type => {
+                    if (medias[type]) {
+                        return call(getChefMedia, medias[type]);
+                    }
+                })
+                .filter(item => item)
+        );
+        yield put({
+            type: types.GET_CHEF_SUCCESS,
+            payload: { chef, preferences, media: imageURLS }
+        });
     } catch (error) {
         yield put({ type: types.GET_CHEF_ERROR, error });
     }
 }
 
+function* getChefMedia(item) {
+    let { data: url } = yield call(ImageService.getImage, item.key);
+
+    return {
+        ...item,
+        url
+    };
+}
+
+function formatMedia(arr) {
+    let result = { "1": null, "2": null, "3": null, "4": null };
+    for (let i = 0; i < arr.length; i++) {
+        let item = arr[i];
+        if (!result[item.type]) {
+            result[item.type] = item;
+        }
+    }
+    return result;
+}
+
+// function* getChefMediaSaga(action) {
+//     try {
+
+//     }
+// }
+
+function* loadHostingEventsSaga(action) {
+    try {
+        yield call(getEventsByChefIdWorkerSaga);
+        yield put({ type: types.LOAD_HOSTING_EVENTS_SUCCESS });
+    } catch (error) {
+        yield put({ type: types.LOAD_HOSTING_EVENTS_ERROR, error });
+    }
+}
+
+function* cancelEventWorkerSaga(action) {
+    try {
+        yield call(updateEventStatusSaga, action.eventId, "CAN");
+        yield put({ type: types.CANCEL_EVENT_SUCCESS });
+    } catch (error) {
+        yield put({ type: types.CANCEL_EVENT_ERROR, error });
+    }
+}
+
+function* postEventWorkerSaga(action) {
+    try {
+        let chefId = yield select(hostSelectors.chefId);
+        let payload = {
+            ...action.payload,
+            chefId
+        };
+
+        yield call(createEventWorkerSaga, payload);
+        yield put({ type: types.POST_EVENT_SUCCESS });
+        NavigationService.navigate("HostTablesMain");
+    } catch (error) {
+        yield put({ type: types.POST_EVENT_ERROR, error });
+    }
+}
+
 export const hostSagas = [
     takeLatest(types.CREATE_APPLICATION_REQUEST, createApplicationWorkerSaga),
-    takeLatest(types.GET_CHEF_REQUEST, getChefWorkerSaga)
+    takeLatest(types.GET_CHEF_REQUEST, getChefWorkerSaga),
+    takeLatest(types.LOAD_HOSTING_EVENTS_REQUEST, loadHostingEventsSaga),
+    takeLatest(types.CANCEL_EVENT_REQUEST, cancelEventWorkerSaga),
+    takeLatest(types.POST_EVENT_REQUEST, postEventWorkerSaga)
 ];

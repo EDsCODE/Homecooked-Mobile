@@ -1,4 +1,4 @@
-/* Copyright 2018 Urban Airship and Contributors */
+/* Copyright Urban Airship and Contributors */
 
 #import <Foundation/Foundation.h>
 #import "UAPush+Internal.h"
@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)notificationRegistrationFinishedWithAuthorizedSettings:(UAAuthorizedNotificationSettings)authorizedSettings
                                                  legacyOptions:(UANotificationOptions)legacyOptions
-                                                    categories:(NSSet *)categories
+                                                    categories:(NSSet<UANotificationCategory *> *)categories
                                                         status:(UAAuthorizationStatus)status;
 
 /**

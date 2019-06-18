@@ -1,15 +1,19 @@
 import types from "./types";
+import { normalize } from "Homecooked/src/utils/normalize";
 
 const initialState = {
+    bookings: {},
     email: null,
     firstName: null,
     lastName: null,
     id: null,
-    profileImageURL: null,
+    profileImageUrl: null,
+    profileImageSignedUrl: null,
     stripeCustomerId: null,
     bio: null,
     isVerified: null,
     loading: false,
+    loadingAvatar: false,
     isComplete: false,
     imageKey: null,
     imageURL: null,
@@ -40,7 +44,7 @@ const reducer = (state = initialState, action) => {
                 firstName: firstName ? firstName : state.firstName,
                 lastName: lastName ? lastName : state.lastName,
                 id: id ? id : state.id,
-                profileImageURL: profileImageURL
+                profileImageUrl: profileImageURL
                     ? profileImageURL
                     : state.profileImageURL,
                 stripeCustomerId: stripeCustomerId
@@ -67,6 +71,60 @@ const reducer = (state = initialState, action) => {
         case types.UPLOAD_USER_IMAGE_ERROR:
             return {
                 ...state
+            };
+        case types.SAVE_PAYMENT_REQUEST:
+            return {
+                ...state
+            };
+        case types.SAVE_PAYMENT_SUCCESS:
+            return {
+                ...state,
+                stripeCustomerId: action.payload
+                    ? action.payload.stripeCustomerId
+                    : state.stripeCustomerId
+            };
+        case types.SAVE_PAYMENT_ERROR:
+            return {
+                ...state,
+                error
+            };
+        case types.GET_AVATAR_REQUEST:
+            return {
+                ...state,
+                loadingAvatar: true
+            };
+        case types.GET_AVATAR_SUCCESS:
+            return {
+                ...state,
+                loadingAvatar: false,
+                profileImageSignedUrl: action.payload.profileImageSignedUrl
+            };
+        case types.GET_AVATAR_ERROR:
+            return {
+                ...state,
+                loadingAvatar: false,
+                error: action.error
+            };
+        case types.GET_CURRENT_BOOKINGS_REQUEST:
+            return {
+                ...state
+            };
+        case types.GET_CURRENT_BOOKINGS_SUCCESS:
+            return {
+                ...state,
+                bookings: normalize(action.bookings, "id")
+            };
+        case types.GET_CURRENT_BOOKINGS_ERROR:
+            return {
+                ...state
+            };
+        case types.ADD_BOOKING:
+            return {
+                ...state,
+                bookings: {
+                    ...state.bookings,
+                    [action.booking.id]: action.booking
+                }
             };
         default:
             return state;

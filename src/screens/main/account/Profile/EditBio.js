@@ -9,7 +9,7 @@ import NavigationService from "Homecooked/src/utils/NavigationService";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 import TextField from "Homecooked/src/components/TextFields/Material";
 
-import { userTypes } from "Homecooked/src/modules/types";
+import { currentUserTypes } from "Homecooked/src/modules/types";
 import { connect } from "react-redux";
 
 const placeHolderWidth = 140;
@@ -23,10 +23,25 @@ class Bio extends Component {
     };
 
     _goNext = () => {
-        this.props.updateUser({
-            bio: this.state.bio
-        });
-        this.props.navigation.navigate("ProfilePreview");
+        if (this.state.bio) {
+            this.props.updateUser({
+                bio: this.state.bio
+            });
+        }
+        this.props.navigation.navigate(
+            "ProfilePreview",
+            this.props.currentUser
+        );
+    };
+
+    displayBio = () => {
+        if (this.state.bio) {
+            return this.state.bio;
+        } else if (this.props.currentUser.bio) {
+            return this.props.currentUser.bio;
+        } else {
+            return "";
+        }
     };
 
     render() {
@@ -42,7 +57,7 @@ class Bio extends Component {
                 <TextField
                     tintColor={Color.gray}
                     label="Bio"
-                    value={bio}
+                    value={this.displayBio()}
                     multiline={true}
                     maxLength={150}
                     onChangeText={bio => this.setState({ bio })}
@@ -65,10 +80,17 @@ class Bio extends Component {
     }
 }
 
+const mapStateToProps = state => {
+    let { currentUser } = state;
+    return {
+        currentUser
+    };
+};
+
 const mapDispatchToProps = dispatch => {
     const updateUser = changes => {
         dispatch({
-            type: userTypes.UPDATE_USER_REQUEST,
+            type: currentUserTypes.UPDATE_USER_REQUEST,
             payload: changes
         });
     };
@@ -78,7 +100,7 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(Bio);
 

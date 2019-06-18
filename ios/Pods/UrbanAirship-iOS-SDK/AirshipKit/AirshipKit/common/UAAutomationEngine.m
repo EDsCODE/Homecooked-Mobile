@@ -1,4 +1,4 @@
-/* Copyright 2018 Urban Airship and Contributors */
+/* Copyright Urban Airship and Contributors */
 
 #import "UAAutomationEngine+Internal.h"
 #import "UAAnalytics+Internal.h"
@@ -25,18 +25,18 @@
 @property (nonatomic, copy, nonnull) id (^argumentGenerator)(void);
 @property (nonatomic, strong, nonnull) NSDate *stateChangeDate;
 
-- (instancetype)initWithPredicate:(BOOL (^_Nonnull)(void))predicate argumentGenerator:(id (^)(void))argumentGenerator;
+- (instancetype)initWithPredicate:(BOOL (^_Nonnull)(void))predicate argumentGenerator:(id (^)(void))argumentGenerator stateChangeDate:(NSDate *)date;
 
 @end
 
 @implementation UAAutomationStateCondition
 
-- (instancetype)initWithPredicate:(BOOL (^_Nonnull)(void))predicate argumentGenerator:(id (^)(void))argumentGenerator {
+- (instancetype)initWithPredicate:(BOOL (^_Nonnull)(void))predicate argumentGenerator:(id (^)(void))argumentGenerator stateChangeDate:(NSDate *)date {
     self = [super init];
     if (self) {
         self.predicate = predicate;
         self.argumentGenerator = argumentGenerator;
-        self.stateChangeDate = [NSDate date];
+        self.stateChangeDate = date;
     }
     return self;
 }
@@ -45,6 +45,11 @@
 
 @interface UAAutomationEngine()
 @property (nonatomic, strong) UATimerScheduler *timerScheduler;
+@property (nonnull, strong) UADispatcher *dispatcher;
+@property (nonnull, strong) UIApplication *application;
+@property (nonnull, strong) NSNotificationCenter *notificationCenter;
+@property (nonnull, nonatomic, strong) UADate *date;
+
 @property (nonatomic, copy) NSString *currentScreen;
 @property (nonatomic, copy, nullable) NSString * currentRegion;
 @property (nonatomic, assign) BOOL isForegrounded;
@@ -53,10 +58,8 @@
 @property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundTaskIdentifier;
 @property (nonatomic, assign) BOOL isStarted;
 @property (nonnull, strong) NSMutableDictionary *stateConditions;
-@property (nonnull, strong) NSNotificationCenter *notificationCenter;
-@property (nonnull, strong) UADispatcher *dispatcher;
-
 @property (atomic, assign) BOOL paused;
+
 @end
 
 @implementation UAAutomationEngine
@@ -70,19 +73,24 @@
 - (instancetype)initWithAutomationStore:(UAAutomationStore *)automationStore
                          timerScheduler:(UATimerScheduler *)timerScheduler
                      notificationCenter:(NSNotificationCenter *)notificationCenter
-                             dispatcher:(UADispatcher *)dispatcher {
+                             dispatcher:(UADispatcher *)dispatcher
+                            application:(UIApplication *)application
+                                   date:(UADate *)date {
     self = [super init];
 
     if (self) {
         self.automationStore = automationStore;
         self.timerScheduler = timerScheduler;
-        self.activeTimers = [NSMutableArray array];
-        self.isForegrounded = [UIApplication sharedApplication].applicationState == UIApplicationStateActive;
-        self.isBackgrounded = [UIApplication sharedApplication].applicationState == UIApplicationStateBackground;
-        self.stateConditions = [NSMutableDictionary dictionary];
-        self.paused = NO;
         self.notificationCenter = notificationCenter;
         self.dispatcher = dispatcher;
+        self.application = application;
+        self.date = date;
+
+        self.activeTimers = [NSMutableArray array];
+        self.isForegrounded = self.application.applicationState == UIApplicationStateActive;
+        self.isBackgrounded = self.application.applicationState == UIApplicationStateBackground;
+        self.stateConditions = [NSMutableDictionary dictionary];
+        self.paused = NO;
     }
 
     return self;
@@ -91,19 +99,25 @@
 + (instancetype)automationEngineWithAutomationStore:(UAAutomationStore *)automationStore
                                      timerScheduler:(UATimerScheduler *)timerScheduler
                                  notificationCenter:(NSNotificationCenter *)notificationCenter
-                                         dispatcher:(UADispatcher *)dispatcher {
+                                         dispatcher:(UADispatcher *)dispatcher
+                                        application:(UIApplication *)application
+                                               date:(UADate *)date {
 
     return [[UAAutomationEngine alloc] initWithAutomationStore:automationStore
                                                 timerScheduler:timerScheduler
                                             notificationCenter:notificationCenter
-                                                    dispatcher:dispatcher];
+                                                    dispatcher:dispatcher
+                                                   application:application
+                                                          date:date];
 }
 
 + (instancetype)automationEngineWithAutomationStore:(UAAutomationStore *)automationStore {
     return [[UAAutomationEngine alloc] initWithAutomationStore:automationStore
-                                                timerScheduler:[[UATimerScheduler alloc] init]
-                                            notificationCenter:[NSNotificationCenter defaultCenter]
-                                                    dispatcher:[UADispatcher mainDispatcher]];
+                                                 timerScheduler:[[UATimerScheduler alloc] init]
+                                             notificationCenter:[NSNotificationCenter defaultCenter]
+                                                     dispatcher:[UADispatcher mainDispatcher]
+                                                    application:[UIApplication sharedApplication]
+                                                           date:[[UADate alloc] init]];
 }
 
 #pragma mark -
@@ -303,6 +317,25 @@
     }];
 }
 
+- (void)getAllSchedules:(void (^)(NSArray<UASchedule *> *))completionHandler {
+    UA_WEAKIFY(self)
+    [self.automationStore getAllSchedules:^(NSArray<UAScheduleData *> *schedulesData) {
+        UA_STRONGIFY(self)
+        
+        NSMutableArray *schedules = [NSMutableArray array];
+        for (UAScheduleData *scheduleData in schedulesData) {
+            UASchedule *schedule = [self scheduleFromData:scheduleData];
+            if (schedule) {
+                [schedules addObject:schedule];
+            }
+        }
+        
+        [self.dispatcher dispatchAsync:^{
+            completionHandler(schedules);
+        }];
+    }];
+}
+
 - (void)getSchedulesWithGroup:(NSString *)group completionHandler:(void (^)(NSArray<UASchedule *> *))completionHandler {
     UA_WEAKIFY(self)
     [self.automationStore getSchedules:group completionHandler:^(NSArray<UAScheduleData *> *schedulesData) {
@@ -379,7 +412,7 @@
     [self.automationStore getSchedulesWithStates:@[@(UAScheduleStateFinished)] completionHandler:^(NSArray<UAScheduleData *> *schedulesData) {
         for (UAScheduleData *scheduleData in schedulesData) {
             NSDate *finishDate = [scheduleData.executionStateChangeDate dateByAddingTimeInterval:[scheduleData.editGracePeriod doubleValue]];
-            if ([finishDate compare:[NSDate date]] == NSOrderedAscending) {
+            if ([finishDate compare:self.date.now] == NSOrderedAscending) {
                 [scheduleData.managedObjectContext deleteObject:scheduleData];
             }
         }
@@ -409,7 +442,7 @@
     // Active session triggers are also updated by foreground transitions
     [self updateTriggersWithType:UAScheduleTriggerActiveSession argument:nil incrementAmount:1.0];
     UAAutomationStateCondition *condition = self.stateConditions[@(UAScheduleTriggerActiveSession)];
-    condition.stateChangeDate = [NSDate date];
+    condition.stateChangeDate = self.date.now;
 
     [self scheduleConditionsChanged];
 }
@@ -491,7 +524,7 @@
 
     UA_LDEBUG(@"Updating triggers with type: %ld", (long)triggerType);
 
-    NSDate *start = [NSDate date];
+    NSDate *start = self.date.now;
 
     UA_WEAKIFY(self)
     [self.automationStore getActiveTriggers:scheduleID type:triggerType completionHandler:^(NSArray<UAScheduleTriggerData *> *triggers) {
@@ -543,7 +576,7 @@
             [self cancelTimersWithIdentifiers:timersToCancel];
         }
 
-        NSTimeInterval executionTime = -[start timeIntervalSinceNow];
+        NSTimeInterval executionTime = -[start timeIntervalSinceDate:self.date.now];
         UA_LTRACE(@"Automation execution time: %f seconds, triggers: %ld, triggered schedules: %ld", executionTime, (unsigned long)triggers.count, (unsigned long)schedulesToExecute.count);
     }];
 }
@@ -563,6 +596,8 @@
 
     UA_WEAKIFY(self);
     [self.dispatcher dispatchAsync:^{
+        UA_STRONGIFY(self);
+
         NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
         [userInfo setValue:scheduleData.identifier forKey:@"identifier"];
         [userInfo setValue:scheduleData.group forKey:@"group"];
@@ -574,11 +609,9 @@
                                                userInfo:userInfo
                                                 repeats:NO];
 
-
-        UA_STRONGIFY(self);
         // Make sure we have a background task identifier before starting the timer
         if (self.backgroundTaskIdentifier == UIBackgroundTaskInvalid) {
-            self.backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+            self.backgroundTaskIdentifier = [self.application beginBackgroundTaskWithExpirationHandler:^{
                 UA_LTRACE(@"Automation background task expired. Cancelling timer alarm.");
                 [self cancelTimers];
             }];
@@ -778,8 +811,8 @@
         UA_STRONGIFY(self);
         for (UAScheduleData *scheduleData in schedules) {
             // If the delayedExecutionDate is greater than the original delay it probably means a clock adjustment. Reset the delay.
-            if ([scheduleData.delayedExecutionDate timeIntervalSinceNow] > [scheduleData.delay.seconds doubleValue]) {
-                scheduleData.delayedExecutionDate = [NSDate dateWithTimeIntervalSinceNow:[scheduleData.delay.seconds doubleValue]];
+            if ([scheduleData.delayedExecutionDate timeIntervalSinceDate:self.date.now] > [scheduleData.delay.seconds doubleValue]) {
+                scheduleData.delayedExecutionDate = [NSDate dateWithTimeInterval:scheduleData.delay.seconds.doubleValue sinceDate:self.date.now];
             }
 
             [self startTimerForSchedule:scheduleData
@@ -793,7 +826,7 @@
         UA_STRONGIFY(self);
         for (UAScheduleData *scheduleData in schedules) {
             NSTimeInterval interval = [scheduleData.interval doubleValue];
-            NSTimeInterval pauseTime = -[scheduleData.executionStateChangeDate timeIntervalSinceNow];
+            NSTimeInterval pauseTime = -[scheduleData.executionStateChangeDate timeIntervalSinceDate:self.date.now];
             NSTimeInterval remainingTime = interval - pauseTime;
             if (remainingTime > interval) {
                 remainingTime = interval;
@@ -826,15 +859,15 @@
  */
 - (void)createStateConditions {
     UAAutomationStateCondition *activeSessionCondition = [[UAAutomationStateCondition alloc] initWithPredicate:^BOOL {
-        return [UIApplication sharedApplication].applicationState == UIApplicationStateActive;
-    } argumentGenerator:nil];
+        return self.application.applicationState == UIApplicationStateActive;
+    } argumentGenerator:nil stateChangeDate:self.date.now];
 
     UAAutomationStateCondition *versionCondition = [[UAAutomationStateCondition alloc] initWithPredicate:^BOOL {
         return [UAirship shared].applicationMetrics.isAppVersionUpdated;
     } argumentGenerator:^id {
         NSString *currentVersion = [UAirship shared].applicationMetrics.currentAppVersion;
         return currentVersion ? @{@"ios" : @{@"version": currentVersion}} : nil;
-    }];
+    } stateChangeDate:self.date.now];
 
     [self.stateConditions setObject:activeSessionCondition forKey:@(UAScheduleTriggerActiveSession)];
     [self.stateConditions setObject:versionCondition forKey:@(UAScheduleTriggerVersion)];
@@ -971,7 +1004,7 @@
         // Check for time delay
         if ([scheduleData.delay.seconds doubleValue] > 0) {
             scheduleData.executionState = @(UAScheduleStateTimeDelayed);
-            scheduleData.delayedExecutionDate = [NSDate dateWithTimeIntervalSinceNow:[scheduleData.delay.seconds doubleValue]];
+            scheduleData.delayedExecutionDate = [NSDate dateWithTimeInterval:scheduleData.delay.seconds.doubleValue sinceDate:self.date.now];
 
             // Start a timer
             [self startTimerForSchedule:scheduleData
@@ -1167,7 +1200,7 @@
  */
 - (void)endBackgroundTask {
     if (self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
-        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
+        [self.application endBackgroundTask:self.backgroundTaskIdentifier];
         self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
     }
 }

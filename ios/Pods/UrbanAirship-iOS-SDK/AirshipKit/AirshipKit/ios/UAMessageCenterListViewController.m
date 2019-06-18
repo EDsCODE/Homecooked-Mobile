@@ -1,4 +1,4 @@
-/* Copyright 2018 Urban Airship and Contributors */
+/* Copyright Urban Airship and Contributors */
 
 #import "UAMessageCenterListViewController.h"
 #import "UAMessageCenterListCell.h"
@@ -11,6 +11,7 @@
 #import "UAMessageCenterLocalization.h"
 #import "UAMessageCenterStyle.h"
 #import "UAConfig.h"
+#import "UADispatcher+Internal.h"
 
 /*
  * List-view image controls: default image path and cache values
@@ -229,31 +230,24 @@
 }
 
 - (void)refreshStateChanged:(UIRefreshControl *)sender {
-
-    // Nothing to refresh if there's no user
-    if (![UAirship inboxUser].isCreated) {
-        [sender endRefreshing];
-    }
-
     if (sender.refreshing) {
         self.refreshControlAnimating = YES;
         UA_WEAKIFY(self)
         void (^retrieveMessageCompletionBlock)(void) = ^(void){
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [CATransaction begin];
-                [CATransaction setCompletionBlock: ^{
-                    UA_STRONGIFY(self)
+            [CATransaction begin];
+            [CATransaction setCompletionBlock: ^{
+                UA_STRONGIFY(self)
 
-                    // refresh animation has finished
-                    self.refreshControlAnimating = NO;
-                    [self chooseMessageDisplayAndReload];
-                }];
-                [sender endRefreshing];
-                [CATransaction commit];
-            });
+                // refresh animation has finished
+                self.refreshControlAnimating = NO;
+                [self chooseMessageDisplayAndReload];
+            }];
+            [sender endRefreshing];
+            [CATransaction commit];
         };
 
-        [[UAirship inbox].messageList retrieveMessageListWithSuccessBlock:retrieveMessageCompletionBlock withFailureBlock:retrieveMessageCompletionBlock];
+        [[UAirship inbox].messageList retrieveMessageListWithSuccessBlock:retrieveMessageCompletionBlock
+                                                         withFailureBlock:retrieveMessageCompletionBlock];
     } else {
         self.refreshControlAnimating = NO;
     }
@@ -678,17 +672,13 @@
     UA_WEAKIFY(self);
     if (sender == self.markAsReadButtonItem) {
         [[UAirship inbox].messageList markMessagesRead:selectedMessages completionHandler:^{
-            dispatch_async(dispatch_get_main_queue(),^{
-                UA_STRONGIFY(self)
-                [self refreshAfterBatchUpdate];
-            });
+            UA_STRONGIFY(self)
+            [self refreshAfterBatchUpdate];
         }];
     } else {
         [[UAirship inbox].messageList markMessagesDeleted:selectedMessages completionHandler:^{
-            dispatch_async(dispatch_get_main_queue(),^{
-                UA_STRONGIFY(self)
-                [self refreshAfterBatchUpdate];
-            });
+            UA_STRONGIFY(self)
+            [self refreshAfterBatchUpdate];
         }];
     }
 }
@@ -791,10 +781,8 @@
     if (message) {
         UA_WEAKIFY(self);
        [[UAirship inbox].messageList markMessagesDeleted:@[message] completionHandler:^{
-           dispatch_async(dispatch_get_main_queue(),^{
-               UA_STRONGIFY(self)
-               [self refreshAfterBatchUpdate];
-           });
+           UA_STRONGIFY(self)
+           [self refreshAfterBatchUpdate];
         }];
     }
 }
@@ -928,17 +916,12 @@
 #pragma mark NSNotificationCenter callbacks
 
 - (void)messageListUpdated {
-    UA_WEAKIFY(self);
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UA_STRONGIFY(self)
+    // copy the back-end list of messages as it can change from under the UI
+    [self copyMessages];
 
-        // copy the back-end list of messages as it can change from under the UI
-        [self copyMessages];
-        
-        if (!self.refreshControlAnimating) {
-            [self chooseMessageDisplayAndReload];
-        }
-    });
+    if (!self.refreshControlAnimating) {
+        [self chooseMessageDisplayAndReload];
+    }
 }
 
 - (void)chooseMessageDisplayAndReload {
@@ -992,10 +975,10 @@
     // Delay selection by a beat, to allow rotation to finish
 
     UA_WEAKIFY(self)
-    dispatch_async(dispatch_get_main_queue(), ^{
+   [[UADispatcher mainDispatcher] dispatchAsync:^{
         UA_STRONGIFY(self)
         [self handlePreviouslySelectedIndexPathsAnimated:YES];
-    });
+   }];
     // Returning nil causes the split view controller to default to the the existing primary view controller
     return nil;
 }
@@ -1060,9 +1043,6 @@
 
         NSURL *iconListURL = [NSURL URLWithString:iconListURLString];
 
-        // Tell the cache to remember the URL
-        [UAURLProtocol addCachableURL:iconListURL];
-
         // NOTE: All add/remove operations on the cache & in-progress set should be done
         // on the main thread. They'll be cleared below in a dispatch_async/main queue block.
 
@@ -1090,7 +1070,7 @@
             UIImage *iconImage = [UIImage imageWithData:iconImageData];
             iconImage = [self scaleImage:iconImage toSize:iconSize];
 
-            dispatch_async(dispatch_get_main_queue(), ^{
+           [[UADispatcher mainDispatcher] dispatchAsync:^{
                 // Recapture self for the duration of this block
                 UA_STRONGIFY(self)
 
@@ -1112,7 +1092,7 @@
                 
                 // Clear the request marker
                 [self.currentIconURLRequests removeObjectForKey:iconListURLString];
-            });
+           }];
         });
     }
 }

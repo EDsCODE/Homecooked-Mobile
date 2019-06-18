@@ -74,7 +74,7 @@ export default class Photos extends Component {
 
     render() {
         let { reason, experience, loading, images } = this.state;
-        console.log(images);
+
         return (
             <View style={styles.container}>
                 <CloseButton onPress={this._goBack} />

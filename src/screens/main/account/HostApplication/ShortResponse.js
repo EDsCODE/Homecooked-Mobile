@@ -19,6 +19,15 @@ export default class ShortResponse extends Component {
         reason: "",
         experience: ""
     };
+
+    componentDidMount() {
+        let { reason, experience } = this.props.screenProps.state;
+        this.setState({
+            reason,
+            experience
+        });
+    }
+
     _goBack = () => {
         this.props.navigation.goBack();
     };
@@ -74,6 +83,7 @@ export default class ShortResponse extends Component {
                         bottom: Spacing.largest,
                         right: Spacing.largest
                     }}
+                    active={reason && experience}
                 />
             </View>
         );

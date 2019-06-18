@@ -1,4 +1,4 @@
-/* Copyright 2018 Urban Airship and Contributors */
+/* Copyright Urban Airship and Contributors */
 
 #import "UAirship.h"
 #import "UAUtils+Internal.h"
@@ -11,7 +11,6 @@
 #import "UAColorUtils+Internal.h"
 #import "UAInAppMessageDismissButton+Internal.h"
 #import "UAInAppMessageFullScreenStyle.h"
-#import "UAInAppMessageMediaView+Internal.h"
 #import "UAViewUtils+Internal.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -493,12 +492,7 @@ NSString *const UAInAppMessageFullScreenViewNibName = @"UAInAppMessageFullScreen
 }
 
 - (void)dismissWithResolution:(UAInAppMessageResolution *)resolution  {
-    if (self.showCompletionHandler) {
-        self.showCompletionHandler(resolution);
-        self.showCompletionHandler = nil;
-    }
-
-    dispatch_async(dispatch_get_main_queue(), ^{
+    [[UADispatcher mainDispatcher] dispatchAsync:^{
         self.verticalConstraint.constant = self.view.bounds.size.height;
 
         [UIView animateWithDuration:DefaultFullScreenAnimationDuration delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
@@ -508,8 +502,13 @@ NSString *const UAInAppMessageFullScreenViewNibName = @"UAInAppMessageFullScreen
             self.isShowing = NO;
             [self.view removeFromSuperview];
             self.fullScreenWindow = nil;
+
+            if (self.showCompletionHandler) {
+                self.showCompletionHandler(resolution);
+                self.showCompletionHandler = nil;
+            }
         }];
-    });
+    }];
 }
 
 - (void)buttonTapped:(id)sender {
@@ -574,4 +573,5 @@ NSString *const UAInAppMessageFullScreenViewNibName = @"UAInAppMessageFullScreen
 @end
 
 NS_ASSUME_NONNULL_END
+
 

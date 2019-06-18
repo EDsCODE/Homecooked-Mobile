@@ -14,8 +14,8 @@ export default class Info extends Component {
         let _modules = this.props.modules;
         return (
             <View style={styles.container}>
-                {_modules.map(item => {
-                    return modules[item](this.props);
+                {_modules.map((item, index) => {
+                    return modules[item](this.props, index.toString());
                 })}
             </View>
         );
@@ -46,14 +46,18 @@ const ModuleScaffold = props => (
 );
 
 const modules = {
-    dateTime: props => {
+    dateTime: (props, key) => {
         let date = props.startTime;
         let firstLine = moment(date).format("dddd, MMMM Do");
-        let secondLine = `${moment(date).format("h:mm a")} - ${moment(
-            date
-        ).format("h:m a")}`;
+        let secondLine = `${moment(date).format("h:mm a")} - ${moment(date)
+            .add(props.duration, "hours")
+            .format("h:mm a")}`;
         return (
-            <ModuleScaffold title={"Date and Time"} iconName={"calendar"}>
+            <ModuleScaffold
+                key={key}
+                title={"Date and Time"}
+                iconName={"calendar"}
+            >
                 <MinorText style={{ marginTop: Spacing.small }}>
                     {firstLine}
                 </MinorText>
@@ -61,49 +65,48 @@ const modules = {
             </ModuleScaffold>
         );
     },
-    description: props => (
-        <ModuleScaffold title={"Description"} iconName={"clipboard"}>
+    description: (props, key) => (
+        <ModuleScaffold key={key} title={"Description"} iconName={"clipboard"}>
             <MinorText style={{ marginTop: Spacing.small }}>
                 {props.description}
             </MinorText>
         </ModuleScaffold>
     ),
-    reminder: props => (
-        <ModuleScaffold title={"Reminder"} iconName="clipboard">
+    reminder: (props, key) => (
+        <ModuleScaffold key={key} title={"Reminder"} iconName="clipboard">
             <MinorText style={{ marginTop: Spacing.small }}>
                 Refunds must be requested at least 48 hours before to be
                 processed.
             </MinorText>
         </ModuleScaffold>
     ),
-    location: props => (
-        <ModuleScaffold title={"Location"} iconName={"pin"}>
+    location: (props, key) => (
+        <ModuleScaffold key={key} title={"Location"} iconName={"pin"}>
             <MinorText style={{ marginTop: Spacing.small }}>
-                I spent 3 months interning with a Chinese shifu in Hong Kong!
-                Come try the fruits of my labor!
+                {props.formattedAddress}
             </MinorText>
         </ModuleScaffold>
     ),
-    refundPolicy: props => (
-        <ModuleScaffold title={"Refund Policy"} iconName="clipboard">
+    refundPolicy: (props, key) => (
+        <ModuleScaffold key={key} title={"Refund Policy"} iconName="clipboard">
             <MinorText style={{ marginTop: Spacing.small }}>
                 Refundable up to 2 days before event
             </MinorText>
         </ModuleScaffold>
     ),
-    invite: props => (
-        <ModuleScaffold title={"Invite Friends"} iconName="mail">
+    invite: (props, key) => (
+        <ModuleScaffold key={key} title={"Invite Friends"} iconName="mail">
             <MinorText style={{ marginTop: Spacing.small }}>
                 Homecooked events are meant to be shared.
             </MinorText>
         </ModuleScaffold>
     ),
-    price: props => {
+    price: (props, key) => {
         let price = props.price;
         let tax = (price * 0.07).toFixed(2);
         let total = (parseFloat(price) + parseFloat(tax)).toFixed(2);
         return (
-            <ModuleScaffold title={"Price"} iconName={"pricetag"}>
+            <ModuleScaffold key={key} title={"Price"} iconName={"pricetag"}>
                 <View style={styles.priceItemContainer}>
                     <SecondaryText style={styles.secondaryTextLeftExtraStyles}>
                         Barb's Table:

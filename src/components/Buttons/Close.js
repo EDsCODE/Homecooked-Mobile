@@ -7,7 +7,7 @@ export default props => (
     <Icon
         name={`ios-${props.icon || "close"}`}
         type="ionicon"
-        color={Color.gray}
+        color={props.color ? props.color : Color.gray}
         size={55}
         containerStyle={{
             alignSelf: "flex-start"

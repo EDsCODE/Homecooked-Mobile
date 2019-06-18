@@ -1,4 +1,4 @@
-/* Copyright 2018 Urban Airship and Contributors */
+/* Copyright Urban Airship and Contributors */
 
 #import "UAMessageCenterMessageViewController.h"
 #import "UAWKWebViewNativeBridge.h"
@@ -12,7 +12,8 @@
 #import "UAMessageCenterLocalization.h"
 #import "UABeveledLoadingIndicator.h"
 #import "UAInAppMessageUtils+Internal.h"
-
+#import "UADispatcher+Internal.h"
+#import "UAUser+Internal.h"
 
 #define kMessageUp 0
 #define kMessageDown 1
@@ -109,10 +110,8 @@ typedef enum MessageState {
     self.webView.navigationDelegate = self.nativeBridge;
     self.webView.allowsLinkPreview = ![UAirship messageCenter].disableMessageLinkPreviewAndCallouts;
 
-    if (@available(iOS 10.0, tvOS 10.0, *)) {
-        // Allow the webView to detect data types (e.g. phone numbers, addresses) at will
-        [self.webView.configuration setDataDetectorTypes:WKDataDetectorTypeAll];
-    }
+    // Allow the webView to detect data types (e.g. phone numbers, addresses) at will
+    [self.webView.configuration setDataDetectorTypes:WKDataDetectorTypeAll];
 
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:UAMessageCenterLocalizedString(@"ua_delete")
                                                                                style:UIBarButtonItemStylePlain
@@ -222,11 +221,11 @@ typedef enum MessageState {
         self.loadingAnimations();
     }
 
-    [self.loadingIndicatorView setHidden:NO];
+    [self.loadingIndicatorContainerView setHidden:NO];
 }
 
 - (void)hideLoadingIndicator {
-    [self.loadingIndicatorView setHidden:YES];
+    [self.loadingIndicatorContainerView setHidden:YES];
 }
 
 static NSString *urlForBlankPage = @"about:blank";
@@ -241,11 +240,6 @@ static NSString *urlForBlankPage = @"about:blank";
         return;
     }
     
-    if (![UAirship inboxUser].isCreated) {
-        UA_LWARN(@"User is not created, can't load message with ID: %@", messageID);
-        return;
-    }
-
     UAInboxMessage *message = [[UAirship inbox].messageList messageForID:messageID];
 
     if (message) {
@@ -262,11 +256,11 @@ static NSString *urlForBlankPage = @"about:blank";
     UA_WEAKIFY(self);
 
     [[UAirship inbox].messageList retrieveMessageListWithSuccessBlock:^{
-        dispatch_async(dispatch_get_main_queue(),^{
+        [[UADispatcher mainDispatcher] dispatchAsync:^{
             UA_STRONGIFY(self)
 
             UAInboxMessage *message = [[UAirship inbox].messageList messageForID:messageID];
-            if (message) {
+            if (message && !message.isExpired) {
                 // display the message
                 [self loadMessage:message onlyIfChanged:onlyIfChanged];
             } else {
@@ -283,17 +277,17 @@ static NSString *urlForBlankPage = @"about:blank";
                 }];
             }
             return;
-        });
+        }];
     } withFailureBlock:^{
-        dispatch_async(dispatch_get_main_queue(),^{
+        [[UADispatcher mainDispatcher] dispatchAsync:^{
             UA_STRONGIFY(self);
-
+            
             [self hideLoadingIndicator];
-
+            
             if (errorCompletion) {
                 errorCompletion();
             }
-        });
+        }];
         return;
     }];
 }
@@ -338,11 +332,14 @@ static NSString *urlForBlankPage = @"about:blank";
     
     NSMutableURLRequest *requestObj = [NSMutableURLRequest requestWithURL:self.message.messageBodyURL];
     requestObj.timeoutInterval = 60;
-    
-    NSString *auth = [UAUtils userAuthHeaderString];
-    [requestObj setValue:auth forHTTPHeaderField:@"Authorization"];
-    
-    [self.webView loadRequest:requestObj];
+
+    UA_WEAKIFY(self)
+    [[UAirship inboxUser] getUserData:^(UAUserData *userData) {
+        UA_STRONGIFY(self)
+        NSString *auth = [UAUtils userAuthHeaderString:userData];
+        [requestObj setValue:auth forHTTPHeaderField:@"Authorization"];
+        [self.webView loadRequest:requestObj];
+    } dispatcher:[UADispatcher mainDispatcher]];
 }
 
 - (void)displayNoLongerAvailableAlertOnOK:(void (^)(void))okCompletion {
@@ -412,6 +409,14 @@ static NSString *urlForBlankPage = @"about:blank";
                 [self displayFailedToLoadAlertOnOK:nil onRetry:^{
                     UA_STRONGIFY(self);
                     [self loadMessage:self.message onlyIfChanged:NO];
+                }];
+            } else if (status == 410) {
+                // Gone: message has been permanently deleted from the backend.
+                // Alert the user that message is no longer available.
+                UA_WEAKIFY(self)
+                [self displayNoLongerAvailableAlertOnOK:^{
+                    UA_STRONGIFY(self)
+                    [self uncoverAndHideLoadingIndicator];
                 }];
             } else {
                 // Display a generic alert

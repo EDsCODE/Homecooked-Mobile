@@ -1,4 +1,4 @@
-/* Copyright 2018 Urban Airship and Contributors */
+/* Copyright Urban Airship and Contributors */
 
 #import "UAPush.h"
 #import "UAirship.h"
@@ -156,6 +156,11 @@ extern NSString *const UAPushEnabledKey;
  */
 @property (nonatomic, strong) id<UAAPNSRegistrationProtocol> pushRegistration;
 
+/**
+ * Flag indicating app is running in the foreground
+ */
+@property (nonatomic, assign) BOOL isForegrounded;
+
 ///---------------------------------------------------------------------------------------
 /// @name Push Internal Methods
 ///---------------------------------------------------------------------------------------
@@ -179,13 +184,17 @@ extern NSString *const UAPushEnabledKey;
  * @param tagGroupsregistrar The tag groups registrar.
  * @param notificationCenter The notification center.
  * @param pushRegistration The push registration instance.
+ * @param application The application.
+ * @param dispatcher The dispatcher.
  * @return A new push instance.
  */
 + (instancetype)pushWithConfig:(UAConfig *)config
                      dataStore:(UAPreferenceDataStore *)dataStore
             tagGroupsRegistrar:(UATagGroupsRegistrar *)tagGroupsregistrar
             notificationCenter:(NSNotificationCenter *)notificationCenter
-              pushRegistration:(id<UAAPNSRegistrationProtocol>)pushRegistration;
+              pushRegistration:(id<UAAPNSRegistrationProtocol>)pushRegistration
+                   application:(UIApplication *)application
+                    dispatcher:(UADispatcher *)dispatcher;
 
 /**
  * Get the local time zone, considered the default.
@@ -211,23 +220,6 @@ extern NSString *const UAPushEnabledKey;
  */
 - (void)applicationBackgroundRefreshStatusChanged;
 #endif
-
-/**
- * Called when the channel registrar creates a new channel.
- * @param channelID The channel ID string.
- * @param channelLocation The channel location string.
- * @param existing Boolean to indicate if the channel previously existed or not.
- */
-- (void)channelCreated:(NSString *)channelID
-       channelLocation:(NSString *)channelLocation
-              existing:(BOOL)existing;
-
-/**
- * Creates a UAChannelRegistrationPayload.
- *
- * @return A UAChannelRegistrationPayload payload.
- */
-- (UAChannelRegistrationPayload *)createChannelPayload;
 
 /**
  * Registers or updates the current registration with an API call. If push notifications are
@@ -274,7 +266,7 @@ extern NSString *const UAPushEnabledKey;
  * @param notification The notification.
  * @return Foreground presentation options.
  */
-- (UNNotificationPresentationOptions)presentationOptionsForNotification:(UNNotification *)notification NS_AVAILABLE_IOS(10.0);
+- (UNNotificationPresentationOptions)presentationOptionsForNotification:(UNNotification *)notification;
 
 /**
  * Called when a notification response is received.
@@ -315,6 +307,11 @@ extern NSString *const UAPushEnabledKey;
  * Called to update the tag groups for the current channel.
  */
 - (void)updateChannelTagGroups;
+
+/**
+ * Removes the existing channel and causes the registrar to create a new channel on next registration.
+ */
+- (void)resetChannel;
 
 @end
 

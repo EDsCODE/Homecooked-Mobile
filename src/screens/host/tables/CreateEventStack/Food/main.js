@@ -10,6 +10,7 @@ import FieldButton from "Homecooked/src/components/TextFields/Button";
 
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 import NavigationService from "Homecooked/src/utils/NavigationService";
+import { objectUtils } from "Homecooked/src/utils";
 
 export default class DetailsMain extends Component {
     _goBack = () => {
@@ -30,14 +31,14 @@ export default class DetailsMain extends Component {
     };
 
     render() {
-        let { menu, restrictions, preferences } = this.props.screenProps.state;
+        let { menu, restrictions, mealType } = this.props.screenProps.state;
         let filteredRestrictions = Object.keys(restrictions).filter(
-            key => restrictions[key]
+            key => restrictions[key].selected
         );
         let parsedRestrictions = filteredRestrictions.join(", ");
 
-        let filteredPreferences = Object.keys(preferences).filter(
-            key => preferences[key]
+        let filteredPreferences = Object.keys(mealType).filter(
+            key => mealType[key].selected
         );
         let parsedPreferences = filteredPreferences.join(", ");
 
@@ -79,6 +80,11 @@ export default class DetailsMain extends Component {
                         bottom: Spacing.largest,
                         right: Spacing.largest
                     }}
+                    active={
+                        menu.length > 0 &&
+                        !objectUtils.isEmpty(restrictions) &&
+                        !objectUtils.isEmpty(mealType)
+                    }
                 />
             </View>
         );

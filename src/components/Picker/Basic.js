@@ -74,7 +74,6 @@ export default class App extends React.Component {
         });
 
         let { items } = this.props;
-        console.log(items);
         return (
             <View
                 style={StyleSheet.absoluteFill}
