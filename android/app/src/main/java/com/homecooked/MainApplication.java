@@ -3,6 +3,7 @@ package com.homecooked;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import io.branch.rnbranch.RNBranchPackage;
 import com.urbanairship.reactnative.ReactAirshipPackage;
 import br.com.classapp.RNSensitiveInfo.RNSensitiveInfoPackage;
 import com.imagepicker.ImagePickerPackage;
@@ -30,6 +31,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNBranchPackage(),
             new ReactAirshipPackage(),
             new RNSensitiveInfoPackage(),
             new ImagePickerPackage(),
