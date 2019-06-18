@@ -7,7 +7,7 @@ import NavigationService from "Homecooked/src/utils/NavigationService";
 
 import { hostTypes } from "Homecooked/src/modules/types";
 import { connect } from "react-redux";
-
+import branch, { BranchEvent } from "react-native-branch";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 
 const PROFILE_PLACEHOLDER_IMAGE = "Homecooked/src/assets/img/filledTable.jpg";
@@ -55,6 +55,10 @@ class Main extends Component {
                 onPress: () => this._goToPayment()
             },
             {
+                title: "Refer Friends",
+                onPress: () => this.getReferralLink()
+            },
+            {
                 title: "Invite Friends"
             },
             {
@@ -63,6 +67,10 @@ class Main extends Component {
             {
                 title: "Settings",
                 onPress: () => this._goToSettings()
+            },
+            {
+                title: "Share",
+                onPress: () => this._goToShare()
             }
         ];
         this.setState({
@@ -104,6 +112,52 @@ class Main extends Component {
         } else {
             return require(PROFILE_PLACEHOLDER_IMAGE);
         }
+    };
+    _goToShare = () => {
+        this.props.navigation.navigate("Share");
+    };
+
+    getReferralLink = async () => {
+        //branch.setIdentity('theUserId') // <- Identifiy the user in branch
+        let branchUniversalObject = await branch.createBranchUniversalObject(
+            "canonicalIdentifier",
+            {
+                automaticallyListOnSpotlight: true,
+                metadata: { prop1: "test", prop2: "abc" },
+                title: "You're Invited!",
+                contentDescription: "Tarun has invited you to join Gathr!"
+            }
+        );
+        let linkProperties = {
+            feature: "referral",
+            channel: "SMS"
+        };
+        let controlParams = {
+            $desktop_url: "http://gathrtable.com"
+        };
+
+        var firstName = this.props.currentUser.firstName;
+        let shareOptions = {
+            messageHeader: "You're Invited!",
+            messageBody:
+                "" +
+                firstName +
+                " has invited you to Gathr. Come join the table!"
+        };
+        let {
+            channel,
+            completed,
+            error
+        } = await branchUniversalObject.showShareSheet(
+            shareOptions,
+            linkProperties,
+            controlParams
+        );
+
+        console.log(channel);
+        console.log(completed);
+        console.log(error);
+        return { channel, completed, error };
     };
 
     _renderItem = ({ item, index }) => {

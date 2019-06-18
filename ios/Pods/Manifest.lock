@@ -83,6 +83,7 @@ PODS:
   - SDWebImage (5.0.6):
     - SDWebImage/Core (= 5.0.6)
   - SDWebImage/Core (5.0.6)
+  - UrbanAirship-iOS-SDK (10.2.2)
   - yoga (0.59.8.React)
 
 DEPENDENCIES:
@@ -99,6 +100,7 @@ DEPENDENCIES:
   - React/RCTNetwork (from `../node_modules/react-native`)
   - React/RCTText (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
+  - UrbanAirship-iOS-SDK (~> 10.0)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -109,6 +111,7 @@ SPEC REPOS:
     - FBSDKLoginKit
     - FBSDKShareKit
     - SDWebImage
+    - UrbanAirship-iOS-SDK
 
 EXTERNAL SOURCES:
   DoubleConversion:
@@ -139,8 +142,9 @@ SPEC CHECKSUMS:
   react-native-fast-image: c631168273554de44bc59adf9053f5a2f44363fb
   react-native-fbsdk: d5f98cc5abecbcc463e3c35c04743d716d002d37
   SDWebImage: 920f1a2ff1ca8296ad34f6e0510a1ef1d70ac965
+  UrbanAirship-iOS-SDK: a5ff86dcdb2582590aec635299931278cfeb53c4
   yoga: 128daf064cacaede0c3bb27424b6b4c71052e6cd
 
-PODFILE CHECKSUM: 7e8331b6aa7edeb9665aaaf30fd84041be95ee12
+PODFILE CHECKSUM: 0a6e1470b39585fa7336d0c96d3c7340c64e9887
 
 COCOAPODS: 1.5.3
