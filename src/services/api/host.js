@@ -27,9 +27,8 @@ const getChefByUserId = userId => {
 const createChefMedia = (chefId, key, type) => {
     return request({
         method: "POST",
-        url: `/chef/${chefId}/media`,
+        url: `/chef/${chefId}/media/${key}`,
         data: {
-            key,
             type
         }
     });

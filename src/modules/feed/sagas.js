@@ -3,10 +3,9 @@ import { EventService } from "Homecooked/src/services/api";
 import types from "./types";
 
 import { getActiveEventsWorkerSaga } from "Homecooked/src/modules/event/sagas";
-import {
-    getCurrentBookingsWorkerSaga,
-    createBookingWorkerSaga
-} from "Homecooked/src/modules/booking/sagas";
+import { getCurrentBookingsWorkerSaga } from "Homecooked/src/modules/currentUser/sagas";
+
+import { createBookingWorkerSaga } from "Homecooked/src/modules/booking/sagas";
 
 function* loadFeedWorkerSaga(action) {
     try {

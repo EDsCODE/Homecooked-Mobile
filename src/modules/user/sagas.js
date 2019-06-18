@@ -3,12 +3,9 @@ import { UserService, ImageService } from "Homecooked/src/services/api";
 
 import types from "./types";
 
-export function* getUserById(action) {
+export function* getUserById(userId) {
     try {
-        const { data: user } = yield call(
-            UserService.getUserById,
-            action.userId
-        );
+        const { data: user } = yield call(UserService.getUserById, userId);
         if (user["profileImageURL"]) {
             let { data: url } = yield call(
                 ImageService.getImage,
@@ -30,7 +27,7 @@ export function* getUsersOfEventSaga(events) {
                 userIds.push(booking.userId);
             });
         });
-        yield all(userIds.map(userId => call(getUserById, { userId })));
+        yield all(userIds.map(userId => call(getUserById, userId)));
     } catch (error) {
         yield put({ type: types.GET_USER_ERROR, error });
     }

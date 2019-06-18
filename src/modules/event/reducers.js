@@ -1,8 +1,14 @@
 import types from "./types";
 import { normalize } from "Homecooked/src/utils/normalize";
+import { EventViewTypes } from "Homecooked/src/types/";
 
 const initialState = {
     byId: {},
+    mode: EventViewTypes.FEED,
+    selectedEvent: "",
+    relatedBooking: "",
+    parentRoute: "",
+    loading: false,
     error: null
 };
 
@@ -56,6 +62,25 @@ const reducer = (state = initialState, action) => {
         case types.UPDATE_EVENT_ERROR:
             return {
                 ...state,
+                error: action.error
+            };
+        case types.SELECT_EVENT:
+            return {
+                ...state,
+                selectedEvent: action.payload.eventId,
+                mode: action.payload.mode,
+                parentRoute: action.payload.parentRoute,
+                loading: true
+            };
+        case types.GET_EVENT_DETAILS_SUCCESS:
+            return {
+                ...state,
+                loading: false
+            };
+        case types.GET_EVENT_DETAILS_ERROR:
+            return {
+                ...state,
+                loading: false,
                 error: action.error
             };
         default:

@@ -1,19 +1,15 @@
 import React from "react";
 import { createStackNavigator } from "react-navigation";
 import Main from "./main";
-import UpcomingEventStack from "./UpcomingEventStack";
-import PastEventStack from "./PastEventStack";
+import Event from "Homecooked/src/screens/common/Event";
 
 const HistoryStack = createStackNavigator(
     {
         HistoryMain: {
             screen: Main
         },
-        UpcomingEventStack: {
-            screen: UpcomingEventStack
-        },
-        PastEventStack: {
-            screen: PastEventStack
+        HistoryMainEvent: {
+            screen: Event
         }
     },
     {

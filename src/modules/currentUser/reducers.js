@@ -1,6 +1,8 @@
 import types from "./types";
+import { normalize } from "Homecooked/src/utils/normalize";
 
 const initialState = {
+    bookings: {},
     email: null,
     firstName: null,
     lastName: null,
@@ -102,6 +104,19 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 loadingAvatar: false,
                 error: action.error
+            };
+        case types.GET_CURRENT_BOOKINGS_REQUEST:
+            return {
+                ...state
+            };
+        case types.GET_CURRENT_BOOKINGS_SUCCESS:
+            return {
+                ...state,
+                bookings: normalize(action.bookings, "id")
+            };
+        case types.GET_CURRENT_BOOKINGS_ERROR:
+            return {
+                ...state
             };
         default:
             return state;

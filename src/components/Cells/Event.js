@@ -41,7 +41,7 @@ export default class EventCard extends PureComponent {
                     <ImageBackground
                         resizeMode="cover"
                         style={styles.image}
-                        source={{ uri: item.signedURL }}
+                        source={{ uri: item }}
                     >
                         <LinearGradient
                             colors={["rgba(0,0,0,0.8)", "transparent"]}
@@ -57,10 +57,10 @@ export default class EventCard extends PureComponent {
 
     get pagination() {
         const { activeSlide } = this.state;
-        let { chef } = this.props.event;
+        let { media } = this.props.event;
         return (
             <Pagination
-                dotsLength={chef.media.length}
+                dotsLength={media.length}
                 activeDotIndex={activeSlide}
                 containerStyle={{
                     backgroundColor: "rgba(0, 0, 0, 0)",
@@ -98,6 +98,7 @@ export default class EventCard extends PureComponent {
             key,
             marker,
             chef,
+            media,
             guestCount
         } = this.props.event;
         let { price } = attributes;
@@ -114,7 +115,7 @@ export default class EventCard extends PureComponent {
             >
                 <TouchableOpacity onPress={this.onPress} activeOpacity={0.9}>
                     <Carousel
-                        data={chef.media}
+                        data={media}
                         renderItem={this._renderCard}
                         sliderWidth={Spacing.deviceWidth - 30}
                         itemWidth={Spacing.deviceWidth - 30}

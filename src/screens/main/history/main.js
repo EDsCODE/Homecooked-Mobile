@@ -6,7 +6,7 @@ import HistoryCell from "Homecooked/src/components/Cells/History";
 
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 
-import { historyTypes } from "Homecooked/src/modules/types";
+import { historyTypes, eventTypes } from "Homecooked/src/modules/types";
 import { connect } from "react-redux";
 import {
     getUpcomingEvents,
@@ -14,6 +14,8 @@ import {
     orderEventsByDateEarliest,
     orderEventsByDateLatest
 } from "Homecooked/src/modules/history/selectors";
+
+import { EventViewTypes } from "Homecooked/src/types";
 
 class HistoryMain extends Component {
     state = {
@@ -35,14 +37,16 @@ class HistoryMain extends Component {
         let endTime = new Date(startTime.getTime() + 60 * 60000);
         return (
             <HistoryCell
+                tintColor={Color.green}
                 upcoming={true}
                 startTime={startTime}
                 endTime={endTime}
                 title={item.title}
                 onPress={() =>
-                    this.props.navigation.navigate("UpcomingEventStack", {
-                        event: item
-                    })
+                    this.props.selectEvent(
+                        item.id,
+                        EventViewTypes.HISTORY_UPCOMING
+                    )
                 }
             />
         );
@@ -53,14 +57,13 @@ class HistoryMain extends Component {
         let endTime = new Date(startTime.getTime() + 60 * 60000);
         return (
             <HistoryCell
+                tintColor={Color.orange}
                 upcoming={false}
                 startTime={startTime}
                 endTime={endTime}
                 title={item.title}
                 onPress={() =>
-                    this.props.navigation.navigate("PastEventStack", {
-                        event: item
-                    })
+                    this.props.selectEvent(item.id, EventViewTypes.HISTORY_PAST)
                 }
             />
         );
@@ -132,13 +135,25 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
+    const selectEvent = (eventId, mode) => {
+        dispatch({
+            type: eventTypes.SELECT_EVENT,
+            payload: {
+                eventId,
+                mode,
+                parentRoute: "HistoryMain"
+            }
+        });
+    };
+
     const loadHistory = () => {
         dispatch({
             type: historyTypes.LOAD_HISTORY_REQUEST
         });
     };
     return {
-        loadHistory
+        loadHistory,
+        selectEvent
     };
 };
 

@@ -57,6 +57,19 @@ function* updateUserWorkerSaga(action) {
     }
 }
 
+export function* getCurrentBookingsWorkerSaga() {
+    try {
+        let userId = yield select(selectors.userId);
+        const { data, status, error } = yield call(
+            UserService.getBookingsForUser,
+            userId
+        );
+        yield put({ type: types.GET_CURRENT_BOOKINGS_SUCCESS, bookings: data });
+    } catch (error) {
+        yield put({ type: types.GET_CURRENT_BOOKINGS_ERROR, error });
+    }
+}
+
 function* getBookingsForUserWorkerSaga(action) {
     try {
         let userId = yield select(selectors.userId);

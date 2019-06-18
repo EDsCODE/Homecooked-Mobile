@@ -1,9 +1,8 @@
 import React from "react";
 import { createStackNavigator } from "react-navigation";
 import Main from "./main";
-import HostUpcomingEventStack from "./HostUpcomingEventStack";
-import HostPastEventStack from "./HostPastEventStack";
 import CreateEventStack from "./CreateEventStack";
+import Event from "Homecooked/src/screens/common/Event";
 
 const TablesStack = createStackNavigator(
     {
@@ -13,11 +12,8 @@ const TablesStack = createStackNavigator(
         CreateEventStack: {
             screen: CreateEventStack
         },
-        HostUpcomingEventStack: {
-            screen: HostUpcomingEventStack
-        },
-        HostPastEventStack: {
-            screen: HostPastEventStack
+        HostTablesMainEvent: {
+            screen: Event
         }
     },
     {

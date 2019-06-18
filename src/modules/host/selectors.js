@@ -25,15 +25,6 @@ export const getActiveEvents = createSelector(
             event => event.status == "OPN" || event.status == "FUL"
         );
 
-        activeEvents.forEach((event, i) => {
-            let bookings = event.bookings.filter(
-                booking => booking.status == "CNF"
-            );
-            bookings.forEach((booking, j) => {
-                bookings[j].user = users[booking.userId];
-            });
-            activeEvents[i].bookings = bookings;
-        });
         return activeEvents;
     }
 );
@@ -43,15 +34,6 @@ export const getInReviewEvents = createSelector(
     (events, users) => {
         let activeEvents = events.filter(event => event.status == "REV");
 
-        activeEvents.forEach((event, i) => {
-            let bookings = event.bookings.filter(
-                booking => booking.status == "CNF"
-            );
-            bookings.forEach((booking, j) => {
-                bookings[j].user = users[booking.userId];
-            });
-            activeEvents[i].bookings = bookings;
-        });
         return activeEvents;
     }
 );
@@ -62,16 +44,6 @@ export const getInactiveEvents = createSelector(
         let inactiveEvents = events.filter(
             event => event.status == "CLO" || event.status == "CAN"
         );
-
-        inactiveEvents.forEach((event, i) => {
-            let bookings = event.bookings.filter(
-                booking => booking.status == "CNF"
-            );
-            bookings.forEach((booking, j) => {
-                bookings[j].user = users[booking.userId];
-            });
-            inactiveEvents[i].bookings = bookings;
-        });
 
         return inactiveEvents;
     }

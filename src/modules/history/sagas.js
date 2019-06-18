@@ -1,9 +1,7 @@
 import { takeLatest, call, put, select, all } from "redux-saga/effects";
 import { getEventWorkerSaga } from "Homecooked/src/modules/event/sagas";
-import {
-    getCurrentBookingsWorkerSaga,
-    updateBookingStatusSaga
-} from "Homecooked/src/modules/booking/sagas";
+import { updateBookingStatusSaga } from "Homecooked/src/modules/booking/sagas";
+import { getCurrentBookingsWorkerSaga } from "Homecooked/src/modules/currentUser/sagas";
 import * as bookingSelectors from "Homecooked/src/modules/booking/selectors";
 import types from "./types";
 

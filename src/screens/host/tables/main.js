@@ -18,6 +18,9 @@ import { connect } from "react-redux";
 import { hostTypes } from "Homecooked/src/modules/types";
 import * as hostSelectors from "Homecooked/src/modules/host/selectors";
 
+import { EventViewTypes } from "Homecooked/src/types";
+import { feedTypes, eventTypes } from "Homecooked/src/modules/types";
+
 class HostTablesMain extends Component {
     state = {
         tabSelected: 0
@@ -46,9 +49,7 @@ class HostTablesMain extends Component {
                 endTime={endTime}
                 title={item.title}
                 onPress={() =>
-                    this.props.navigation.navigate("HostUpcomingEventStack", {
-                        event: item
-                    })
+                    this.props.selectEvent(item.id, EventViewTypes.HOST_ACTIVE)
                 }
             />
         );
@@ -64,9 +65,7 @@ class HostTablesMain extends Component {
                 endTime={endTime}
                 title={item.title}
                 onPress={() =>
-                    this.props.navigation.navigate("HostPastEventStack", {
-                        event: item
-                    })
+                    this.props.selectEvent(item.id, EventViewTypes.HOST_PAST)
                 }
             />
         );
@@ -82,9 +81,10 @@ class HostTablesMain extends Component {
                 endTime={endTime}
                 title={item.title}
                 onPress={() =>
-                    this.props.navigation.navigate("HostPastEventStack", {
-                        event: item
-                    })
+                    this.props.selectEvent(
+                        item.id,
+                        EventViewTypes.HOST_IN_REVIEW
+                    )
                 }
             />
         );
@@ -207,13 +207,25 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
+    const selectEvent = (eventId, mode) => {
+        dispatch({
+            type: eventTypes.SELECT_EVENT,
+            payload: {
+                eventId,
+                mode,
+                parentRoute: "HostTablesMain"
+            }
+        });
+    };
+
     const loadHostingEvents = () => {
         dispatch({
             type: hostTypes.LOAD_HOSTING_EVENTS_REQUEST
         });
     };
     return {
-        loadHostingEvents
+        loadHostingEvents,
+        selectEvent
     };
 };
 

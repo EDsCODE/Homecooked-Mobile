@@ -2,7 +2,7 @@
 // get events past
 import { createSelector } from "reselect";
 
-const getBookings = state => state.currentBookings.byId;
+const getBookings = state => state.currentUser.bookings;
 const getEvents = state => state.events.byId;
 const getUsers = state => state.users.byId;
 
@@ -34,15 +34,15 @@ export const getUpcomingEvents = createSelector(
             }
         });
 
-        upcomingEvents.forEach((event, i) => {
-            let bookings = event["bookings"].filter(
-                booking => booking.status == "CNF"
-            );
-            bookings.forEach((booking, j) => {
-                bookings[j].user = users[booking.userId];
-            });
-            upcomingEvents[i].bookings = bookings;
-        });
+        // upcomingEvents.forEach((event, i) => {
+        //     let bookings = event["bookings"].filter(
+        //         booking => booking.status == "CNF"
+        //     );
+        //     bookings.forEach((booking, j) => {
+        //         bookings[j].user = users[booking.userId];
+        //     });
+        //     upcomingEvents[i].bookings = bookings;
+        // });
 
         return upcomingEvents;
     }
@@ -62,15 +62,15 @@ export const getPastEvents = createSelector(
             }
         });
 
-        pastEvents.forEach((event, i) => {
-            let bookings = event.bookings.filter(
-                booking => booking.status == "CNF"
-            );
-            bookings.forEach((booking, j) => {
-                bookings[j].user = users[booking.userId];
-            });
-            pastEvents[i].bookings = bookings;
-        });
+        // pastEvents.forEach((event, i) => {
+        //     let bookings = event.bookings.filter(
+        //         booking => booking.status == "CNF"
+        //     );
+        //     bookings.forEach((booking, j) => {
+        //         bookings[j].user = users[booking.userId];
+        //     });
+        //     pastEvents[i].bookings = bookings;
+        // });
 
         return pastEvents;
     }

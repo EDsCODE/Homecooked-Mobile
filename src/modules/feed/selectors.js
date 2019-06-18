@@ -2,7 +2,7 @@
 import { createSelector } from "reselect";
 import { CityFilter } from "Homecooked/src/types";
 
-const getCurrentBookings = state => state.currentBookings.byId;
+const getCurrentBookings = state => state.currentUser.bookings;
 const getEvents = state => state.events.byId;
 const getUsers = state => state.users.byId;
 const getChefId = state => state.host.id;
@@ -28,14 +28,23 @@ const getActiveEvents = createSelector(
             return true;
         });
         eventsArray.forEach((event, i) => {
-            let bookings = event.bookings.filter(
-                booking => booking.status == "CNF"
-            );
-            bookings.forEach((booking, j) => {
-                bookings[j].user = users[booking.userId];
-            });
-            eventsArray[i].bookings = bookings;
+            let media = [];
+            console.log();
+            if (event.chefProfileImageSignedUrl) {
+                media.push(event.chefProfileImageSignedUrl);
+            }
+            if (event.eventImage1SignedUrl) {
+                media.push(event.eventImage1SignedUrl);
+            }
+            if (event.eventImage2SignedUrl) {
+                media.push(event.eventImage2SignedUrl);
+            }
+            if (event.eventImage3SignedUrl) {
+                media.push(event.consoleeventImage3SignedUrl);
+            }
+            eventsArray[i].media = media;
         });
+
         return eventsArray;
     }
 );

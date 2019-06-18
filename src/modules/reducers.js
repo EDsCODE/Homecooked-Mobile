@@ -17,7 +17,7 @@ const appReducer = combineReducers({
     currentUser: currentUserReducer,
     feed: feedReducer,
     events: eventReducer,
-    currentBookings: bookingReducer,
+    bookings: bookingReducer,
     history: historyReducer,
     users: userReducer
     // notifications: notificationsReducer,

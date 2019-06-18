@@ -1,25 +1,36 @@
-import React, { Component } from "react";
+import React, { Component, useState, useEffect } from "react";
 import { View, StyleSheet, Image } from "react-native";
 
 import PrimaryText from "Homecooked/src/components/Text/Primary";
 import MinorText from "Homecooked/src/components/Text/Minor";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 import Carousel, { Pagination } from "react-native-snap-carousel";
+import FastImage from "react-native-fast-image";
+
+import Placeholder, {
+    Paragraph,
+    Media,
+    Line,
+    ImageContent
+} from "rn-placeholder";
 
 const imageURI = "Homecooked/src/assets/img/filledTable.jpg";
 
-export default class Hero extends Component {
+class Hero extends Component {
     state = {
         activeSlide: 0
     };
 
-    _renderImage = item => {
+    _renderImage = ({ item }) => {
         console.log(item);
         return (
-            <Image
-                resizeMode="cover"
+            <FastImage
                 style={styles.image}
-                source={{ uri: item.signedURL }}
+                source={{
+                    uri: item,
+                    priority: FastImage.priority.normal
+                }}
+                resizeMode={FastImage.resizeMode.cover}
             />
         );
     };
@@ -54,6 +65,48 @@ export default class Hero extends Component {
         );
     }
 }
+
+export default (Compo = props => {
+    const [isReady, setReady] = useState(false);
+
+    useEffect(() => {
+        if (!props.loading) {
+            setTimeout(() => setReady(true), 500);
+        }
+    });
+
+    return (
+        <Placeholder
+            animation="fade"
+            style={{
+                width: Spacing.deviceWidth,
+                height: Spacing.deviceHeight - 50
+            }}
+            isReady={isReady}
+            whenReadyRender={() => <Hero {...props} />}
+        >
+            <Media
+                style={{
+                    width: Spacing.deviceWidth,
+                    height: Spacing.deviceWidth,
+                    backgroundColor: Color.lightestGray,
+                    marginBottom: Spacing.base
+                }}
+            />
+            <ImageContent
+                animation="fade"
+                position="top"
+                hasRadius
+                lineNumber={5}
+                textSize={14}
+                color={Color.lightestGray}
+                width="100%"
+                lastLineWidth="30%"
+                firstLineWidth="10%"
+            />
+        </Placeholder>
+    );
+});
 
 const styles = StyleSheet.create({
     carousel: {
