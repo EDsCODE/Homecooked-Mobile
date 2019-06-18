@@ -5,8 +5,6 @@ import types from "./types";
 import { getActiveEventsWorkerSaga } from "Homecooked/src/modules/event/sagas";
 import { getCurrentBookingsWorkerSaga } from "Homecooked/src/modules/currentUser/sagas";
 
-import { createBookingWorkerSaga } from "Homecooked/src/modules/booking/sagas";
-
 function* loadFeedWorkerSaga(action) {
     try {
         // load bookings for user
@@ -19,23 +17,8 @@ function* loadFeedWorkerSaga(action) {
     }
 }
 
-function* bookEventWorkerSaga(action) {
-    try {
-        // call create booking saga and get result
-        yield call(
-            createBookingWorkerSaga,
-            action.payload.eventId,
-            action.payload.paymentToken
-        );
-        yield put({ type: types.BOOK_EVENT_SUCCESS });
-    } catch (error) {
-        yield put({ type: types.BOOK_EVENT_ERROR, error });
-    }
-}
-
 export const feedSagas = [
-    takeLatest(types.LOAD_FEED_REQUEST, loadFeedWorkerSaga),
-    takeLatest(types.BOOK_EVENT_REQUEST, bookEventWorkerSaga)
+    takeLatest(types.LOAD_FEED_REQUEST, loadFeedWorkerSaga)
 ];
 
 // const getKeys = events => {

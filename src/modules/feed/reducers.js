@@ -27,21 +27,7 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 error: action.error
             };
-        case types.BOOK_EVENT_REQUEST:
-            return {
-                ...state,
-                bookingInProgress: true
-            };
-        case types.BOOK_EVENT_SUCCESS:
-            return {
-                ...state,
-                bookingInProgress: false
-            };
-        case types.BOOK_EVENT_ERROR:
-            return {
-                ...state,
-                error: action.error
-            };
+
         case types.CITY_FILTER_SELECTED:
             return {
                 ...state,

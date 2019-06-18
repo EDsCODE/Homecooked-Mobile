@@ -83,7 +83,10 @@ class CreateEventLogistics extends Component {
     };
 
     render() {
-        const { navigation } = this.props;
+        const {
+            navigation,
+            screenProps: { preview }
+        } = this.props;
 
         return (
             <CreateEventLogisticsStack
@@ -91,7 +94,8 @@ class CreateEventLogistics extends Component {
                 screenProps={{
                     updateData: this.updateData,
                     state: this.state,
-                    submit: this.submit
+                    submit: this.submit,
+                    preview: preview
                 }}
             />
         );

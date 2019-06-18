@@ -4,6 +4,7 @@ export const HISTORY_PAST = "HISTORY_PAST";
 export const HOST_ACTIVE = "HOST_ACTIVE";
 export const HOST_IN_REVIEW = "HOST_IN_REVIEW";
 export const HOST_PAST = "HOST_PAST";
+export const PREVIEW = "PREVIEW";
 
 // const FEED_MENU_TITLE = "What's cooking";
 // const HISTORY_UPCOMING_MENU_TITLE = "What's cooking";

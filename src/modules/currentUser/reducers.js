@@ -118,6 +118,14 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state
             };
+        case types.ADD_BOOKING:
+            return {
+                ...state,
+                bookings: {
+                    ...state.bookings,
+                    [action.booking.id]: action.booking
+                }
+            };
         default:
             return state;
     }

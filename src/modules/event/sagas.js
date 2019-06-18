@@ -7,12 +7,19 @@ import {
     select,
     takeEvery
 } from "redux-saga/effects";
-import { EventService, ImageService } from "Homecooked/src/services/api";
+import {
+    EventService,
+    ImageService,
+    BookingService
+} from "Homecooked/src/services/api";
 import types from "./types";
-import { getUsersOfEventSaga } from "Homecooked/src/modules/user/sagas";
 import { getBookingsForEvent } from "Homecooked/src/modules/booking/sagas";
 import * as hostSelectors from "Homecooked/src/modules/host/selectors";
+import * as currentUserSelectors from "Homecooked/src/modules/currentUser/selectors";
+import * as eventSelectors from "Homecooked/src/modules/event/selectors";
 import NavigationService from "Homecooked/src/utils/NavigationService";
+import { EventViewTypes } from "Homecooked/src/types/";
+import { currentUserTypes } from "../types";
 
 export function* getActiveEventsWorkerSaga(action) {
     try {
@@ -68,7 +75,9 @@ export function* getActiveEventsWorkerSaga(action) {
 export function* getEventDetails(action) {
     try {
         NavigationService.navigate(action.payload.parentRoute + "Event");
-        yield call(getBookingsForEvent, action.payload.eventId);
+        if (action.payload.mode != EventViewTypes.PREVIEW) {
+            yield call(getBookingsForEvent, action.payload.eventId);
+        }
         yield put({ type: types.GET_EVENT_DETAILS_SUCCESS });
     } catch (error) {
         yield put({ type: types.GET_EVENT_DETAILS_ERROR, error });
@@ -78,20 +87,6 @@ export function* getEventDetails(action) {
 export function* getEventWorkerSaga(action) {
     try {
         const { data } = yield call(EventService.getEventById, action.eventId);
-        // yield call(getUsersOfEventSaga, [data]);
-
-        // // TODO: refactor
-        // yield all(
-        //     data.chef.media.map((media, j) => {
-        //         return call(function*() {
-        //             let { data: url } = yield call(
-        //                 ImageService.getImage,
-        //                 media.key
-        //             );
-        //             data.chef.media[j]["signedURL"] = url;
-        //         });
-        //     })
-        // );
 
         yield put({ type: types.GET_EVENT_SUCCESS, event: data });
     } catch (error) {
@@ -134,7 +129,26 @@ export function* createEventWorkerSaga(eventData) {
     }
 }
 
+function* bookEventWorkerSaga(action) {
+    try {
+        let { paymentToken } = action.payload;
+        let eventId = yield select(eventSelectors.selectedEventId);
+        let userId = yield select(currentUserSelectors.userId);
+        const { data: booking } = yield call(
+            BookingService.createBooking,
+            userId,
+            eventId,
+            paymentToken
+        );
+        yield put({ type: currentUserTypes.ADD_BOOKING, booking });
+        yield put({ type: types.BOOK_EVENT_SUCCESS });
+    } catch (error) {
+        yield put({ type: types.BOOK_EVENT_ERROR, error });
+    }
+}
+
 export const eventSagas = [
     takeLatest(types.GET_EVENTS_REQUEST, getActiveEventsWorkerSaga),
-    takeEvery(types.SELECT_EVENT, getEventDetails)
+    takeEvery(types.SELECT_EVENT, getEventDetails),
+    takeLatest(types.BOOK_EVENT_REQUEST, bookEventWorkerSaga)
 ];

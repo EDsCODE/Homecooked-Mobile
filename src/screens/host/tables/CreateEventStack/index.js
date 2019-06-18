@@ -3,12 +3,12 @@ import { createStackNavigator } from "react-navigation";
 import Details from "./Details";
 import Food from "./Food";
 import Logistics from "./Logistics";
-import Preview from "./Preview";
-import moment from "moment";
 import { connect } from "react-redux";
-import { hostTypes } from "Homecooked/src/modules/types";
+import { hostTypes, eventTypes } from "Homecooked/src/modules/types";
 import * as hostSelectors from "Homecooked/src/modules/host/selectors";
-import { EventTypes } from "Homecooked/src/types";
+import { EventTypes, EventViewTypes } from "Homecooked/src/types";
+
+import Event from "Homecooked/src/screens/common/Event";
 
 const CreateEventStack = createStackNavigator(
     {
@@ -21,8 +21,8 @@ const CreateEventStack = createStackNavigator(
         CreateEventFood: {
             screen: Food
         },
-        Preview: {
-            screen: Preview
+        CreateEventLogisticsEvent: {
+            screen: Event
         }
     },
     {
@@ -37,7 +37,8 @@ class CreateEvent extends Component {
     state = {
         details: {},
         logistics: {},
-        food: {}
+        food: {},
+        payload: {}
     };
 
     updateData = (key, value) => {
@@ -46,9 +47,8 @@ class CreateEvent extends Component {
         });
     };
 
-    submit = () => {
+    _formatData = () => {
         let fields = this.props.fields;
-
         let payload = {
             ...this.state.details,
             ...this.state.food,
@@ -81,7 +81,69 @@ class CreateEvent extends Component {
                 fields[EventTypes.MEAL_TYPE]
             )
         };
+        return payload;
+    };
 
+    _formatPreview = () => {
+        console.log(this.state);
+        let { details, logistics, food } = this.state;
+        let { eventTitle, eventDescription } = details;
+        let { menu, mealType, restrictions } = food;
+        let {
+            address,
+            duration,
+            maxGuests,
+            minGuests,
+            price,
+            specialDirections,
+            startTime
+        } = logistics;
+        let payload = {};
+        let marker = {};
+        marker.formattedAddress = address.formattedAddress;
+        marker.point = {};
+        marker.point.coordinates = [address.geometry.lat, address.geometry.lng];
+        let attributes = {};
+        attributes.price = price;
+        attributes.tableSizeMax = maxGuests;
+        attributes.tableSizeMin = minGuests;
+        attributes.dietaryRestriction = Object.values(restrictions).filter(
+            item => item.selected
+        );
+        attributes.mealType = Object.values(mealType).filter(
+            item => item.selected
+        );
+
+        let chef = {};
+        chef.user = this.props.currentUser;
+
+        let media = Object.values(this.props.currentHost.media).map(
+            media => media.url
+        );
+
+        payload = {
+            title: eventTitle,
+            description: eventDescription,
+            attributes,
+            marker,
+            duration,
+            menu,
+            startTime: startTime.toISOString(),
+            specialDirections,
+            chef,
+            media,
+            guestCount: 0
+        };
+        return payload;
+    };
+
+    preview = () => {
+        let payload = this._formatPreview();
+        this.props.previewEvent(payload);
+    };
+
+    submit = () => {
+        let payload = this._formatData();
         this.props.postEvent(payload);
     };
 
@@ -95,7 +157,8 @@ class CreateEvent extends Component {
                     updateData: this.updateData,
                     state: this.state,
                     submit: this.submit,
-                    fields: fields
+                    fields: fields,
+                    preview: this.preview
                 }}
             />
         );
@@ -104,11 +167,24 @@ class CreateEvent extends Component {
 
 const mapStateToProps = state => {
     return {
-        fields: hostSelectors.getEventFields(state)
+        fields: hostSelectors.getEventFields(state),
+        currentUser: state.currentUser,
+        currentHost: state.host
     };
 };
 
 const mapDispatchToProps = dispatch => {
+    const previewEvent = event => {
+        dispatch({
+            type: eventTypes.SELECT_EVENT,
+            payload: {
+                mode: EventViewTypes.PREVIEW,
+                preview: event,
+                parentRoute: "CreateEventLogistics"
+            }
+        });
+    };
+
     const postEvent = eventData => {
         dispatch({
             type: hostTypes.POST_EVENT_REQUEST,
@@ -116,7 +192,8 @@ const mapDispatchToProps = dispatch => {
         });
     };
     return {
-        postEvent
+        postEvent,
+        previewEvent
     };
 };
 

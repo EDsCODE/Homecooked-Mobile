@@ -44,7 +44,7 @@ export default class DetailsMain extends Component {
 
     _goNext = async () => {
         await this.props.screenProps.submit();
-        this.props.navigation.navigate("Preview");
+        this.props.screenProps.preview();
     };
 
     render() {

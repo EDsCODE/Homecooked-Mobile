@@ -7,7 +7,7 @@ import BarButton from "Homecooked/src/components/Buttons/BarButton";
 import InfoSection from "Homecooked/src/components/Event/Info";
 
 import { createToken, formatCardDetails } from "Homecooked/src/services/stripe";
-import { feedTypes } from "Homecooked/src/modules/types";
+import { eventTypes } from "Homecooked/src/modules/types";
 import { connect } from "react-redux";
 import { LiteCreditCardInput } from "react-native-credit-card-input";
 
@@ -41,7 +41,7 @@ class Review extends Component {
     _goNext = () => {
         let { id } = this.props.navigation.state.params.event;
         // TODO: payment token placeholder
-        this.props.bookEvent(id, "123");
+        this.props.bookEvent("123");
     };
 
     render() {
@@ -75,19 +75,18 @@ class Review extends Component {
 }
 
 const mapStateToProps = state => {
-    const { feed } = state;
+    const { events } = state;
     return {
-        bookingInProgress: feed.bookingInProgress,
-        error: feed.error
+        bookingInProgress: events.bookingInProgress,
+        error: events.error
     };
 };
 
 const mapDispatchToProps = dispatch => {
-    const bookEvent = (eventId, paymentToken) => {
+    const bookEvent = paymentToken => {
         dispatch({
-            type: feedTypes.BOOK_EVENT_REQUEST,
+            type: eventTypes.BOOK_EVENT_REQUEST,
             payload: {
-                eventId,
                 paymentToken
             }
         });

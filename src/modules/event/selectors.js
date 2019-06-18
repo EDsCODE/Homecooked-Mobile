@@ -1,17 +1,7 @@
 import { createSelector } from "reselect";
+import { EventViewTypes } from "Homecooked/src/types/";
 
-const getBookings = state => state.bookings.byEvent;
-const getEvents = state => state.events.byId;
-const getUsers = state => state.users.byId;
-const getSelectedEvent = state => state.events.selectedEvent;
-const getCurrentDetails = state => {
-    return {
-        mode: state.events.mode,
-        relatedBooking: state.events.relatedBooking,
-        parentRoute: state.events.parentRoute,
-        loading: state.events.loading
-    };
-};
+export const selectedEventId = state => state.events.selectedEvent;
 
 // export const getEvent = createSelector(
 //     [getEvents, getBookings, getUsers, getSelectedEvent, getCurrentDetails],
@@ -60,8 +50,24 @@ export const getEvent = state => {
     let bookingsByEvent = state.bookings.byEvent;
     let usersById = state.users.byId;
     let details = state.events;
-    let { selectedEvent, mode, parentRoute, relatedBooking, loading } = details;
+    let {
+        selectedEvent,
+        mode,
+        parentRoute,
+        relatedBooking,
+        loading,
+        preview
+    } = details;
     let event = eventsById[details.selectedEvent];
+    if (mode == EventViewTypes.PREVIEW) {
+        return {
+            event: preview,
+            mode,
+            relatedBooking,
+            parentRoute,
+            loading
+        };
+    }
     if (details.loading) {
         return {
             event,
