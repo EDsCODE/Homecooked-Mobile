@@ -3,10 +3,13 @@ import { createStackNavigator } from "react-navigation";
 import Details from "./Details";
 import Food from "./Food";
 import Logistics from "./Logistics";
+import EventMedia from "./EventMedia";
 import { connect } from "react-redux";
 import { hostTypes, eventTypes } from "Homecooked/src/modules/types";
 import * as hostSelectors from "Homecooked/src/modules/host/selectors";
 import { EventTypes, EventViewTypes } from "Homecooked/src/types";
+
+import _ from "lodash";
 
 import Event from "Homecooked/src/screens/common/Event";
 
@@ -20,6 +23,9 @@ const CreateEventStack = createStackNavigator(
         },
         CreateEventFood: {
             screen: Food
+        },
+        CreateEventMedia: {
+            screen: EventMedia
         },
         CreateEventLogisticsEvent: {
             screen: Event
@@ -38,21 +44,30 @@ class CreateEvent extends Component {
         details: {},
         logistics: {},
         food: {},
+        media: [],
+        mediaKeys: [],
+        upload: [],
         payload: {}
     };
 
-    updateData = (key, value) => {
-        this.setState({
-            [key]: value
-        });
+    updateData = (key, value, cb) => {
+        this.setState(
+            {
+                [key]: value
+            },
+            () => {
+                typeof cb === "function" && cb();
+            }
+        );
     };
 
     _formatData = () => {
+        let { details, food, logistics, upload, mediaKeys } = this.state;
         let fields = this.props.fields;
         let payload = {
-            ...this.state.details,
-            ...this.state.food,
-            ...this.state.logistics,
+            ...details,
+            ...food,
+            ...logistics,
             [EventTypes.PRICE]: [
                 {
                     settingId: fields[EventTypes.PRICE].id,
@@ -79,14 +94,17 @@ class CreateEvent extends Component {
             [EventTypes.MEAL_TYPE]: formatConstrainedValue(
                 this.state.food.mealType,
                 fields[EventTypes.MEAL_TYPE]
-            )
+            ),
+            chefId: this.props.currentHost.id,
+            mediaKeys: mediaKeys,
+            upload: Object.values(upload)
         };
         return payload;
     };
 
     _formatPreview = () => {
         console.log(this.state);
-        let { details, logistics, food } = this.state;
+        let { details, logistics, food, media } = this.state;
         let { eventTitle, eventDescription } = details;
         let { menu, mealType, restrictions } = food;
         let {
@@ -117,9 +135,7 @@ class CreateEvent extends Component {
         let chef = {};
         chef.user = this.props.currentUser;
 
-        let media = Object.values(this.props.currentHost.media).map(
-            media => media.url
-        );
+        media = Object.values(media);
 
         payload = {
             title: eventTitle,
@@ -139,12 +155,8 @@ class CreateEvent extends Component {
 
     preview = () => {
         let payload = this._formatPreview();
-        this.props.previewEvent(payload);
-    };
-
-    submit = () => {
-        let payload = this._formatData();
-        this.props.postEvent(payload);
+        let eventForm = this._formatData();
+        this.props.previewEvent(payload, eventForm);
     };
 
     render() {
@@ -156,7 +168,6 @@ class CreateEvent extends Component {
                 screenProps={{
                     updateData: this.updateData,
                     state: this.state,
-                    submit: this.submit,
                     fields: fields,
                     preview: this.preview
                 }}
@@ -174,12 +185,13 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-    const previewEvent = event => {
+    const previewEvent = (preview, eventForm) => {
         dispatch({
             type: eventTypes.SELECT_EVENT,
             payload: {
                 mode: EventViewTypes.PREVIEW,
-                preview: event,
+                preview,
+                eventForm,
                 parentRoute: "CreateEventLogistics"
             }
         });
@@ -217,5 +229,3 @@ function formatConstrainedValue(dictToFormat, field) {
     });
     return result;
 }
-
-function formatUnconstrainedValue(dictToFormat, field) {}

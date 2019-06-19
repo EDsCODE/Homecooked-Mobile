@@ -26,6 +26,10 @@ export default class EventCard extends PureComponent {
         imagesLoaded: false
     };
 
+    componentDidMount() {
+        console.log(this.props.event);
+    }
+
     _renderCard = ({ item, index }) => {
         return (
             <TouchableOpacity
@@ -57,10 +61,10 @@ export default class EventCard extends PureComponent {
 
     get pagination() {
         const { activeSlide } = this.state;
-        let { media } = this.props.event;
+        let { images } = this.props.event;
         return (
             <Pagination
-                dotsLength={media.length}
+                dotsLength={images.length}
                 activeDotIndex={activeSlide}
                 containerStyle={{
                     backgroundColor: "rgba(0, 0, 0, 0)",
@@ -98,13 +102,16 @@ export default class EventCard extends PureComponent {
             key,
             marker,
             chef,
-            media,
-            guestCount
+            images,
+            confirmedBookingCount
         } = this.props.event;
         let { price } = attributes;
         let MEALTYPE_TIME = dateWithMealType(date);
         let LOCATION = `${marker.city}, ${marker.state}`;
-        let SEATS_LEFT = attributes.tableSizeMax - guestCount + " seats left";
+        let SEATS_LEFT =
+            attributes.tableSizeMax -
+            parseInt(confirmedBookingCount) +
+            " seats left";
         let EVENT_CARD_DATE = eventCardDate(date);
         return (
             <TouchableOpacity
@@ -115,7 +122,7 @@ export default class EventCard extends PureComponent {
             >
                 <TouchableOpacity onPress={this.onPress} activeOpacity={0.9}>
                     <Carousel
-                        data={media}
+                        data={images}
                         renderItem={this._renderCard}
                         sliderWidth={Spacing.deviceWidth - 30}
                         itemWidth={Spacing.deviceWidth - 30}

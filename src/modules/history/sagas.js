@@ -26,16 +26,6 @@ function* loadHistoryWorkerSaga(action) {
     }
 }
 
-function* refundBookingWorkerSaga(action) {
-    try {
-        yield call(updateBookingStatusSaga, action.bookingId, "REF");
-        yield put({ type: types.REFUND_BOOKING_SUCCESS });
-    } catch (error) {
-        yield put({ type: types.REFUND_BOOKING_ERROR, error });
-    }
-}
-
 export const historySagas = [
-    takeLatest(types.LOAD_HISTORY_REQUEST, loadHistoryWorkerSaga),
-    takeLatest(types.REFUND_BOOKING_REQUEST, refundBookingWorkerSaga)
+    takeLatest(types.LOAD_HISTORY_REQUEST, loadHistoryWorkerSaga)
 ];

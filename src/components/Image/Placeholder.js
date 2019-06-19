@@ -4,23 +4,32 @@ import { View, TouchableOpacity, Text, StyleSheet, Image } from "react-native";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 import MinorText from "Homecooked/src/components/Text/Minor";
 
-const Placeholder = props => (
-    <TouchableOpacity onPress={props.onPress} style={props.style}>
-        {props.source.uri ? (
+const Placeholder = props =>
+    props.inactive ? (
+        <View style={props.style}>
             <Image
                 resizeMode={"cover"}
                 style={{ flex: 1 }}
                 source={props.source}
             />
-        ) : (
-            <View style={styles.outerSquare}>
-                <View style={styles.innerSquare}>
-                    <MinorText>{props.caption}</MinorText>
+        </View>
+    ) : (
+        <TouchableOpacity onPress={props.onPress} style={props.style}>
+            {props.source.uri ? (
+                <Image
+                    resizeMode={"cover"}
+                    style={{ flex: 1 }}
+                    source={props.source}
+                />
+            ) : (
+                <View style={styles.outerSquare}>
+                    <View style={styles.innerSquare}>
+                        <MinorText>{props.caption}</MinorText>
+                    </View>
                 </View>
-            </View>
-        )}
-    </TouchableOpacity>
-);
+            )}
+        </TouchableOpacity>
+    );
 
 const styles = StyleSheet.create({
     outerSquare: {

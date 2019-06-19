@@ -13,7 +13,7 @@ import PrimaryText from "Homecooked/src/components/Text/Primary";
 import MinorText from "Homecooked/src/components/Text/Minor";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 import Separator from "Homecooked/src/components/Separator";
-import { feedTypes } from "Homecooked/src/modules/types";
+import { eventTypes } from "Homecooked/src/modules/types";
 import { connect } from "react-redux";
 
 import { EventViewTypes } from "Homecooked/src/types/";
@@ -133,7 +133,7 @@ class Event extends Component {
             duration,
             guestCount,
             marker,
-            media,
+            images: media,
             menu,
             specialDirections,
             startTime,
@@ -574,17 +574,26 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-    let refund = () => {};
+    let refund = () => {
+        dispatch({
+            type: eventTypes.REFUND_BOOKING_REQUEST
+        });
+    };
 
-    let book = () => {};
+    let cancel = () => {
+        dispatch({
+            type: eventTypes.CANCEL_EVENT_REQUEST
+        });
+    };
 
-    let cancel = () => {};
-
-    let submit = () => {};
+    let submit = () => {
+        dispatch({
+            type: eventTypes.CREATE_EVENT_REQUEST
+        });
+    };
 
     return {
         refund,
-        book,
         cancel,
         submit
     };
@@ -592,5 +601,5 @@ const mapDispatchToProps = dispatch => {
 
 export default connect(
     mapStateToProps,
-    null
+    mapDispatchToProps
 )(Event);

@@ -2,6 +2,8 @@ import { createSelector } from "reselect";
 import { EventViewTypes } from "Homecooked/src/types/";
 
 export const selectedEventId = state => state.events.selectedEvent;
+export const eventForm = state => state.events.eventForm;
+export const relatedBooking = state => state.events.relatedBooking;
 
 // export const getEvent = createSelector(
 //     [getEvents, getBookings, getUsers, getSelectedEvent, getCurrentDetails],
@@ -83,7 +85,6 @@ export const getEvent = state => {
         });
         event.bookings = bookings;
         event.chef.user = usersById[event.chef.userId];
-        console.log(event);
         return {
             event,
             mode,

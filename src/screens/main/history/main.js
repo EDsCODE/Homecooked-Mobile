@@ -45,7 +45,8 @@ class HistoryMain extends Component {
                 onPress={() =>
                     this.props.selectEvent(
                         item.id,
-                        EventViewTypes.HISTORY_UPCOMING
+                        EventViewTypes.HISTORY_UPCOMING,
+                        item.userBooking
                     )
                 }
             />
@@ -63,7 +64,11 @@ class HistoryMain extends Component {
                 endTime={endTime}
                 title={item.title}
                 onPress={() =>
-                    this.props.selectEvent(item.id, EventViewTypes.HISTORY_PAST)
+                    this.props.selectEvent(
+                        item.id,
+                        EventViewTypes.HISTORY_PAST,
+                        item.userBooking
+                    )
                 }
             />
         );
@@ -136,13 +141,14 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-    const selectEvent = (eventId, mode) => {
+    const selectEvent = (eventId, mode, relatedBooking) => {
         dispatch({
             type: eventTypes.SELECT_EVENT,
             payload: {
                 eventId,
                 mode,
-                parentRoute: "HistoryMain"
+                parentRoute: "HistoryMain",
+                relatedBooking
             }
         });
     };

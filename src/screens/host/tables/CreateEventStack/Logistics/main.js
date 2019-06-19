@@ -43,8 +43,8 @@ export default class DetailsMain extends Component {
     };
 
     _goNext = async () => {
-        await this.props.screenProps.submit();
-        this.props.screenProps.preview();
+        this.props.screenProps.submit();
+        this.props.navigation.navigate("CreateEventMedia");
     };
 
     render() {

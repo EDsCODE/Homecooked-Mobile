@@ -17,6 +17,13 @@ const createApplication = (userId, address, lat, lng, reason, experience) => {
     });
 };
 
+const getChefById = id => {
+    return request({
+        method: "GET",
+        url: `/chef/${id}`
+    });
+};
+
 const getChefByUserId = userId => {
     return request({
         method: "GET",
@@ -48,7 +55,8 @@ const HostService = {
     createApplication,
     getChefByUserId,
     createChefMedia,
-    createChef
+    createChef,
+    getChefById
 };
 
 export default HostService;
