@@ -25,8 +25,8 @@ class Review extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (
-            this.props.bookingInProgress &&
-            !nextProps.bookingInProgress &&
+            this.props.actionLoading &&
+            !nextProps.actionLoading &&
             !nextProps.error
         ) {
             this.props.navigation.navigate("Confirmed");
@@ -77,7 +77,7 @@ class Review extends Component {
 const mapStateToProps = state => {
     const { events } = state;
     return {
-        bookingInProgress: events.bookingInProgress,
+        actionLoading: events.actionLoading,
         error: events.error
     };
 };

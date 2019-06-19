@@ -147,8 +147,20 @@ function* bookEventWorkerSaga(action) {
     }
 }
 
+function* refundBookingWorkerSaga(action) {
+    try {
+        let { id } = yield select(eventSelectors.relatedBooking);
+        let { data: booking } = yield call(BookingService.refundBooking, id);
+        yield put({ type: currentUserTypes.ADD_BOOKING, booking });
+        yield put({ type: types.REFUND_BOOKING_SUCCESS });
+    } catch (error) {
+        yield put({ type: types.REFUND_BOOKING_ERROR, error });
+    }
+}
+
 export const eventSagas = [
     takeLatest(types.GET_EVENTS_REQUEST, getActiveEventsWorkerSaga),
     takeEvery(types.SELECT_EVENT, getEventDetails),
-    takeLatest(types.BOOK_EVENT_REQUEST, bookEventWorkerSaga)
+    takeLatest(types.BOOK_EVENT_REQUEST, bookEventWorkerSaga),
+    takeLatest(types.REFUND_BOOKING_REQUEST, refundBookingWorkerSaga)
 ];

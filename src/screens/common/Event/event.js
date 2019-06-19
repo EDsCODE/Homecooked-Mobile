@@ -13,7 +13,7 @@ import PrimaryText from "Homecooked/src/components/Text/Primary";
 import MinorText from "Homecooked/src/components/Text/Minor";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 import Separator from "Homecooked/src/components/Separator";
-import { feedTypes } from "Homecooked/src/modules/types";
+import { eventTypes } from "Homecooked/src/modules/types";
 import { connect } from "react-redux";
 
 import { EventViewTypes } from "Homecooked/src/types/";
@@ -574,9 +574,11 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-    let refund = () => {};
-
-    let book = () => {};
+    let refund = () => {
+        dispatch({
+            type: eventTypes.REFUND_BOOKING_REQUEST
+        });
+    };
 
     let cancel = () => {};
 
@@ -584,7 +586,6 @@ const mapDispatchToProps = dispatch => {
 
     return {
         refund,
-        book,
         cancel,
         submit
     };
@@ -592,5 +593,5 @@ const mapDispatchToProps = dispatch => {
 
 export default connect(
     mapStateToProps,
-    null
+    mapDispatchToProps
 )(Event);

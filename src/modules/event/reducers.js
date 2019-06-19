@@ -11,7 +11,8 @@ const initialState = {
     preview: null,
     loading: false,
     error: null,
-    bookingInProgress: false
+    actionLoading: false,
+    refundInProgress: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -70,6 +71,7 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 selectedEvent: action.payload.eventId,
+                relatedBooking: action.payload.relatedBooking,
                 mode: action.payload.mode,
                 parentRoute: action.payload.parentRoute,
                 preview: action.payload.preview,
@@ -90,16 +92,32 @@ const reducer = (state = initialState, action) => {
         case types.BOOK_EVENT_REQUEST:
             return {
                 ...state,
-                bookingInProgress: true
+                actionLoading: true
             };
         case types.BOOK_EVENT_SUCCESS:
             return {
                 ...state,
-                bookingInProgress: false
+                actionLoading: false
             };
         case types.BOOK_EVENT_ERROR:
             return {
                 ...state,
+                error: action.error
+            };
+        case types.REFUND_BOOKING_REQUEST:
+            return {
+                ...state,
+                actionLoading: true
+            };
+        case types.REFUND_BOOKING_SUCCESS:
+            return {
+                ...state,
+                actionLoading: false
+            };
+        case types.REFUND_BOOKING_ERROR:
+            return {
+                ...state,
+                actionLoading: false,
                 error: action.error
             };
         default:

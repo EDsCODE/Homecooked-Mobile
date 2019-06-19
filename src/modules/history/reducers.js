@@ -26,22 +26,6 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 error: action.error
             };
-        case types.REFUND_BOOKING_REQUEST:
-            return {
-                ...state,
-                refundInProgress: true
-            };
-        case types.REFUND_BOOKING_SUCCESS:
-            return {
-                ...state,
-                refundInProgress: false,
-                error: null
-            };
-        case types.REFUND_BOOKING_ERROR:
-            return {
-                ...state,
-                error: action.error
-            };
         default:
             return {
                 ...state
