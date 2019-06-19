@@ -105,25 +105,21 @@ export function* getEventsByChefIdWorkerSaga(action) {
     }
 }
 
-export function* updateEventStatusSaga(eventId, status) {
+export function* createEventWorkerSaga(eventData) {
     try {
-        let event;
-        if (status == "CAN") {
-            let { data } = yield call(EventService.cancelEvent, eventId);
-            event = data;
-        } else {
-            throw new Error("Invalid Status");
-        }
+        let { data: event } = yield call(EventService.createEvent, eventData);
         yield put({ type: types.UPDATE_EVENT_SUCCESS, event });
     } catch (error) {
         yield put({ type: types.UPDATE_EVENT_ERROR, error });
     }
 }
 
-export function* createEventWorkerSaga(eventData) {
+function* cancelEventWorkerSaga(action) {
     try {
-        let { data: event } = yield call(EventService.createEvent, eventData);
+        let eventId = yield select(eventSelectors.selectedEventId);
+        let { data: event } = yield call(EventService.cancelEvent, eventId);
         yield put({ type: types.UPDATE_EVENT_SUCCESS, event });
+        yield put({ type: types.CANCEL_EVENT_SUCCESS });
     } catch (error) {
         yield put({ type: types.UPDATE_EVENT_ERROR, error });
     }
@@ -162,5 +158,6 @@ export const eventSagas = [
     takeLatest(types.GET_EVENTS_REQUEST, getActiveEventsWorkerSaga),
     takeEvery(types.SELECT_EVENT, getEventDetails),
     takeLatest(types.BOOK_EVENT_REQUEST, bookEventWorkerSaga),
-    takeLatest(types.REFUND_BOOKING_REQUEST, refundBookingWorkerSaga)
+    takeLatest(types.REFUND_BOOKING_REQUEST, refundBookingWorkerSaga),
+    takeLatest(types.CANCEL_EVENT_REQUEST, cancelEventWorkerSaga)
 ];

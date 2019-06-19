@@ -580,7 +580,11 @@ const mapDispatchToProps = dispatch => {
         });
     };
 
-    let cancel = () => {};
+    let cancel = () => {
+        dispatch({
+            type: eventTypes.CANCEL_EVENT_REQUEST
+        });
+    };
 
     let submit = () => {};
 
