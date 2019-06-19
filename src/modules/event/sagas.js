@@ -10,7 +10,8 @@ import {
 import {
     EventService,
     ImageService,
-    BookingService
+    BookingService,
+    HostService
 } from "Homecooked/src/services/api";
 import types from "./types";
 import { getBookingsForEvent } from "Homecooked/src/modules/booking/sagas";
@@ -20,6 +21,7 @@ import * as eventSelectors from "Homecooked/src/modules/event/selectors";
 import NavigationService from "Homecooked/src/utils/NavigationService";
 import { EventViewTypes } from "Homecooked/src/types/";
 import { currentUserTypes } from "../types";
+import _ from "lodash";
 
 export function* getActiveEventsWorkerSaga(action) {
     try {
@@ -27,49 +29,49 @@ export function* getActiveEventsWorkerSaga(action) {
         if (!data) {
             throw new Error("Could not retrieve events");
         }
-        yield all(
-            data.map((event, i) => {
-                return call(function*() {
-                    // retireve images
-                    if (event.chefProfileImageKey) {
-                        let { data: chefProfileImageSignedUrl } = yield call(
-                            ImageService.getImage,
-                            event.chefProfileImageKey
-                        );
-                        event[
-                            "chefProfileImageSignedUrl"
-                        ] = chefProfileImageSignedUrl;
-                    }
-                    if (event.eventImageKey1) {
-                        let { data: eventImage1SignedUrl } = yield call(
-                            ImageService.getImage,
-                            event.eventImageKey1
-                        );
-                        event["eventImage1SignedUrl"] = eventImage1SignedUrl;
-                    }
-                    if (event.eventImageKey2) {
-                        let { data: eventImage2SignedUrl } = yield call(
-                            ImageService.getImage,
-                            event.eventImageKey2
-                        );
-                        event["eventImage2SignedUrl"] = eventImage2SignedUrl;
-                    }
-                    if (event.eventImageKey3) {
-                        let { data: eventImage3SignedUrl } = yield call(
-                            ImageService.getImage,
-                            event.eventImageKey3
-                        );
-                        event["eventImage3SignedUrl"] = eventImage3SignedUrl;
-                    }
-                    data[i] = event;
-                });
-            })
-        );
+        let events = yield all(data.map(event => call(getEventMedia, event)));
 
-        yield put({ type: types.GET_EVENTS_SUCCESS, events: data });
+        yield put({ type: types.GET_EVENTS_SUCCESS, events: events });
     } catch (error) {
         yield put({ type: types.GET_EVENTS_ERROR, error });
     }
+}
+
+export function* getEventsByChefIdWorkerSaga(action) {
+    try {
+        let chefId = yield select(hostSelectors.chefId);
+        const { data } = yield call(EventService.getEventsByChefId, chefId);
+        let events = yield all(data.map(event => call(getEventMedia, event)));
+
+        yield put({ type: types.GET_EVENTS_SUCCESS, events });
+    } catch (error) {
+        yield put({ type: types.GET_EVENTS_ERROR, error });
+    }
+}
+
+export function* getEventWorkerSaga(action) {
+    try {
+        const { data } = yield call(EventService.getEventById, action.eventId);
+        let event = yield call(getEventMedia, data);
+        yield put({ type: types.GET_EVENT_SUCCESS, event });
+    } catch (error) {
+        yield put({ type: types.GET_EVENT_ERROR, error });
+    }
+}
+
+function* getEventMedia(event) {
+    let media = yield all(event.media.map(media => call(getMedia, media)));
+    let { data: chef } = yield call(HostService.getChefById, event.chef.id);
+    let chefMedia = _.find(chef.media, ["type", "AVATAR"]);
+    let chefImageUrl = yield call(getMedia, chefMedia);
+    media.unshift(chefImageUrl);
+    event.images = media;
+    return event;
+}
+
+function* getMedia(media) {
+    let { data } = yield call(ImageService.getImage, media.key);
+    return data;
 }
 
 export function* getEventDetails(action) {
@@ -84,31 +86,27 @@ export function* getEventDetails(action) {
     }
 }
 
-export function* getEventWorkerSaga(action) {
+export function* createEventWorkerSaga(action) {
     try {
-        const { data } = yield call(EventService.getEventById, action.eventId);
+        let eventData = yield select(eventSelectors.eventForm);
 
-        yield put({ type: types.GET_EVENT_SUCCESS, event: data });
-    } catch (error) {
-        yield put({ type: types.GET_EVENT_ERROR, error });
-    }
-}
+        // upload images
+        let toUpload = eventData.upload;
+        let result = yield all(
+            toUpload.map(image => call(ImageService.uploadImage, image))
+        );
+        //add uploaded images keys to mediakeys
+        let mediaKeys = eventData.mediaKeys;
+        result.forEach(media => {
+            mediaKeys.push(media.data);
+        });
 
-export function* getEventsByChefIdWorkerSaga(action) {
-    try {
-        let chefId = yield select(hostSelectors.chefId);
-        const { data } = yield call(EventService.getEventsByChefId, chefId);
-
-        yield put({ type: types.GET_EVENTS_SUCCESS, events: data });
-    } catch (error) {
-        yield put({ type: types.GET_EVENTS_ERROR, error });
-    }
-}
-
-export function* createEventWorkerSaga(eventData) {
-    try {
+        eventData.mediaKeys = mediaKeys;
+        delete eventData.upload;
+        console.log(eventData);
         let { data: event } = yield call(EventService.createEvent, eventData);
         yield put({ type: types.UPDATE_EVENT_SUCCESS, event });
+        yield put({ type: types.CREATE_EVENT_SUCCESS });
     } catch (error) {
         yield put({ type: types.UPDATE_EVENT_ERROR, error });
     }
@@ -159,5 +157,6 @@ export const eventSagas = [
     takeEvery(types.SELECT_EVENT, getEventDetails),
     takeLatest(types.BOOK_EVENT_REQUEST, bookEventWorkerSaga),
     takeLatest(types.REFUND_BOOKING_REQUEST, refundBookingWorkerSaga),
-    takeLatest(types.CANCEL_EVENT_REQUEST, cancelEventWorkerSaga)
+    takeLatest(types.CANCEL_EVENT_REQUEST, cancelEventWorkerSaga),
+    takeLatest(types.CREATE_EVENT_REQUEST, createEventWorkerSaga)
 ];

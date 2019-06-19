@@ -55,11 +55,12 @@ class Main extends Component {
                 onPress: () => this._goToPayment()
             },
             {
-                title: "Refer Friends",
+                title: "Invite Friends",
                 onPress: () => this.getReferralLink()
             },
             {
-                title: "Invite Friends"
+                title: "Share",
+                onPress: () => this._goToShare()
             },
             {
                 title: "FAQ"
@@ -67,10 +68,6 @@ class Main extends Component {
             {
                 title: "Settings",
                 onPress: () => this._goToSettings()
-            },
-            {
-                title: "Share",
-                onPress: () => this._goToShare()
             }
         ];
         this.setState({

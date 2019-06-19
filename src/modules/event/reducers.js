@@ -9,6 +9,7 @@ const initialState = {
     relatedBooking: "",
     parentRoute: "",
     preview: null,
+    eventForm: null,
     loading: false,
     error: null,
     actionLoading: false,
@@ -75,6 +76,7 @@ const reducer = (state = initialState, action) => {
                 mode: action.payload.mode,
                 parentRoute: action.payload.parentRoute,
                 preview: action.payload.preview,
+                eventForm: action.payload.eventForm,
                 loading:
                     action.payload.mode == EventViewTypes.PREVIEW ? false : true
             };
@@ -115,6 +117,22 @@ const reducer = (state = initialState, action) => {
                 actionLoading: false
             };
         case types.REFUND_BOOKING_ERROR:
+            return {
+                ...state,
+                actionLoading: false,
+                error: action.error
+            };
+        case types.CREATE_EVENT_REQUEST:
+            return {
+                ...state,
+                actionLoading: true
+            };
+        case types.CREATE_EVENT_SUCCESS:
+            return {
+                ...state,
+                actionLoading: false
+            };
+        case types.CREATE_EVENT_ERROR:
             return {
                 ...state,
                 actionLoading: false,

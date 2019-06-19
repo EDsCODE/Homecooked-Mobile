@@ -2,6 +2,7 @@ import { createSelector } from "reselect";
 import { EventViewTypes } from "Homecooked/src/types/";
 
 export const selectedEventId = state => state.events.selectedEvent;
+export const eventForm = state => state.events.eventForm;
 export const relatedBooking = state => state.events.relatedBooking;
 
 // export const getEvent = createSelector(

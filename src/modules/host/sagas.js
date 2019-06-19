@@ -78,19 +78,14 @@ function* getChefWorkerSaga(action) {
             EventService.getEventSettingsByType,
             chef.type
         );
-        let medias = formatMedia(chef.media);
-        const imageURLS = yield all(
-            Object.keys(medias)
-                .map(type => {
-                    if (medias[type]) {
-                        return call(getChefMedia, medias[type]);
-                    }
-                })
-                .filter(item => item)
+        let medias = yield all(
+            chef.media.map(media => {
+                return call(getChefMedia, media);
+            })
         );
         yield put({
             type: types.GET_CHEF_SUCCESS,
-            payload: { chef, preferences, media: imageURLS }
+            payload: { chef, preferences, media: medias }
         });
     } catch (error) {
         yield put({ type: types.GET_CHEF_ERROR, error });
@@ -104,17 +99,6 @@ function* getChefMedia(item) {
         ...item,
         url
     };
-}
-
-function formatMedia(arr) {
-    let result = { "1": null, "2": null, "3": null, "4": null };
-    for (let i = 0; i < arr.length; i++) {
-        let item = arr[i];
-        if (!result[item.type]) {
-            result[item.type] = item;
-        }
-    }
-    return result;
 }
 
 function* loadHostingEventsSaga(action) {

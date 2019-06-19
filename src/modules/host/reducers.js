@@ -37,7 +37,6 @@ const reducer = (state = initialState, action) => {
                     allowedValues: values
                 });
             }
-            let media = normalize(action.payload.media, "type");
             return {
                 ...state,
                 id: action.payload.chef.id,
@@ -48,7 +47,7 @@ const reducer = (state = initialState, action) => {
                     ...action.payload.preferences,
                     fields: normalize(fields, "fieldType")
                 },
-                media: media,
+                media: action.payload.media,
                 loading: false
             };
         case types.GET_CHEF_ERROR:

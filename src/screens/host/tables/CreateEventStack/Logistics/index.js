@@ -66,7 +66,7 @@ class CreateEventLogistics extends Component {
         );
     };
 
-    submit = async () => {
+    submit = () => {
         // merge date and time
         let time = moment(this.state.startTime).format("hh:mm:ss a");
         let date = this.state.date.format("YYYY-MM-DD");

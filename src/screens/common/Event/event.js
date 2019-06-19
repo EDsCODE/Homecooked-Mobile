@@ -133,7 +133,7 @@ class Event extends Component {
             duration,
             guestCount,
             marker,
-            media,
+            images: media,
             menu,
             specialDirections,
             startTime,
@@ -586,7 +586,11 @@ const mapDispatchToProps = dispatch => {
         });
     };
 
-    let submit = () => {};
+    let submit = () => {
+        dispatch({
+            type: eventTypes.CREATE_EVENT_REQUEST
+        });
+    };
 
     return {
         refund,
