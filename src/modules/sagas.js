@@ -3,7 +3,7 @@ import { all } from "redux-saga/effects";
 import { feedSagas } from "./feed/sagas";
 import { eventSagas } from "./event/sagas";
 import { historySagas } from "./history/sagas";
-// import notificationSaga from "./notifications/sagas";
+import { notificationSagas } from "./notification/sagas";
 import { hostSagas } from "./host/sagas";
 import { userSagas } from "./currentUser/sagas";
 
@@ -14,6 +14,7 @@ export default function* rootSaga() {
         ...userSagas,
         ...feedSagas,
         ...eventSagas,
-        ...historySagas
+        ...historySagas,
+        ...notificationSagas
     ]);
 }

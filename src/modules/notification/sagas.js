@@ -1,0 +1,32 @@
+import { takeLatest, call, put, select, all } from "redux-saga/effects";
+import { getEventWorkerSaga } from "Homecooked/src/modules/event/sagas";
+import types from "./types";
+import { UserService } from "Homecooked/src/services/api";
+import * as userSelectors from "Homecooked/src/modules/currentUser/selectors";
+
+function* loadNotificationsWorkerSaga(action) {
+    try {
+        let userId = yield select(userSelectors.userId);
+        let { data: notifications } = yield call(
+            UserService.getNotificationsForUser,
+            userId
+        );
+
+        yield all(
+            notifications.map(notification =>
+                call(getEventWorkerSaga, { eventId: notification.entity_id })
+            )
+        );
+
+        yield put({
+            type: types.GET_NOTIFICATIONS_SUCCESS,
+            payload: { notifications }
+        });
+    } catch (error) {
+        yield put({ type: types.GET_NOTIFICATIONS_ERROR, error });
+    }
+}
+
+export const notificationSagas = [
+    takeLatest(types.GET_NOTIFICATIONS_REQUEST, loadNotificationsWorkerSaga)
+];

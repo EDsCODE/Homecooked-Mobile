@@ -17,6 +17,13 @@ const getBookingsForUser = id => {
     });
 };
 
+const getNotificationsForUser = id => {
+    return request({
+        method: "GET",
+        url: `/user/${id}/notifications`
+    });
+};
+
 const getUserById = id => {
     return request({
         method: "GET",
@@ -51,7 +58,8 @@ const UserService = {
     getBookingsForUser,
     getUserById,
     savePaymentDetails,
-    updatePaymentDetails
+    updatePaymentDetails,
+    getNotificationsForUser
 };
 
 export default UserService;

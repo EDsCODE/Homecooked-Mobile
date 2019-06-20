@@ -26,10 +26,6 @@ export default class EventCard extends PureComponent {
         imagesLoaded: false
     };
 
-    componentDidMount() {
-        console.log(this.props.event);
-    }
-
     _renderCard = ({ item, index }) => {
         return (
             <TouchableOpacity

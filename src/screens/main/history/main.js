@@ -92,7 +92,6 @@ class HistoryMain extends Component {
     );
 
     render() {
-        console.log(this.props);
         return (
             <View>
                 <Header title={"Your Tables"} leftComponent={() => null} />

@@ -17,10 +17,12 @@ export default class Row extends Component {
 
     _onLayout = event => {
         let { width } = event.nativeEvent.layout;
+        console.log(width);
         this.setState({
             width
         });
     };
+
     _renderProfiles = width => {
         let imageWidth = width / 5 - Spacing.smallest;
         let { people, onPress } = this.props;
