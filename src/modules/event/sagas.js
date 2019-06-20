@@ -15,6 +15,7 @@ import {
 } from "Homecooked/src/services/api";
 import types from "./types";
 import { getBookingsForEvent } from "Homecooked/src/modules/booking/sagas";
+import { getUserById } from "Homecooked/src/modules/user/sagas";
 import * as hostSelectors from "Homecooked/src/modules/host/selectors";
 import * as currentUserSelectors from "Homecooked/src/modules/currentUser/selectors";
 import * as eventSelectors from "Homecooked/src/modules/event/selectors";
@@ -63,6 +64,7 @@ function* getEventMedia(event) {
     let media = yield all(event.media.map(media => call(getMedia, media)));
     let { data: chef } = yield call(HostService.getChefById, event.chef.id);
     let chefMedia = _.find(chef.media, ["type", "AVATAR"]);
+    yield call(getUserById, chef.userId);
     let chefImageUrl = yield call(getMedia, chefMedia);
     media.unshift(chefImageUrl);
     event.images = media;

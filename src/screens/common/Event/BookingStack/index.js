@@ -7,10 +7,16 @@ import Invite from "./invite";
 const BookingStack = createStackNavigator(
     {
         Review: {
-            screen: Review
+            screen: Review,
+            navigationOptions: {
+                gesturesEnabled: false
+            }
         },
         Confirmed: {
-            screen: Confirmed
+            screen: Confirmed,
+            navigationOptions: {
+                gesturesEnabled: false
+            }
         },
         Invite: {
             screen: Invite
