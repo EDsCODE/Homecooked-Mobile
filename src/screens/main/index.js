@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from "react-navigation";
 import Feed from "./feed";
 import HistoryStack from "./history";
-// import Notifications from "./notifications";
+import Notifications from "./notifications";
 import Account from "./account";
 
 const MainStack = createBottomTabNavigator(
@@ -11,6 +11,9 @@ const MainStack = createBottomTabNavigator(
         },
         History: {
             screen: HistoryStack
+        },
+        Notification: {
+            screen: Notifications
         },
         Account: {
             screen: Account

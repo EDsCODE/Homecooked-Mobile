@@ -8,7 +8,7 @@ import feedReducer from "./feed/reducers";
 import eventReducer from "./event/reducers";
 import bookingReducer from "./booking/reducers";
 import historyReducer from "./history/reducers";
-// import notificationsReducer from "./notifications/reducers";
+import notificationsReducer from "./notification/reducers";
 // import settingsReducer from "./settings/reducers";
 
 const appReducer = combineReducers({
@@ -19,8 +19,8 @@ const appReducer = combineReducers({
     events: eventReducer,
     bookings: bookingReducer,
     history: historyReducer,
-    users: userReducer
-    // notifications: notificationsReducer,
+    users: userReducer,
+    notifications: notificationsReducer
     // settings: settingsReducer
 });
 

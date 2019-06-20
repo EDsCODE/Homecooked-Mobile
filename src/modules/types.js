@@ -3,7 +3,7 @@ import feedTypes from "./feed/types";
 import eventTypes from "./event/types";
 import historyTypes from "./history/types";
 import userTypes from "./user/types";
-// import notificationsTypes from "./notifications/types";
+import notificationTypes from "./notification/types";
 // import settingsTypes from "./settings/types";
 import hostTypes from "./host/types";
 import currentUserTypes from "./currentUser/types";
@@ -15,5 +15,6 @@ export {
     feedTypes,
     eventTypes,
     historyTypes,
-    userTypes
+    userTypes,
+    notificationTypes
 };
