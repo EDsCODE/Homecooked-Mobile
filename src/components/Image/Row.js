@@ -29,7 +29,7 @@ export default class Row extends Component {
         return (
             <View style={styles.imageContainer}>
                 {people.slice(0, 4 || people.length).map((person, index) => (
-                    <TouchableOpacity onPress={() => onPress(person.user)}>
+                    <TouchableOpacity onPress={() => onPress(person)}>
                         <Image
                             key={index.toString()}
                             style={{
@@ -41,7 +41,7 @@ export default class Row extends Component {
                                 borderWidth: 1,
                                 marginRight: Spacing.smallest
                             }}
-                            source={{ uri: person.user.profileImageSignedUrl }}
+                            source={{ uri: person.profileImageSignedUrl }}
                         />
                     </TouchableOpacity>
                 ))}

@@ -138,7 +138,6 @@ android {
 }
 
 dependencies {
-    implementation project(':urbanairship-react-native')
     implementation project(':react-native-fast-image')
     implementation project(':react-native-fbsdk')
     implementation project(':react-native-branch')

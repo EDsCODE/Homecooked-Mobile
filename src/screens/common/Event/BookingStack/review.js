@@ -10,6 +10,7 @@ import { createToken, formatCardDetails } from "Homecooked/src/services/stripe";
 import { eventTypes } from "Homecooked/src/modules/types";
 import { connect } from "react-redux";
 import { LiteCreditCardInput } from "react-native-credit-card-input";
+import { getEvent } from "Homecooked/src/modules/event/selectors";
 
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 
@@ -46,13 +47,19 @@ class Review extends Component {
 
     render() {
         let { bookingInProgress } = this.props;
+        let { attributes, startTime } = this.props.event;
+        let { price } = attributes;
         return (
             <View style={{ flex: 1, paddingTop: 30 }}>
                 <View style={styles.headerContainer}>
                     <CloseButton onPress={this._goBack} />
                     <HeadingText>Review</HeadingText>
                 </View>
-                <InfoSection modules={this.state.modules} />
+                <InfoSection
+                    modules={this.state.modules}
+                    startTime={startTime}
+                    price={price}
+                />
                 <View style={styles.cardInputContainer}>
                     <LiteCreditCardInput onChange={this._onChange} />
                 </View>
@@ -77,6 +84,7 @@ class Review extends Component {
 const mapStateToProps = state => {
     const { events } = state;
     return {
+        ...getEvent(state),
         actionLoading: events.actionLoading,
         error: events.error
     };

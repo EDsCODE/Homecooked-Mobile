@@ -4,8 +4,7 @@ import types from "./types";
 import { currentUserTypes } from "../types";
 import NavigationService from "Homecooked/src/utils/NavigationService";
 import SInfo from "react-native-sensitive-info";
-import branch from 'react-native-branch';
-import { UrbanAirship, UACustomEvent } from "urbanairship-react-native";
+import branch from "react-native-branch";
 // ref: https://hackernoon.com/redux-saga-tutorial-for-beginners-and-dog-lovers-aa69a17db645
 
 // worker saga: makes the api call when watcher saga sees the action
@@ -90,7 +89,6 @@ function* registerWorkerSaga(action) {
         SInfo.setItem("refreshToken", refreshToken, {});
 
         // register named user
-        UrbanAirship.setNamedUser(user.id);
         branch.setIdentity(user.id);
 
         // dispatch a success action to the store with the new access

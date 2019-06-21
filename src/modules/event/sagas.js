@@ -149,6 +149,7 @@ function* refundBookingWorkerSaga(action) {
         let { data: booking } = yield call(BookingService.refundBooking, id);
         yield put({ type: currentUserTypes.ADD_BOOKING, booking });
         yield put({ type: types.REFUND_BOOKING_SUCCESS });
+        NavigationService.navigate("RefundConfirmation");
     } catch (error) {
         yield put({ type: types.REFUND_BOOKING_ERROR, error });
     }

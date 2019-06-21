@@ -80,11 +80,13 @@ export const getEvent = state => {
         };
     } else {
         let bookings = bookingsByEvent[selectedEvent];
+        let users = [];
         bookings.forEach((booking, index) => {
-            bookings[index].user = usersById[booking.userId];
+            users.push(usersById[booking.userId]);
         });
-        event.bookings = bookings;
+        event.users = users;
         event.chef.user = usersById[event.chef.userId];
+        console.log(event);
         return {
             event,
             mode,
