@@ -1,4 +1,5 @@
 import { createSelector } from "reselect";
+import _ from "lodash";
 
 export const chefId = state => state.host.id;
 export const media = state => {
@@ -17,6 +18,11 @@ const getEventsbyChefId = createSelector(
         return relatedEvents;
     }
 );
+
+export const getHostImage = state => {
+    let image = _.find(state.host.media, ["type", "AVATAR"]);
+    return image;
+};
 
 export const getActiveEvents = createSelector(
     [getEventsbyChefId, getUsers],

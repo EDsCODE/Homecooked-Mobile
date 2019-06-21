@@ -31,7 +31,7 @@ export default class HistoryCell extends Component {
         let subTitle = `${dayOfWeek} ${type}, ${startTimeParsed} to ${endTimeParsed}`;
 
         return (
-            <TouchableOpacity onPress={onPress} style={style} key={title}>
+            <TouchableOpacity onPress={onPress} style={style}>
                 <View style={styles.row}>
                     <View
                         style={{

@@ -81,7 +81,6 @@ class Event extends Component {
             chef,
             description,
             duration,
-            guestCount,
             marker,
             media,
             menu,
@@ -132,7 +131,7 @@ class Event extends Component {
             chef,
             description,
             duration,
-            guestCount,
+            confirmedBookingCount,
             marker,
             images: media,
             menu,
@@ -176,7 +175,8 @@ class Event extends Component {
                     BUTTON_COLOR: Color.green,
                     TINT_COLOR: Color.green,
                     MAIN_TEXT: `$${price} per person`,
-                    SUB_TEXT: `${tableSizeMax - guestCount} seats left`,
+                    SUB_TEXT: `${tableSizeMax -
+                        confirmedBookingCount} seats left`,
                     ONPRESS: this._navigateToBooking,
                     BUTTON_TEXT: "RSVP",
                     USERS: users
@@ -392,7 +392,14 @@ class Event extends Component {
         );
     };
 
-    _renderInfoSection = (modules, startTime, description, price, duration) => {
+    _renderInfoSection = (
+        modules,
+        startTime,
+        description,
+        price,
+        duration,
+        formattedAddress = null
+    ) => {
         return (
             <View>
                 <Separator />
@@ -402,6 +409,7 @@ class Event extends Component {
                     description={description}
                     price={price}
                     duration={duration}
+                    formattedAddress={formattedAddress}
                 />
             </View>
         );
@@ -564,7 +572,8 @@ class Event extends Component {
                               START_TIME,
                               EVENT_DESCRIPTION,
                               EVENT_PRICE,
-                              EVENT_DURATION
+                              EVENT_DURATION,
+                              MARKER.formattedAddress
                           )
                         : null}
                     {renderPeople
