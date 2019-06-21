@@ -35,6 +35,35 @@ class Hero extends Component {
         );
     };
 
+    get pagination() {
+        const { activeSlide } = this.state;
+        let { media } = this.props;
+        return (
+            <Pagination
+                dotsLength={media.length}
+                activeDotIndex={activeSlide}
+                containerStyle={{
+                    backgroundColor: "rgba(0, 0, 0, 0)",
+                    paddingTop: Spacing.base,
+                    paddingBottom: 0
+                }}
+                dotStyle={{
+                    width: 8,
+                    height: 8,
+                    borderRadius: 4,
+                    marginHorizontal: 0,
+                    backgroundColor: "rgba(75, 75, 75, 1.00)"
+                }}
+                inactiveDotStyle={{
+                    // Define styles for inactive dots here
+                    backgroundColor: "rgba(160, 160, 160, 1.00)"
+                }}
+                inactiveDotOpacity={0.4}
+                inactiveDotScale={0.6}
+            />
+        );
+    }
+
     render() {
         let { title, chefName, chefDescription, media } = this.props;
         return (
@@ -53,7 +82,7 @@ class Hero extends Component {
                         }
                     />
                 </View>
-
+                {this.pagination}
                 <View style={styles.textContainer}>
                     <PrimaryText>{title}</PrimaryText>
                     <MinorText>{`Hosted by ${chefName}`}</MinorText>

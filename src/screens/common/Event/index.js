@@ -4,6 +4,7 @@ import Event from "./event";
 import ProfileCreationStack from "Homecooked/src/screens/main/common/ProfileCreationStack";
 import BookingStack from "./BookingStack";
 import Person from "Homecooked/src/screens/main/common/Person";
+import RefundConfirmation from "./RefundConfirmation";
 const EventStack = createStackNavigator(
     {
         Event: {
@@ -19,6 +20,9 @@ const EventStack = createStackNavigator(
             screen: ({ navigation }) => (
                 <Person navigation={navigation} parentRoute={"Event"} />
             )
+        },
+        RefundConfirmation: {
+            screen: RefundConfirmation
         }
     },
     {

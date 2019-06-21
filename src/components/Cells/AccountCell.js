@@ -7,7 +7,6 @@ const Cell = props => (
     <TouchableOpacity
         onPress={props.onPress}
         style={props.style}
-        key={props.key}
         activeOpacity={1.0}
     >
         <View style={styles.row}>

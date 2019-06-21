@@ -2,16 +2,18 @@ import React, { Component } from "react";
 import { View, StyleSheet } from "react-native";
 import NavigationService from "Homecooked/src/utils/NavigationService";
 import HeadingText from "Homecooked/src/components/Text/Heading";
+import SecondaryText from "Homecooked/src/components/Text/Secondary";
 import CloseButton from "Homecooked/src/components/Buttons/Close";
 import BarButton from "Homecooked/src/components/Buttons/BarButton";
 import InfoSection from "Homecooked/src/components/Event/Info";
-
+import CreditCardInput from "Homecooked/src/components/TextFields/CreditCardInput";
 import { createToken, formatCardDetails } from "Homecooked/src/services/stripe";
 import { eventTypes } from "Homecooked/src/modules/types";
 import { connect } from "react-redux";
-import { LiteCreditCardInput } from "react-native-credit-card-input";
+import { getEvent } from "Homecooked/src/modules/event/selectors";
 
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 class Review extends Component {
     state = {
@@ -34,9 +36,14 @@ class Review extends Component {
     }
 
     _onChange = form =>
-        this.setState({
-            cardDetails: form
-        });
+        this.setState(
+            {
+                cardDetails: form
+            },
+            () => {
+                console.log(this.state);
+            }
+        );
 
     _goNext = () => {
         let { id } = this.props.navigation.state.params.event;
@@ -46,17 +53,32 @@ class Review extends Component {
 
     render() {
         let { bookingInProgress } = this.props;
+        let { attributes, startTime } = this.props.event;
+        let { price } = attributes;
         return (
             <View style={{ flex: 1, paddingTop: 30 }}>
-                <View style={styles.headerContainer}>
-                    <CloseButton onPress={this._goBack} />
-                    <HeadingText>Review</HeadingText>
-                </View>
-                <InfoSection modules={this.state.modules} />
-                <View style={styles.cardInputContainer}>
-                    <LiteCreditCardInput onChange={this._onChange} />
-                </View>
+                <KeyboardAwareScrollView
+                    extraScrollHeight={120}
+                    extraHeight={50}
+                    keyboardShouldPersistTaps={"handled"}
+                    showsVerticalScrollIndicator={false}
+                    bounces={false}
+                >
+                    <View style={styles.headerContainer}>
+                        <CloseButton onPress={this._goBack} />
+                        <HeadingText>Review</HeadingText>
+                    </View>
+                    <InfoSection
+                        modules={this.state.modules}
+                        startTime={startTime}
+                        price={price}
+                    />
 
+                    <CreditCardInput
+                        onChange={this._onChange}
+                        valid={this.state.cardDetails.valid}
+                    />
+                </KeyboardAwareScrollView>
                 <BarButton
                     title="RSVP"
                     style={{
@@ -77,6 +99,7 @@ class Review extends Component {
 const mapStateToProps = state => {
     const { events } = state;
     return {
+        ...getEvent(state),
         actionLoading: events.actionLoading,
         error: events.error
     };
@@ -104,8 +127,5 @@ export default connect(
 const styles = StyleSheet.create({
     headerContainer: {
         paddingHorizontal: Spacing.large
-    },
-    cardInputContainer: {
-        marginHorizontal: Spacing.large
     }
 });

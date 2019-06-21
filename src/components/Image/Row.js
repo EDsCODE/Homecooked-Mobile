@@ -8,7 +8,7 @@ import {
     TouchableOpacity
 } from "react-native";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
-import { Icon } from "react-native-elements";
+import FastImage from "react-native-fast-image";
 
 export default class Row extends Component {
     state = {
@@ -29,9 +29,11 @@ export default class Row extends Component {
         return (
             <View style={styles.imageContainer}>
                 {people.slice(0, 4 || people.length).map((person, index) => (
-                    <TouchableOpacity onPress={() => onPress(person.user)}>
-                        <Image
-                            key={index.toString()}
+                    <TouchableOpacity
+                        key={index.toString()}
+                        onPress={() => onPress(person)}
+                    >
+                        <FastImage
                             style={{
                                 width: imageWidth,
                                 height: imageWidth,
@@ -41,7 +43,11 @@ export default class Row extends Component {
                                 borderWidth: 1,
                                 marginRight: Spacing.smallest
                             }}
-                            source={{ uri: person.user.profileImageSignedUrl }}
+                            source={{
+                                uri: person.profileImageSignedUrl,
+                                priority: FastImage.priority.normal
+                            }}
+                            resizeMode={FastImage.resizeMode.cover}
                         />
                     </TouchableOpacity>
                 ))}
@@ -86,12 +92,13 @@ export default class Row extends Component {
     };
 
     render() {
-        return (
+        let { people } = this.props;
+        return people.length ? (
             <View style={styles.container} onLayout={this._onLayout}>
                 <Text style={styles.title}>At the Table</Text>
                 {this._renderProfiles(this.state.width)}
             </View>
-        );
+        ) : null;
     }
 }
 

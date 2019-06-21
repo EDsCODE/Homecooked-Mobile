@@ -12,7 +12,10 @@ export default class Tabs extends Component {
             <View ref={this.props.ref} style={styles.statusContainer}>
                 {tabs.map((tab, index) => {
                     return (
-                        <TouchableOpacity onPress={() => this.select(index)}>
+                        <TouchableOpacity
+                            key={index.toString()}
+                            onPress={() => this.select(index)}
+                        >
                             <Text
                                 style={[
                                     styles.tab,

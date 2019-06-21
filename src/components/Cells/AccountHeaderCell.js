@@ -14,7 +14,7 @@ const imageURI = "Homecooked/src/assets/img/filledTable.jpg";
 export default props => {
     return (
         <TouchableOpacity onPress={props.onPress}>
-            <View style={styles.row} key={props.key}>
+            <View style={styles.row}>
                 <Image
                     style={styles.image}
                     source={

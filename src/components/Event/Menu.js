@@ -71,7 +71,7 @@ function formatArrayAttributes(arr) {
 }
 
 const Row = props => (
-    <View style={styles.row} key={props.key}>
+    <View style={styles.row}>
         <SecondaryText>{props.name}</SecondaryText>
         <MinorText>{props.description}</MinorText>
     </View>

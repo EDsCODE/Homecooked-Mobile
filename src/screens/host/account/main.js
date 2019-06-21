@@ -9,6 +9,7 @@ import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 
 import { connect } from "react-redux";
 import { hostTypes } from "Homecooked/src/modules/types";
+import { getHostImage } from "Homecooked/src/modules/host/selectors";
 
 const PROMPT = "Edit Host Profile";
 
@@ -37,14 +38,6 @@ class Host_Settings_Main extends Component {
                 onPress: () => Linking.openURL(STRIPE_URL)
             },
             {
-                title: "Invite Friends",
-                prompt: "Earn $3 for each friend who attends a meal"
-            },
-            {
-                title: "Refer a host",
-                prompt: "Earn $8 for each new host you refer"
-            },
-            {
                 title: "FAQ"
             },
             {
@@ -57,12 +50,25 @@ class Host_Settings_Main extends Component {
     }
 
     _renderItem = ({ item, index }) => {
+        let {
+            currentUser: { firstName },
+            hostImage
+        } = this.props;
         if (index == 0) {
             // render header cell
-            return <HeaderCell id={item.id} name="Eric" prompt={PROMPT} />;
+            return (
+                <HeaderCell
+                    key={index.toString()}
+                    id={item.id}
+                    name={firstName}
+                    prompt={PROMPT}
+                    source={hostImage}
+                />
+            );
         } else {
             return (
                 <Cell
+                    key={index.toString()}
                     id={item.id}
                     title={item.title}
                     prompt={item.prompt}
@@ -72,7 +78,7 @@ class Host_Settings_Main extends Component {
         }
     };
 
-    _keyExtractor = (item, index) => item.id;
+    _keyExtractor = (item, index) => index.toString();
 
     _renderSeparator = () => (
         <View
@@ -102,7 +108,8 @@ const mapStateToProps = state => {
     const { host, currentUser } = state;
     return {
         host,
-        currentUser
+        currentUser,
+        hostImage: getHostImage(state)
     };
 };
 

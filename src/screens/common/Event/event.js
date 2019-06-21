@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, Alert } from "react-native";
 import HeroSection from "Homecooked/src/components/Event/Hero";
 import MenuSection from "Homecooked/src/components/Event/Menu";
 import InfoSection from "Homecooked/src/components/Event/Info";
@@ -52,7 +52,8 @@ class Event extends Component {
         MAIN_TEXT: "",
         SUB_TEXT: "",
         ONPRESS: null,
-        BUTTON_TEXT: ""
+        BUTTON_TEXT: "",
+        USERS: []
     };
 
     componentDidMount() {
@@ -80,7 +81,6 @@ class Event extends Component {
             chef,
             description,
             duration,
-            guestCount,
             marker,
             media,
             menu,
@@ -131,13 +131,14 @@ class Event extends Component {
             chef,
             description,
             duration,
-            guestCount,
+            confirmedBookingCount,
             marker,
             images: media,
             menu,
             specialDirections,
             startTime,
-            title
+            title,
+            users
         } = this.props.event;
 
         let {
@@ -153,7 +154,7 @@ class Event extends Component {
                     loading: false,
                     renderHero: true,
                     renderInfo: true,
-                    renderPeople: false,
+                    renderPeople: true,
                     renderMenu: true,
                     renderLocation: true,
                     renderUtilityBar: true,
@@ -174,9 +175,11 @@ class Event extends Component {
                     BUTTON_COLOR: Color.green,
                     TINT_COLOR: Color.green,
                     MAIN_TEXT: `$${price} per person`,
-                    SUB_TEXT: `${tableSizeMax - guestCount} seats left`,
+                    SUB_TEXT: `${tableSizeMax -
+                        confirmedBookingCount} seats left`,
                     ONPRESS: this._navigateToBooking,
-                    BUTTON_TEXT: "RSVP"
+                    BUTTON_TEXT: "RSVP",
+                    USERS: users
                 });
                 break;
             case EventViewTypes.HISTORY_UPCOMING:
@@ -184,7 +187,7 @@ class Event extends Component {
                     loading: false,
                     renderHero: true,
                     renderInfo: true,
-                    renderPeople: false,
+                    renderPeople: true,
                     renderMenu: true,
                     renderLocation: true,
                     renderUtilityBar: true,
@@ -211,8 +214,9 @@ class Event extends Component {
                     TINT_COLOR: Color.green,
                     MAIN_TEXT: `Status: Active`,
                     SUB_TEXT: `Upcoming`,
-                    ONPRESS: this.props.refund,
-                    BUTTON_TEXT: "Refund"
+                    ONPRESS: this._refund,
+                    BUTTON_TEXT: "Refund",
+                    USERS: users
                 });
                 break;
             case EventViewTypes.HISTORY_PAST:
@@ -327,6 +331,26 @@ class Event extends Component {
         }
     };
 
+    _refund = () => {
+        Alert.alert(
+            "Are you sure?",
+            "This action cannot be undone and you will unable to book this meal again.",
+            [
+                {
+                    text: "Refund",
+                    onPress: () => this.props.refund(),
+                    style: "destructive"
+                },
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                }
+            ],
+            { cancelable: false }
+        );
+    };
+
     _goBack = () => {
         let { parentRoute } = this.props;
         NavigationService.navigate(parentRoute);
@@ -368,7 +392,14 @@ class Event extends Component {
         );
     };
 
-    _renderInfoSection = (modules, startTime, description, price, duration) => {
+    _renderInfoSection = (
+        modules,
+        startTime,
+        description,
+        price,
+        duration,
+        formattedAddress = null
+    ) => {
         return (
             <View>
                 <Separator />
@@ -378,13 +409,20 @@ class Event extends Component {
                     description={description}
                     price={price}
                     duration={duration}
+                    formattedAddress={formattedAddress}
                 />
             </View>
         );
     };
 
-    _renderPeopleRow = (people, onPress) => {
-        return <PeopleRow people={people} onPress={onPress} />;
+    _renderPeopleRow = (loading, people) => {
+        return (
+            <PeopleRow
+                loading={loading}
+                people={people}
+                onPress={this._navigateToPerson}
+            />
+        );
     };
 
     _renderMenuSection = (title, menu, mealType, dietaryRestriction) => {
@@ -505,7 +543,8 @@ class Event extends Component {
             MAIN_TEXT,
             SUB_TEXT,
             ONPRESS,
-            BUTTON_TEXT
+            BUTTON_TEXT,
+            USERS
         } = this.state;
         return (
             <View style={{ flex: 1 }}>
@@ -533,10 +572,13 @@ class Event extends Component {
                               START_TIME,
                               EVENT_DESCRIPTION,
                               EVENT_PRICE,
-                              EVENT_DURATION
+                              EVENT_DURATION,
+                              MARKER.formattedAddress
                           )
                         : null}
-                    {renderPeople ? this._renderPeopleRow() : null}
+                    {renderPeople
+                        ? this._renderPeopleRow(loading, USERS)
+                        : null}
                     {renderMenu
                         ? this._renderMenuSection(
                               MENU_TITLE,

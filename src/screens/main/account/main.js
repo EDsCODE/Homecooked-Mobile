@@ -151,9 +151,6 @@ class Main extends Component {
             controlParams
         );
 
-        console.log(channel);
-        console.log(completed);
-        console.log(error);
         return { channel, completed, error };
     };
 
@@ -166,6 +163,7 @@ class Main extends Component {
             // render header cell
             return (
                 <HeaderCell
+                    key={index.toString()}
                     onPress={this._goToProfile}
                     id={item.id}
                     name={firstName}
@@ -176,6 +174,7 @@ class Main extends Component {
         } else {
             return (
                 <Cell
+                    key={index.toString()}
                     id={item.id}
                     title={item.title}
                     prompt={item.prompt}
@@ -185,7 +184,7 @@ class Main extends Component {
         }
     };
 
-    _keyExtractor = (item, index) => item.id;
+    _keyExtractor = (item, index) => index.toString();
 
     _renderSeparator = () => (
         <View
