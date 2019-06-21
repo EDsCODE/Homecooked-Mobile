@@ -141,6 +141,7 @@ dependencies {
     implementation project(':react-native-fast-image')
     implementation project(':react-native-fbsdk')
     implementation project(':react-native-branch')
+    implementation "io.branch.sdk.android:library:3.0.4"
     implementation project(':react-native-sensitive-info')
     implementation project(':react-native-image-picker')
     implementation project(':react-native-maps')

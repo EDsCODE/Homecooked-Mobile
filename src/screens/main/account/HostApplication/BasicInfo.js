@@ -11,7 +11,6 @@ import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 import NavigationService from "Homecooked/src/utils/NavigationService";
 
 import TextField from "Homecooked/src/components/TextFields/Material";
-import LocationField from "Homecooked/src/components/TextFields/LocationAutocomplete";
 
 export default class BasicInfo extends Component {
     state = {
