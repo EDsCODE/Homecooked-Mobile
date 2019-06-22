@@ -359,7 +359,7 @@ THE SOFTWARE.
 
 ## UrbanAirship-iOS-SDK
 
-Copyright 2010-2019 Urban Airship and Contributors
+Copyright 2010-2019 Airship and Contributors
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
