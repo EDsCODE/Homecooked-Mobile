@@ -7,7 +7,7 @@ target 'Homecooked' do
 
   # Pods for Homecooked
   pod 'react-native-fbsdk', :path => '../node_modules/react-native-fbsdk'
-  pod 'UrbanAirship-iOS-SDK', '~>10.0'
+  pod 'UrbanAirship-iOS-SDK', '~>11.0'
   # Your 'node_modules' directory is probably in the root of your project,
   # but if not, adjust the `:path` accordingly
   pod 'React', :path => '../node_modules/react-native', :subspecs => [
@@ -24,6 +24,10 @@ target 'Homecooked' do
   # Explicitly include Yoga if you are using RN >= 0.42.0
   pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
 
+  pod 'FBSDKCoreKit', '~>4.42.0'
+  pod 'FBSDKLoginKit', '~>4.42.0'
+  pod 'FBSDKShareKit', '~>4.42.0'
+  
   # Third party deps podspec link
   pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'

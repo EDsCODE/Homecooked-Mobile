@@ -7,11 +7,11 @@ PODS:
   - Bolts/Tasks (1.9.0)
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
-  - FBSDKCoreKit (4.39.1):
+  - FBSDKCoreKit (4.42.0):
     - Bolts (~> 1.9)
-  - FBSDKLoginKit (4.39.1):
+  - FBSDKLoginKit (4.42.0):
     - FBSDKCoreKit
-  - FBSDKShareKit (4.39.1):
+  - FBSDKShareKit (4.42.0):
     - FBSDKCoreKit
   - Folly (2018.10.22.00):
     - boost-for-react-native
@@ -83,11 +83,14 @@ PODS:
   - SDWebImage (5.0.6):
     - SDWebImage/Core (= 5.0.6)
   - SDWebImage/Core (5.0.6)
-  - UrbanAirship-iOS-SDK (10.2.2)
+  - UrbanAirship-iOS-SDK (11.0.0)
   - yoga (0.59.8.React)
 
 DEPENDENCIES:
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
+  - FBSDKCoreKit (~> 4.42.0)
+  - FBSDKLoginKit (~> 4.42.0)
+  - FBSDKShareKit (~> 4.42.0)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - react-native-fast-image (from `../node_modules/react-native-fast-image`)
@@ -100,7 +103,7 @@ DEPENDENCIES:
   - React/RCTNetwork (from `../node_modules/react-native`)
   - React/RCTText (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
-  - UrbanAirship-iOS-SDK (~> 10.0)
+  - UrbanAirship-iOS-SDK (~> 11.0)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -133,18 +136,18 @@ SPEC CHECKSUMS:
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
-  FBSDKCoreKit: f442aa96179cc9b382bb4abeb7e340a47cca8f91
-  FBSDKLoginKit: c3079d9a4db27c492287b1eed7a4272b28cf8a59
-  FBSDKShareKit: 27d7b982e7b1f4638da2f2b1ab6eba5afc6b5888
+  FBSDKCoreKit: aa42f1c384775f8b075f53a43080474278e9701d
+  FBSDKLoginKit: 373830c68aa48c9e8f0bfed93a3e32d2ca8963a0
+  FBSDKShareKit: 387749259d79e4070ebb304b3fd256e4b4bc4298
   Folly: de497beb10f102453a1afa9edbf8cf8a251890de
   glog: aefd1eb5dda2ab95ba0938556f34b98e2da3a60d
-  React: 1d605e098d69bdf08960787f3446f0a9dc2e2ccf
-  react-native-fast-image: c631168273554de44bc59adf9053f5a2f44363fb
-  react-native-fbsdk: d5f98cc5abecbcc463e3c35c04743d716d002d37
+  React: 76e6aa2b87d05eb6cccb6926d72685c9a07df152
+  react-native-fast-image: 3390cc968d598f0c6b5c710df138f4b653a87231
+  react-native-fbsdk: 5c3ff4dda057e17d3b4b5491033fc653d423e71d
   SDWebImage: 920f1a2ff1ca8296ad34f6e0510a1ef1d70ac965
-  UrbanAirship-iOS-SDK: a5ff86dcdb2582590aec635299931278cfeb53c4
-  yoga: 128daf064cacaede0c3bb27424b6b4c71052e6cd
+  UrbanAirship-iOS-SDK: a8d14c20a1b5af58784923b827dfd4d4145c0622
+  yoga: 92b2102c3d373d1a790db4ab761d2b0ffc634f64
 
-PODFILE CHECKSUM: 0a6e1470b39585fa7336d0c96d3c7340c64e9887
+PODFILE CHECKSUM: 19e288425af8dc4cc14488dd4ac6e18cba59d9c9
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.7.1

@@ -1,4 +1,4 @@
-/* Copyright Urban Airship and Contributors */
+/* Copyright Airship and Contributors */
 
 #import <UIKit/UIKit.h>
 
@@ -16,7 +16,7 @@
 #import "UANotificationCategories+Internal.h"
 #import "UANotificationCategory.h"
 #import "UAPreferenceDataStore+Internal.h"
-#import "UAConfig.h"
+#import "UARuntimeConfig.h"
 #import "UANotificationCategory.h"
 #import "UATagUtils+Internal.h"
 #import "UAPushReceivedEvent+Internal.h"
@@ -78,13 +78,13 @@ NSString *const UAChannelUpdatedEventChannelKey = @"com.urbanairship.push.channe
 @property (nonatomic, strong) UARegistrationDelegateWrapper *registrationDelegateWrapper;
 @property (nonatomic, readonly) BOOL isRegisteredForRemoteNotifications;
 @property (nonatomic, readonly) BOOL isBackgroundRefreshStatusAvailable;
-@property (nonatomic, strong) UAConfig *config;
+@property (nonatomic, strong) UARuntimeConfig *config;
 
 @end
 
 @implementation UAPush
 
-- (instancetype)initWithConfig:(UAConfig *)config
+- (instancetype)initWithConfig:(UARuntimeConfig *)config
                      dataStore:(UAPreferenceDataStore *)dataStore
             tagGroupsRegistrar:(UATagGroupsRegistrar *)tagGroupsRegistrar
             notificationCenter:(NSNotificationCenter *)notificationCenter
@@ -168,7 +168,7 @@ NSString *const UAChannelUpdatedEventChannelKey = @"com.urbanairship.push.channe
     return self;
 }
 
-+ (instancetype)pushWithConfig:(UAConfig *)config
++ (instancetype)pushWithConfig:(UARuntimeConfig *)config
                      dataStore:(UAPreferenceDataStore *)dataStore
             tagGroupsRegistrar:(UATagGroupsRegistrar *)tagGroupsRegistrar {
     return [[self alloc] initWithConfig:config
@@ -180,7 +180,7 @@ NSString *const UAChannelUpdatedEventChannelKey = @"com.urbanairship.push.channe
                              dispatcher:[UADispatcher mainDispatcher]];
 }
 
-+ (instancetype)pushWithConfig:(UAConfig *)config
++ (instancetype)pushWithConfig:(UARuntimeConfig *)config
                      dataStore:(UAPreferenceDataStore *)dataStore
             tagGroupsRegistrar:(UATagGroupsRegistrar *)tagGroupsRegistrar
             notificationCenter:(NSNotificationCenter *)notificationCenter
@@ -220,14 +220,6 @@ NSString *const UAChannelUpdatedEventChannelKey = @"com.urbanairship.push.channe
 
 - (UAAuthorizedNotificationSettings)authorizedNotificationSettings {
     return (UAAuthorizedNotificationSettings) [self.dataStore integerForKey:UAPushTypesAuthorizedKey];
-}
-
-- (UANotificationOptions)authorizedNotificationOptions {
-    UANotificationOptions legacyOptions = [self legacyOptionsForAuthorizedSettings:self.authorizedNotificationSettings];
-
-    // iOS 10 does not disable the types if they are already authorized. Hide any types
-    // that are authorized but are no longer requested
-    return legacyOptions & self.notificationOptions;
 }
 
 - (void)setAuthorizedNotificationSettings:(UAAuthorizedNotificationSettings)authorizedSettings {
@@ -406,7 +398,7 @@ NSString *const UAChannelUpdatedEventChannelKey = @"com.urbanairship.push.channe
     _customCategories = [categories filteredSetUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
         UANotificationCategory *category = evaluatedObject;
         if ([category.identifier hasPrefix:@"ua_"]) {
-            UA_LWARN(@"Ignoring category %@, only Urban Airship notification categories are allowed to have prefix ua_.", category.identifier);
+            UA_LWARN(@"Ignoring category %@, only Airship notification categories are allowed to have prefix ua_.", category.identifier);
             return NO;
         }
 
@@ -497,7 +489,7 @@ NSString *const UAChannelUpdatedEventChannelKey = @"com.urbanairship.push.channe
 
 
 #pragma mark -
-#pragma mark Open APIs - UA Registration Tags APIs
+#pragma mark Open APIs - Airship Registration Tags APIs
 
 - (void)addTag:(NSString *)tag {
     [self addTags:[NSArray arrayWithObject:tag]];
@@ -520,7 +512,7 @@ NSString *const UAChannelUpdatedEventChannelKey = @"com.urbanairship.push.channe
 }
 
 #pragma mark -
-#pragma mark Open APIs - UA Tag Groups APIs
+#pragma mark Open APIs - Airship Tag Groups APIs
 
 - (void)addTags:(NSArray *)tags group:(NSString *)tagGroupID {
     if (self.channelTagRegistrationEnabled && [UAPushDefaultDeviceTagGroup isEqualToString:tagGroupID]) {
@@ -563,7 +555,7 @@ NSString *const UAChannelUpdatedEventChannelKey = @"com.urbanairship.push.channe
     // we are post-registration and will need to make
     // an update call
     if (self.autobadgeEnabled && (self.deviceToken || self.channelID)) {
-        UA_LDEBUG(@"Sending autobadge update to UA server.");
+        UA_LDEBUG(@"Sending autobadge update to Airship server.");
         [self updateChannelRegistrationForcefully:YES];
     }
 }
@@ -642,7 +634,7 @@ NSString *const UAChannelUpdatedEventChannelKey = @"com.urbanairship.push.channe
 }
 
 #pragma mark -
-#pragma mark UA Registration Methods
+#pragma mark Airship Registration Methods
 
 
 - (void)createChannelPayload:(void (^)(UAChannelRegistrationPayload *))completionHandler
@@ -752,7 +744,7 @@ NSString *const UAChannelUpdatedEventChannelKey = @"com.urbanairship.push.channe
         [self updateAPNSRegistration];
     } else if (self.userPushNotificationsEnabled && !self.channelID) {
         UA_LDEBUG(@"Push is enabled but we have not yet generated a channel ID. "
-                  "Urban Airship registration will automatically run when the device token is registered, "
+                  "Airship registration will automatically run when the device token is registered, "
                   "the next time the app is backgrounded, or the next time the app is foregrounded.");
     } else {
         [self updateChannelRegistrationForcefully:NO];
@@ -891,10 +883,9 @@ NSString *const UAChannelUpdatedEventChannelKey = @"com.urbanairship.push.channe
     [self.registrationDelegateWrapper registrationFailed];}
 
 - (void)channelCreated:(NSString *)channelID
-       channelLocation:(NSString *)channelLocation
               existing:(BOOL)existing {
 
-    if (channelID && channelLocation) {
+    if (channelID) {
         if (uaLogLevel >= UALogLevelError) {
             NSLog(@"Created channel with ID: %@", channelID);
         }
@@ -904,8 +895,7 @@ NSString *const UAChannelUpdatedEventChannelKey = @"com.urbanairship.push.channe
                                              userInfo:@{UAChannelCreatedEventChannelKey: channelID,
                                                         UAChannelCreatedEventExistingKey: @(existing)}];
     } else {
-        UA_LERR(@"Channel creation failed. Missing channelID: %@ or channelLocation: %@",
-                channelID, channelLocation);
+        UA_LERR(@"Channel creation failed. Missing channelID: %@", channelID);
     }
 }
 
@@ -994,7 +984,7 @@ NSString *const UAChannelUpdatedEventChannelKey = @"com.urbanairship.push.channe
 - (void)migratePushSettings {
     [self.dataStore migrateUnprefixedKeys:@[UAUserPushNotificationsEnabledKey, UABackgroundPushNotificationsEnabledKey,
                                             UAPushAliasSettingsKey, UAPushTagsSettingsKey, UAPushBadgeSettingsKey,
-                                            UAPushChannelIDKey, UAPushChannelLocationKey, UAPushDeviceTokenKey,
+                                            UAPushChannelIDKey, UAPushDeviceTokenKey,
                                             UAPushQuietTimeSettingsKey, UAPushQuietTimeEnabledSettingsKey,
                                             UAPushChannelCreationOnForeground, UAPushEnabledSettingsMigratedKey,
                                             UAPushEnabledKey, UAPushTimeZoneSettingsKey]];
