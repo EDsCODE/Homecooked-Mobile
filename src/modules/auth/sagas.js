@@ -81,12 +81,14 @@ function* facebookLoginWorkerSaga(action) {
 
 function* registerWorkerSaga(action) {
     try {
-        let { email, password, firstName } = action.payload;
+        let { personal, account } = action.payload;
+        let { email, password } = account;
         const payload = yield call(
             AuthService.register,
             email,
             password,
-            firstName
+            personal,
+            account
         );
         let { accessToken, user, message, refreshToken } = payload;
 

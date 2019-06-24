@@ -13,29 +13,44 @@ import {
 
 export default class Attendance extends Component {
     state = {
-        attendees: [
-            {
-                userId: "1",
-                name: "Eric",
-                selected: false
-            },
-            {
-                userId: "2",
-                name: "Tarun",
-                selected: false
-            },
-            {
-                userId: "3",
-                name: "Hojung",
-                selected: false
-            },
-            {
-                userId: "4",
-                name: "Hojung",
-                selected: false
-            }
-        ]
+        attendees: [],
+        loaded: false
     };
+
+    componentDidMount() {
+        let attendees = [];
+        if (this.props.screenProps.event.users) {
+            this.props.screenProps.event.users.forEach(user => {
+                attendees.push({
+                    userId: user.id,
+                    name: user.firstName,
+                    selected: false,
+                    profileImageSignedUrl: user.profileImageSignedUrl
+                });
+            });
+            this.setState({
+                attendees: attendees
+            });
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (!this.state.loaded && nextProps.screenProps.event.users) {
+            let attendees = [];
+            nextProps.screenProps.event.users.forEach(user => {
+                attendees.push({
+                    userId: user.id,
+                    name: user.firstName,
+                    selected: false,
+                    profileImageSignedUrl: user.profileImageSignedUrl
+                });
+            });
+            this.setState({
+                attendees: attendees,
+                loaded: true
+            });
+        }
+    }
 
     _renderItem = (item, index) => {
         return (
@@ -47,6 +62,7 @@ export default class Attendance extends Component {
                 selectedIconType={"checkmark"}
                 color={Color.green}
                 iconSize={26}
+                source={item.profileImageSignedUrl}
             />
         );
     };
@@ -65,6 +81,18 @@ export default class Attendance extends Component {
     };
 
     _goNext = () => {
+        this.props.screenProps.updateData("attendees", this.state.attendees);
+        let reports = [];
+        this.state.attendees.forEach(attendee => {
+            if (attendee.selected) {
+                reports.push({
+                    ...attendee,
+                    selected: false,
+                    report: ""
+                });
+            }
+        });
+        this.props.screenProps.updateData("reports", reports);
         this.props.navigation.navigate("AttendanceReview");
     };
 

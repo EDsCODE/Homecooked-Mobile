@@ -3,6 +3,7 @@ export const HISTORY_UPCOMING = "HISTORY_UPCOMING";
 export const HISTORY_PAST = "HISTORY_PAST";
 export const HOST_ACTIVE = "HOST_ACTIVE";
 export const HOST_IN_REVIEW = "HOST_IN_REVIEW";
+export const HOST_CLOSEABLE = "HOST_CLOSEABLE";
 export const HOST_PAST = "HOST_PAST";
 export const PREVIEW = "PREVIEW";
 

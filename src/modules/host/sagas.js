@@ -89,15 +89,11 @@ function* getChefWorkerSaga(action) {
             EventService.getEventSettingsByType,
             chef.type
         );
-        let medias = yield all(
-            chef.media.map(media => {
-                return call(getChefMedia, media);
-            })
-        );
         yield put({
             type: types.GET_CHEF_SUCCESS,
-            payload: { chef, preferences, media: medias }
+            payload: { chef, preferences }
         });
+        yield put({ type: types.GET_HOST_AVATAR_REQUEST });
     } catch (error) {
         yield put({ type: types.GET_CHEF_ERROR, error });
     }
@@ -137,9 +133,66 @@ function* postEventWorkerSaga(action) {
     }
 }
 
+function* uploadImageWorkerSaga(action) {
+    try {
+        let { image } = action.payload;
+        let { data: key } = yield call(ImageService.uploadImage, image);
+        yield put({ type: types.UPLOAD_HOST_IMAGE_SUCCESS, payload: { key } });
+        yield put({
+            type: types.UPDATE_HOST_REQUEST,
+            payload: {
+                profileImageUrl: key
+            }
+        });
+    } catch (error) {
+        yield put({ type: types.UPLOAD_HOST_IMAGE_ERROR, error });
+    }
+}
+
+function* updateHostWorkerSaga(action) {
+    try {
+        let hostInput = action.payload;
+        let chefId = yield select(hostSelectors.chefId);
+        yield call(HostService.updateHost, chefId, hostInput);
+        yield put({
+            type: types.UPDATE_HOST_SUCCESS,
+            payload: {
+                ...hostInput
+            }
+        });
+        yield put({ type: types.GET_HOST_AVATAR_REQUEST });
+    } catch (error) {
+        yield put({ type: types.UPDATE_HOST_ERROR, error });
+    }
+}
+
+function* getAvatarWorkerSaga(action) {
+    try {
+        let host = yield select(hostSelectors.host);
+        if (!host.profileImageUrl) {
+            throw "No profile image key";
+        }
+        let { data: url } = yield call(
+            ImageService.getImage,
+            host.profileImageUrl
+        );
+        yield put({
+            type: types.GET_HOST_AVATAR_SUCCESS,
+            payload: {
+                profileImageSignedUrl: url
+            }
+        });
+    } catch (error) {
+        yield put({ type: types.GET_HOST_AVATAR_ERROR, error });
+    }
+}
+
 export const hostSagas = [
     takeLatest(types.CREATE_APPLICATION_REQUEST, createApplicationWorkerSaga),
     takeLatest(types.GET_CHEF_REQUEST, getChefWorkerSaga),
+    takeLatest(types.UPDATE_HOST_REQUEST, updateHostWorkerSaga),
     takeLatest(types.LOAD_HOSTING_EVENTS_REQUEST, loadHostingEventsSaga),
-    takeLatest(types.POST_EVENT_REQUEST, postEventWorkerSaga)
+    takeLatest(types.POST_EVENT_REQUEST, postEventWorkerSaga),
+    takeLatest(types.UPLOAD_HOST_IMAGE_REQUEST, uploadImageWorkerSaga),
+    takeLatest(types.GET_HOST_AVATAR_REQUEST, getAvatarWorkerSaga)
 ];

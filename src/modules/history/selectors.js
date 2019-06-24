@@ -1,6 +1,7 @@
 // get events upcoming events for user
 // get events past
 import { createSelector } from "reselect";
+import { EventViewTypes } from "Homecooked/src/types";
 
 const getBookings = state => state.currentUser.bookings;
 const getEvents = state => state.events.byId;
@@ -27,23 +28,16 @@ export const getUpcomingEvents = createSelector(
         let upcomingEvents = [];
         currentBookingsArray.forEach(booking => {
             if (booking.status == "CNF" && events[booking.eventId]) {
+                let event = Object.assign({}, events[booking.eventId]);
+                event.mode = EventViewTypes.HISTORY_UPCOMING;
+
                 upcomingEvents.push({
-                    ...events[booking.eventId],
+                    ...event,
                     userBooking: booking
                 });
             }
         });
-
-        // upcomingEvents.forEach((event, i) => {
-        //     let bookings = event["bookings"].filter(
-        //         booking => booking.status == "CNF"
-        //     );
-        //     bookings.forEach((booking, j) => {
-        //         bookings[j].user = users[booking.userId];
-        //     });
-        //     upcomingEvents[i].bookings = bookings;
-        // });
-
+        console.log(upcomingEvents);
         return upcomingEvents;
     }
 );
@@ -55,8 +49,10 @@ export const getPastEvents = createSelector(
         let pastEvents = [];
         currentBookingsArray.forEach(booking => {
             if (events[booking.eventId]) {
+                let event = Object.assign({}, events[booking.eventId]);
+                event.mode = EventViewTypes.HISTORY_PAST;
                 pastEvents.push({
-                    ...events[booking.eventId],
+                    ...event,
                     userBooking: booking
                 });
             }

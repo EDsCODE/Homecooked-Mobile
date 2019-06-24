@@ -51,16 +51,13 @@ class HostTablesMain extends Component {
                 title={item.title}
                 onPress={() => {
                     NavigationService.navigate("HostTablesMainEvent");
-                    this.props.selectEvent(item.id, EventViewTypes.HOST_ACTIVE);
+                    this.props.selectEvent(item.id, item.mode);
                 }}
-                showUtility={item.closeable}
+                showUtility={item.mode == EventViewTypes.HOST_CLOSEABLE}
                 utilityOnPress={() => {
                     {
                         this.props.navigation.navigate("CloseEventStack");
-                        this.props.selectEvent(
-                            item.id,
-                            EventViewTypes.HOST_ACTIVE
-                        );
+                        this.props.selectEvent(item.id, item.mode);
                     }
                 }}
             />
@@ -77,8 +74,9 @@ class HostTablesMain extends Component {
                 endTime={endTime}
                 title={item.title}
                 onPress={() => {
+                    console.log(item);
                     NavigationService.navigate("HostTablesMainEvent");
-                    this.props.selectEvent(item.id, EventViewTypes.HOST_PAST);
+                    this.props.selectEvent(item.id, item.mode);
                 }}
             />
         );
@@ -96,10 +94,7 @@ class HostTablesMain extends Component {
                 onPress={() => {
                     NavigationService.navigate("HostTablesMainEvent");
 
-                    this.props.selectEvent(
-                        item.id,
-                        EventViewTypes.HOST_IN_REVIEW
-                    );
+                    this.props.selectEvent(item.id, item.mode);
                 }}
             />
         );

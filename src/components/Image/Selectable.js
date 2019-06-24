@@ -30,7 +30,7 @@ export const SelectableCell = props => {
             <View style={{ marginHorizontal: Spacing.larger / 6 }}>
                 <Grayscale amount={props.selected ? 0 : 1}>
                     <Image
-                        source={require(PROFILE_PLACEHOLDER_IMAGE)}
+                        source={{ uri: props.source }}
                         style={{
                             width: Spacing.deviceWidth / 3 - Spacing.larger,
                             height: Spacing.deviceWidth / 3 - Spacing.larger,

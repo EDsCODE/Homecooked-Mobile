@@ -9,39 +9,30 @@ import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 import { eventCardDate } from "Homecooked/src/utils/Date";
 import Separator from "Homecooked/src/components/Separator";
 import BarButton from "Homecooked/src/components/Buttons/BarButton";
+import _ from "lodash";
 
 export default class AttendanceReview extends Component {
     state = {
-        attendees: [
-            {
-                userId: "1",
-                name: "Eric",
-                selected: false,
-                profileImageSignedUrl: "https://picsum.photos/id/200/320/240"
-            },
-            {
-                userId: "2",
-                name: "Tarun",
-                selected: false,
-                profileImageSignedUrl: "https://picsum.photos/id/200/320/240"
-            },
-            {
-                userId: "3",
-                name: "Hojung",
-                selected: false,
-                profileImageSignedUrl: "https://picsum.photos/id/200/320/240"
-            },
-            {
-                userId: "4",
-                name: "Hojung",
-                selected: false,
-                profileImageSignedUrl: "https://picsum.photos/id/200/320/240"
-            }
-        ]
+        attendees: []
     };
+
+    componentDidMount() {
+        console.log(this.props);
+        let confirmed = _.filter(this.props.screenProps.attendees, [
+            "selected",
+            true
+        ]);
+        this.setState({
+            attendees: confirmed
+        });
+    }
 
     _navigateToReport = () => {
         this.props.navigation.navigate("ReportOverview");
+    };
+
+    _goNext = () => {
+        this.props.screenProps.submit();
     };
 
     render() {

@@ -123,6 +123,7 @@ class Event extends Component {
     };
 
     _setEventDetails = () => {
+        console.log(this.props);
         let {
             attributes,
             bookings,
@@ -161,6 +162,7 @@ class Event extends Component {
                     START_TIME: startTime,
                     MEDIA: media,
                     CHEF_NAME: chef.user.firstName,
+                    CHEF_DESCRIPTION: chef.description,
                     EVENT_TITLE: title,
                     EVENT_DESCRIPTION: description,
                     EVENT_PRICE: price,
@@ -194,6 +196,7 @@ class Event extends Component {
                     START_TIME: startTime,
                     MEDIA: media,
                     CHEF_NAME: chef.user.firstName,
+                    CHEF_DESCRIPTION: chef.description,
                     EVENT_TITLE: title,
                     EVENT_DESCRIPTION: description,
                     EVENT_PRICE: price,
@@ -267,6 +270,7 @@ class Event extends Component {
                     START_TIME: startTime,
                     MEDIA: media,
                     CHEF_NAME: chef.user.firstName,
+                    CHEF_DESCRIPTION: chef.description,
                     EVENT_TITLE: title,
                     EVENT_DESCRIPTION: description,
                     EVENT_PRICE: price,
@@ -278,20 +282,53 @@ class Event extends Component {
                         "refundPolicy"
                     ],
                     MENU: menu,
-                    MENU_TITLE: closeable
-                        ? "What was served"
-                        : "What's cooking",
+                    MENU_TITLE: "What's cooking",
                     DIETARY_RESTRICTION: dietaryRestriction,
                     MEAL_TYPE: mealType,
                     MARKER: marker,
                     BUTTON_COLOR: Color.orange,
                     TINT_COLOR: Color.green,
-                    MAIN_TEXT: closeable ? "Status: Past" : `Status: Upcoming`,
-                    SUB_TEXT: closeable ? "Event finished" : `Happening soon`,
-                    ONPRESS: closeable
-                        ? this._navigateToCloseEventStack
-                        : this.props.cancel,
-                    BUTTON_TEXT: closeable ? "Close" : "Cancel"
+                    MAIN_TEXT: `Status: Upcoming`,
+                    SUB_TEXT: `Happening soon`,
+                    ONPRESS: this.props.cancel,
+                    BUTTON_TEXT: "Cancel"
+                });
+                break;
+            case EventViewTypes.HOST_CLOSEABLE:
+                this.setState({
+                    loading: false,
+                    renderHero: true,
+                    renderInfo: true,
+                    renderPeople: false,
+                    renderMenu: true,
+                    renderLocation: true,
+                    renderUtilityBar: true,
+                    renderTitle: false,
+                    START_TIME: startTime,
+                    MEDIA: media,
+                    CHEF_NAME: chef.user.firstName,
+                    CHEF_DESCRIPTION: chef.description,
+                    EVENT_TITLE: title,
+                    EVENT_DESCRIPTION: description,
+                    EVENT_PRICE: price,
+                    EVENT_DURATION: duration,
+                    MODULES: [
+                        "dateTime",
+                        "location",
+                        "description",
+                        "refundPolicy"
+                    ],
+                    MENU: menu,
+                    MENU_TITLE: "What was served",
+                    DIETARY_RESTRICTION: dietaryRestriction,
+                    MEAL_TYPE: mealType,
+                    MARKER: marker,
+                    BUTTON_COLOR: Color.orange,
+                    TINT_COLOR: Color.green,
+                    MAIN_TEXT: "Status: Past",
+                    SUB_TEXT: "Event finished",
+                    ONPRESS: this._navigateToCloseEventStack,
+                    BUTTON_TEXT: "Close"
                 });
                 break;
             case EventViewTypes.HOST_IN_REVIEW:
@@ -307,6 +344,7 @@ class Event extends Component {
                     START_TIME: startTime,
                     MEDIA: media,
                     CHEF_NAME: chef.user.firstName,
+                    CHEF_DESCRIPTION: chef.description,
                     EVENT_TITLE: title,
                     EVENT_DESCRIPTION: description,
                     EVENT_PRICE: price,
@@ -328,6 +366,42 @@ class Event extends Component {
                     SUB_TEXT: `You will be notified soon`,
                     ONPRESS: this.props.refund,
                     BUTTON_TEXT: "Cancel"
+                });
+                break;
+            case EventViewTypes.HOST_PAST:
+                this.setState({
+                    loading: false,
+                    renderHero: false,
+                    renderInfo: false,
+                    renderPeople: false,
+                    renderMenu: true,
+                    renderLocation: false,
+                    renderUtilityBar: false,
+                    renderTitle: true,
+                    START_TIME: startTime,
+                    MEDIA: media,
+                    CHEF_NAME: chef.user.firstName,
+                    EVENT_TITLE: title,
+                    EVENT_DESCRIPTION: description,
+                    EVENT_PRICE: price,
+                    EVENT_DURATION: duration,
+                    MODULES: [
+                        "dateTime",
+                        "location",
+                        "description",
+                        "refundPolicy"
+                    ],
+                    MENU: menu,
+                    MENU_TITLE: "What was served",
+                    DIETARY_RESTRICTION: dietaryRestriction,
+                    MEAL_TYPE: mealType,
+                    MARKER: marker,
+                    BUTTON_COLOR: Color.orange,
+                    TINT_COLOR: Color.green,
+                    MAIN_TEXT: `Status: Active`,
+                    SUB_TEXT: `Upcoming`,
+                    ONPRESS: this.props.refund,
+                    BUTTON_TEXT: "Refund"
                 });
                 break;
             default:

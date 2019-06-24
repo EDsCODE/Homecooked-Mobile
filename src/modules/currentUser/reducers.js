@@ -11,6 +11,8 @@ const initialState = {
     profileImageSignedUrl: null,
     stripeCustomerId: null,
     bio: null,
+    dob: null,
+    phoneNumber: null,
     isVerified: null,
     loading: false,
     loadingAvatar: false,
@@ -36,7 +38,9 @@ const reducer = (state = initialState, action) => {
                 profileImageURL,
                 stripeCustomerId,
                 bio,
-                isVerified
+                isVerified,
+                dob,
+                phoneNumber
             } = action.payload;
             return {
                 ...state,
@@ -51,6 +55,8 @@ const reducer = (state = initialState, action) => {
                     ? stripeCustomerId
                     : state.stripeCustomerId,
                 bio: bio ? bio : state.bio,
+                dob: dob ? dob : state.dob,
+                phoneNumber: phoneNumber ? phoneNumber : state.phoneNumber,
                 isVerified: isVerified ? isVerified : state.isVerified,
                 loading: false
             };

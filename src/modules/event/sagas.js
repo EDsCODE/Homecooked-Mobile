@@ -80,6 +80,8 @@ export function* getEventDetails(action) {
     try {
         if (action.payload.mode != EventViewTypes.PREVIEW) {
             yield call(getBookingsForEvent, action.payload.eventId);
+        } else {
+            NavigationService.navigate(action.payload.parentRoute + "Event");
         }
         yield put({ type: types.GET_EVENT_DETAILS_SUCCESS });
     } catch (error) {
@@ -104,10 +106,11 @@ export function* createEventWorkerSaga(action) {
 
         eventData.mediaKeys = mediaKeys;
         delete eventData.upload;
-        console.log(eventData);
+
         let { data: event } = yield call(EventService.createEvent, eventData);
         yield put({ type: types.UPDATE_EVENT_SUCCESS, event });
         yield put({ type: types.CREATE_EVENT_SUCCESS });
+        NavigationService.navigate("CongratulationsPage");
     } catch (error) {
         yield put({ type: types.UPDATE_EVENT_ERROR, error });
     }
@@ -154,11 +157,22 @@ function* refundBookingWorkerSaga(action) {
     }
 }
 
+function* markAttendanceWorkerSaga(action) {
+    try {
+        let { eventId, attendees, reports } = action.payload;
+        yield call(EventService.markAttendance, eventId, attendees, reports);
+        yield put({ type: types.MARK_ATTENDANCE_SUCCESS });
+    } catch (error) {
+        yield put({ type: types.MARK_ATTENDANCE_ERROR, error });
+    }
+}
+
 export const eventSagas = [
     takeLatest(types.GET_EVENTS_REQUEST, getActiveEventsWorkerSaga),
     takeEvery(types.SELECT_EVENT, getEventDetails),
     takeLatest(types.BOOK_EVENT_REQUEST, bookEventWorkerSaga),
     takeLatest(types.REFUND_BOOKING_REQUEST, refundBookingWorkerSaga),
     takeLatest(types.CANCEL_EVENT_REQUEST, cancelEventWorkerSaga),
-    takeLatest(types.CREATE_EVENT_REQUEST, createEventWorkerSaga)
+    takeLatest(types.CREATE_EVENT_REQUEST, createEventWorkerSaga),
+    takeLatest(types.MARK_ATTENDANCE_REQUEST, markAttendanceWorkerSaga)
 ];

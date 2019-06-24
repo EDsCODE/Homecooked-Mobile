@@ -42,13 +42,14 @@ class HistoryMain extends Component {
                 startTime={startTime}
                 endTime={endTime}
                 title={item.title}
-                onPress={() =>
+                onPress={() => {
                     this.props.selectEvent(
                         item.id,
-                        EventViewTypes.HISTORY_UPCOMING,
+                        item.mode,
                         item.userBooking
-                    )
-                }
+                    );
+                    this.props.navigation.navigate("HistoryMainEvent");
+                }}
             />
         );
     };
@@ -63,13 +64,14 @@ class HistoryMain extends Component {
                 startTime={startTime}
                 endTime={endTime}
                 title={item.title}
-                onPress={() =>
+                onPress={() => {
                     this.props.selectEvent(
                         item.id,
-                        EventViewTypes.HISTORY_PAST,
+                        item.mode,
                         item.userBooking
-                    )
-                }
+                    );
+                    this.props.navigation.navigate("HistoryMainEvent");
+                }}
             />
         );
     };

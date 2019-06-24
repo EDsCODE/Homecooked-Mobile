@@ -46,6 +46,7 @@ const reducer = (state = intialState, action) => {
             return {
                 ...state,
                 byEvent: {
+                    ...state.byEvent,
                     [action.payload.eventId]: action.payload.bookings
                 }
             };
