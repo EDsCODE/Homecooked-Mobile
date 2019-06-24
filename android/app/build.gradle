@@ -138,6 +138,11 @@ android {
 }
 
 dependencies {
+    implementation project(':appcenter-crashes')
+    implementation project(':appcenter-analytics')
+    implementation project(':appcenter')
+    implementation project(':tipsi-stripe')
+    implementation project(':react-native-image-crop-picker')
     implementation project(':react-native-color-matrix-image-filters')
     implementation project(':urbanairship-react-native')
     implementation project(':react-native-fast-image')

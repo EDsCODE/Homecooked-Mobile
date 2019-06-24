@@ -3,6 +3,11 @@ package com.homecooked;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.microsoft.appcenter.reactnative.crashes.AppCenterReactNativeCrashesPackage;
+import com.microsoft.appcenter.reactnative.analytics.AppCenterReactNativeAnalyticsPackage;
+import com.microsoft.appcenter.reactnative.appcenter.AppCenterReactNativePackage;
+import com.gettipsi.stripe.StripeReactPackage;
+import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import iyegoroff.RNColorMatrixImageFilters.ColorMatrixImageFiltersPackage;
 import com.urbanairship.reactnative.ReactAirshipPackage;
 import com.dylanvann.fastimage.FastImageViewPackage;
@@ -34,6 +39,11 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new AppCenterReactNativeCrashesPackage(MainApplication.this, getResources().getString(R.string.appCenterCrashes_whenToSendCrashes)),
+            new AppCenterReactNativeAnalyticsPackage(MainApplication.this, getResources().getString(R.string.appCenterAnalytics_whenToEnableAnalytics)),
+            new AppCenterReactNativePackage(MainApplication.this),
+            new StripeReactPackage(),
+            new PickerPackage(),
             new ColorMatrixImageFiltersPackage(),
             new ReactAirshipPackage(),
             new FastImageViewPackage(),
