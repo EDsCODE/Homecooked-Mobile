@@ -26,7 +26,7 @@ class Feed extends Component {
 
     onPress = event => {
         this.props.selectEvent(event.id);
-        // this.props.navigation.navigate("EventStack", { event });
+        this.props.navigation.navigate("FeedEvent");
     };
 
     _renderItem = ({ item }) => {

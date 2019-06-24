@@ -25,7 +25,7 @@ export default class Row extends Component {
 
     _renderProfiles = width => {
         let imageWidth = width / 5 - Spacing.smallest;
-        let { people, onPress } = this.props;
+        let { people, onPress, style } = this.props;
         return (
             <View style={styles.imageContainer}>
                 {people.slice(0, 4 || people.length).map((person, index) => (
@@ -92,11 +92,15 @@ export default class Row extends Component {
     };
 
     render() {
-        let { people } = this.props;
+        let { people, style, title } = this.props;
         return people.length ? (
-            <View style={styles.container} onLayout={this._onLayout}>
-                <Text style={styles.title}>At the Table</Text>
-                {this._renderProfiles(this.state.width)}
+            <View style={style}>
+                <View style={styles.container} onLayout={this._onLayout}>
+                    <Text style={styles.title}>
+                        {title ? title : "At the Table"}
+                    </Text>
+                    {this._renderProfiles(this.state.width)}
+                </View>
             </View>
         ) : null;
     }

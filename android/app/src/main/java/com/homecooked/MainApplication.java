@@ -3,6 +3,7 @@ package com.homecooked;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import iyegoroff.RNColorMatrixImageFilters.ColorMatrixImageFiltersPackage;
 import com.urbanairship.reactnative.ReactAirshipPackage;
 import com.dylanvann.fastimage.FastImageViewPackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
@@ -33,6 +34,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ColorMatrixImageFiltersPackage(),
             new ReactAirshipPackage(),
             new FastImageViewPackage(),
             new FBSDKPackage(),

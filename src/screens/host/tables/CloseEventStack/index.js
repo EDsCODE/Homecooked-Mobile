@@ -36,12 +36,7 @@ class CloseEvent extends Component {
     render() {
         const { navigation } = this.props;
         return (
-            <CloseEventStack
-                navigation={navigation}
-                screenProps={{
-                    event: this.props
-                }}
-            />
+            <CloseEventStack navigation={navigation} screenProps={this.props} />
         );
     }
 }

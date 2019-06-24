@@ -12,8 +12,60 @@ import {
 } from "Homecooked/src/components/Image/Selectable";
 
 export default class Attendance extends Component {
-    _renderItem = ({ item }) => {
-        return <SelectableCell />;
+    state = {
+        attendees: [
+            {
+                userId: "1",
+                name: "Eric",
+                selected: false
+            },
+            {
+                userId: "2",
+                name: "Tarun",
+                selected: false
+            },
+            {
+                userId: "3",
+                name: "Hojung",
+                selected: false
+            },
+            {
+                userId: "4",
+                name: "Hojung",
+                selected: false
+            }
+        ]
+    };
+
+    _renderItem = (item, index) => {
+        return (
+            <SelectableCell
+                key={item.userId}
+                onPress={() => this._onPress(item, index)}
+                name={item.name}
+                selected={item.selected}
+                selectedIconType={"checkmark"}
+                color={Color.green}
+                iconSize={26}
+            />
+        );
+    };
+
+    _onPress = (item, index) => {
+        this.setState({
+            attendees: [
+                ...this.state.attendees.slice(0, index),
+                Object.assign({}, this.state.attendees[index], {
+                    ...item,
+                    selected: !item.selected
+                }),
+                ...this.state.attendees.slice(index + 1)
+            ]
+        });
+    };
+
+    _goNext = () => {
+        this.props.navigation.navigate("AttendanceReview");
     };
 
     render() {
@@ -27,7 +79,7 @@ export default class Attendance extends Component {
                     photo.
                 </PromptText>
                 <SelectableGrid
-                    data={["hello", "goodbye", "use", "new"]}
+                    data={this.state.attendees}
                     renderItem={this._renderItem}
                 />
                 <BarButton
