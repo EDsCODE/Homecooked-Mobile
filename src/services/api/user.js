@@ -17,10 +17,13 @@ const getBookingsForUser = id => {
     });
 };
 
-const getNotificationsForUser = id => {
+const getNotificationsForUser = (id, userType) => {
     return request({
         method: "GET",
-        url: `/user/${id}/notifications`
+        url: `/user/${id}/notifications`,
+        params: {
+            userType
+        }
     });
 };
 

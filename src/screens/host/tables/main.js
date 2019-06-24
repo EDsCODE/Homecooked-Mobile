@@ -19,7 +19,8 @@ import { hostTypes } from "Homecooked/src/modules/types";
 import * as hostSelectors from "Homecooked/src/modules/host/selectors";
 
 import { EventViewTypes } from "Homecooked/src/types";
-import { feedTypes, eventTypes } from "Homecooked/src/modules/types";
+import { eventTypes } from "Homecooked/src/modules/types";
+import NavigationService from "Homecooked/src/utils/NavigationService";
 
 class HostTablesMain extends Component {
     state = {
@@ -48,9 +49,20 @@ class HostTablesMain extends Component {
                 startTime={startTime}
                 endTime={endTime}
                 title={item.title}
-                onPress={() =>
-                    this.props.selectEvent(item.id, EventViewTypes.HOST_ACTIVE)
-                }
+                onPress={() => {
+                    NavigationService.navigate("HostTablesMainEvent");
+                    this.props.selectEvent(item.id, EventViewTypes.HOST_ACTIVE);
+                }}
+                showUtility={item.closeable}
+                utilityOnPress={() => {
+                    {
+                        this.props.navigation.navigate("CloseEventStack");
+                        this.props.selectEvent(
+                            item.id,
+                            EventViewTypes.HOST_ACTIVE
+                        );
+                    }
+                }}
             />
         );
     };
@@ -64,9 +76,10 @@ class HostTablesMain extends Component {
                 startTime={startTime}
                 endTime={endTime}
                 title={item.title}
-                onPress={() =>
-                    this.props.selectEvent(item.id, EventViewTypes.HOST_PAST)
-                }
+                onPress={() => {
+                    NavigationService.navigate("HostTablesMainEvent");
+                    this.props.selectEvent(item.id, EventViewTypes.HOST_PAST);
+                }}
             />
         );
     };
@@ -80,12 +93,14 @@ class HostTablesMain extends Component {
                 startTime={startTime}
                 endTime={endTime}
                 title={item.title}
-                onPress={() =>
+                onPress={() => {
+                    NavigationService.navigate("HostTablesMainEvent");
+
                     this.props.selectEvent(
                         item.id,
                         EventViewTypes.HOST_IN_REVIEW
-                    )
-                }
+                    );
+                }}
             />
         );
     };

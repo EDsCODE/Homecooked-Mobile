@@ -78,7 +78,6 @@ function* getMedia(media) {
 
 export function* getEventDetails(action) {
     try {
-        NavigationService.navigate(action.payload.parentRoute + "Event");
         if (action.payload.mode != EventViewTypes.PREVIEW) {
             yield call(getBookingsForEvent, action.payload.eventId);
         }

@@ -52,7 +52,7 @@ class Review extends Component {
     };
 
     render() {
-        let { bookingInProgress } = this.props;
+        let { actionLoading } = this.props;
         let { attributes, startTime } = this.props.event;
         let { price } = attributes;
         return (
@@ -89,7 +89,7 @@ class Review extends Component {
                     borderColor={Color.green}
                     fill={Color.green}
                     onPress={this._goNext}
-                    loading={bookingInProgress}
+                    loading={actionLoading}
                 />
             </View>
         );

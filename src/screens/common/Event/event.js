@@ -15,9 +15,7 @@ import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 import Separator from "Homecooked/src/components/Separator";
 import { eventTypes } from "Homecooked/src/modules/types";
 import { connect } from "react-redux";
-
 import { EventViewTypes } from "Homecooked/src/types/";
-
 import { getEvent } from "Homecooked/src/modules/event/selectors";
 import NavigationService from "Homecooked/src/utils/NavigationService";
 import { extendedDateWithMealType } from "Homecooked/src/utils/Date";
@@ -138,7 +136,8 @@ class Event extends Component {
             specialDirections,
             startTime,
             title,
-            users
+            users,
+            closeable
         } = this.props.event;
 
         let {
@@ -279,16 +278,20 @@ class Event extends Component {
                         "refundPolicy"
                     ],
                     MENU: menu,
-                    MENU_TITLE: "What's cooking",
+                    MENU_TITLE: closeable
+                        ? "What was served"
+                        : "What's cooking",
                     DIETARY_RESTRICTION: dietaryRestriction,
                     MEAL_TYPE: mealType,
                     MARKER: marker,
                     BUTTON_COLOR: Color.orange,
                     TINT_COLOR: Color.green,
-                    MAIN_TEXT: `Status: Upcoming`,
-                    SUB_TEXT: `Happening soon`,
-                    ONPRESS: this.props.cancel,
-                    BUTTON_TEXT: "Cancel"
+                    MAIN_TEXT: closeable ? "Status: Past" : `Status: Upcoming`,
+                    SUB_TEXT: closeable ? "Event finished" : `Happening soon`,
+                    ONPRESS: closeable
+                        ? this._navigateToCloseEventStack
+                        : this.props.cancel,
+                    BUTTON_TEXT: closeable ? "Close" : "Cancel"
                 });
                 break;
             case EventViewTypes.HOST_IN_REVIEW:
@@ -360,6 +363,10 @@ class Event extends Component {
         this.props.navigation.navigate("BookingStack", {
             event: this.props.event
         });
+    };
+
+    _navigateToCloseEventStack = () => {
+        NavigationService.navigate("CloseEventStack");
     };
 
     _navigateToPerson = person => {

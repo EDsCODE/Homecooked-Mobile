@@ -1,5 +1,6 @@
 import { createSelector } from "reselect";
 import _ from "lodash";
+import moment from "moment";
 
 export const chefId = state => state.host.id;
 export const media = state => {
@@ -30,7 +31,14 @@ export const getActiveEvents = createSelector(
         let activeEvents = events.filter(
             event => event.status == "OPN" || event.status == "FUL"
         );
-
+        activeEvents.forEach(event => {
+            if (moment(event.startTime) < moment()) {
+                event.closeable = true;
+            } else {
+                event.closeable = true;
+            }
+        });
+        console.log(activeEvents);
         return activeEvents;
     }
 );

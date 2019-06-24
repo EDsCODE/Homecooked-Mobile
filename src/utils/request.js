@@ -30,7 +30,7 @@ const request = options => {
             // triggered the error
             console.log("Error Message:", err.message);
         }
-        return Promise.reject(err.response.data || err.message);
+        return Promise.reject(err.response || err.message);
     };
 
     return client(options)
