@@ -42,9 +42,14 @@ class Photo extends Component {
             }
         };
         ImagePicker.launchImageLibrary(options, response => {
-            this.setState({
-                image: response
-            });
+            console.log(response);
+            if (response.didCancel) {
+                return;
+            } else {
+                this.setState({
+                    image: response
+                });
+            }
         });
     };
 

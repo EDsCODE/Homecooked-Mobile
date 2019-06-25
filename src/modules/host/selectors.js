@@ -35,7 +35,7 @@ export const getActiveEvents = createSelector(
         );
         activeEvents.forEach(event => {
             if (moment(event.startTime) < moment()) {
-                event.mode = EventViewTypes.HOST_CLOSEABLE;
+                event.mode = EventViewTypes.HOST_ACTIVE;
             } else {
                 event.mode = EventViewTypes.HOST_CLOSEABLE;
             }

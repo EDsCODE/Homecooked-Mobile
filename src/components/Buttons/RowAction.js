@@ -4,9 +4,9 @@ import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 
 export default props => (
     <TouchableOpacity onPress={props.onPress} style={props.style}>
-        <View style={styles.container}>
+        <View style={[styles.container, { backgroundColor: props.color }]}>
             <Text adjustsFontSizeToFit={true} style={styles.buttonText}>
-                Close table
+                {props.title}
             </Text>
         </View>
     </TouchableOpacity>

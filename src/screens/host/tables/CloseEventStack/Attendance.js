@@ -5,6 +5,7 @@ import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 import PromptText from "Homecooked/src/components/Text/Prompt";
 import HeadingText from "Homecooked/src/components/Text/Heading";
 import BarButton from "Homecooked/src/components/Buttons/BarButton";
+import _ from "lodash";
 
 import {
     SelectableGrid,
@@ -19,9 +20,13 @@ export default class Attendance extends Component {
 
     componentDidMount() {
         let attendees = [];
+
         if (this.props.screenProps.event.users) {
-            this.props.screenProps.event.users.forEach(user => {
+            let users = this.props.screenProps.event.users;
+            this.props.screenProps.event.bookings.forEach(booking => {
+                let user = _.find(users, ["id", booking.userId]);
                 attendees.push({
+                    bookingId: booking.id,
                     userId: user.id,
                     name: user.firstName,
                     selected: false,
@@ -37,8 +42,11 @@ export default class Attendance extends Component {
     componentWillReceiveProps(nextProps) {
         if (!this.state.loaded && nextProps.screenProps.event.users) {
             let attendees = [];
-            nextProps.screenProps.event.users.forEach(user => {
+            let users = nextProps.screenProps.event.users;
+            nextProps.screenProps.event.bookings.forEach(booking => {
+                let user = _.find(users, ["id", booking.userId]);
                 attendees.push({
+                    bookingId: booking.id,
                     userId: user.id,
                     name: user.firstName,
                     selected: false,

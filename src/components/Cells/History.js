@@ -20,7 +20,9 @@ export default class HistoryCell extends Component {
             upcoming,
             tintColor,
             showUtility,
-            utilityOnPress
+            utilityOnPress,
+            utilityTitle,
+            utilityColor
         } = this.props;
         let dayOfWeek = moment(startTime).format("dddd");
         let type = mealType(startTime);
@@ -69,6 +71,8 @@ export default class HistoryCell extends Component {
                             <RowAction
                                 style={{ marginTop: Spacing.smaller }}
                                 onPress={utilityOnPress}
+                                title={utilityTitle}
+                                color={utilityColor}
                             />
                         ) : null}
                     </View>

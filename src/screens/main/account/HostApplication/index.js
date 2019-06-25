@@ -41,8 +41,6 @@ class HostApplication extends Component {
         phoneNumber: "+17328775160",
         reason: "test reason",
         experience: "test experience",
-        lat: 5.12390123,
-        lng: 50.108923,
         images: null
     };
 
@@ -58,15 +56,14 @@ class HostApplication extends Component {
     };
 
     submitApplication = () => {
-        let { address, lat, lng, reason, experience, images } = this.state;
-        this.props.createApplication(
+        let { address, reason, experience, images } = this.state;
+        let applicationInput = {
             address,
-            lat,
-            lng,
             reason,
-            experience,
-            images
-        );
+            experience
+        };
+        console.log(applicationInput);
+        this.props.createApplication(applicationInput, images);
     };
 
     render() {
@@ -86,23 +83,12 @@ class HostApplication extends Component {
 }
 
 const mapDispatchToProps = dispatch => {
-    const createApplication = (
-        address,
-        lat,
-        lng,
-        reason,
-        experience,
-        images
-    ) => {
+    const createApplication = (applicationInput, images) => {
         dispatch({
             type: hostTypes.CREATE_APPLICATION_REQUEST,
             payload: {
-                address,
-                lat,
-                lng,
-                images,
-                reason,
-                experience
+                applicationInput,
+                images
             }
         });
     };

@@ -60,6 +60,8 @@ class HostTablesMain extends Component {
                         this.props.selectEvent(item.id, item.mode);
                     }
                 }}
+                utilityColor={Color.orange}
+                utilityTitle={"Close Event"}
             />
         );
     };

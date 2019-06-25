@@ -44,13 +44,13 @@ class EventMedia extends Component {
 
     componentDidMount() {
         let media = this.props.currentHost.media;
-        let avatar = _.filter(media, ["type", "AVATAR"]);
+        let avatar = this.props.currentHost.profileImageSignedUrl;
         let eventMedias = _.filter(media, ["type", "EVENT"]);
         let mediaKeys = eventMedias.map(eventMedia => eventMedia.key);
-        let medias = avatar.concat(eventMedias);
-        let images = medias.map(media => media.url);
+        let eventImages = eventMedias.map(media => media.url);
+        let allImages = [avatar].concat(eventImages);
         this.setState({
-            images,
+            images: allImages,
             mediaKeys
         });
     }
@@ -60,6 +60,7 @@ class EventMedia extends Component {
     };
 
     _goNext = () => {
+        // console.log(this.state);
         this.props.screenProps.updateData("upload", this.state.upload);
         this.props.screenProps.updateData("mediaKeys", this.state.mediaKeys);
         this.props.screenProps.updateData("media", this.state.images, () => {
@@ -83,6 +84,7 @@ class EventMedia extends Component {
                     [index]: response.uri
                 },
                 upload: {
+                    ...this.state.upload,
                     [index]: response
                 }
             });

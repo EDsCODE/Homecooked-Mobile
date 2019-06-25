@@ -221,6 +221,42 @@ class Event extends Component {
                     USERS: users
                 });
                 break;
+            case EventViewTypes.HISTORY_REVIEW:
+                this.setState({
+                    loading: false,
+                    renderHero: false,
+                    renderInfo: false,
+                    renderPeople: false,
+                    renderMenu: true,
+                    renderLocation: false,
+                    renderUtilityBar: false,
+                    renderTitle: true,
+                    START_TIME: startTime,
+                    MEDIA: media,
+                    CHEF_NAME: chef.user.firstName,
+                    EVENT_TITLE: title,
+                    EVENT_DESCRIPTION: description,
+                    EVENT_PRICE: price,
+                    EVENT_DURATION: duration,
+                    MODULES: [
+                        "dateTime",
+                        "location",
+                        "description",
+                        "refundPolicy"
+                    ],
+                    MENU: menu,
+                    MENU_TITLE: "What was served",
+                    DIETARY_RESTRICTION: dietaryRestriction,
+                    MEAL_TYPE: mealType,
+                    MARKER: marker,
+                    BUTTON_COLOR: Color.orange,
+                    TINT_COLOR: Color.green,
+                    MAIN_TEXT: `Status: Closing`,
+                    SUB_TEXT: `Review event`,
+                    ONPRESS: this._navigateToReview,
+                    BUTTON_TEXT: "Review"
+                });
+                break;
             case EventViewTypes.HISTORY_PAST:
                 this.setState({
                     loading: false,
@@ -368,6 +404,7 @@ class Event extends Component {
                     BUTTON_TEXT: "Cancel"
                 });
                 break;
+
             case EventViewTypes.HOST_PAST:
                 this.setState({
                     loading: false,
@@ -437,6 +474,10 @@ class Event extends Component {
         this.props.navigation.navigate("BookingStack", {
             event: this.props.event
         });
+    };
+
+    _navigateToReview = () => {
+        NavigationService.navigate("ReviewEvent");
     };
 
     _navigateToCloseEventStack = () => {

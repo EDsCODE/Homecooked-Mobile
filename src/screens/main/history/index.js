@@ -2,6 +2,7 @@ import React from "react";
 import { createStackNavigator } from "react-navigation";
 import Main from "./main";
 import Event from "Homecooked/src/screens/common/Event";
+import Review from "Homecooked/src/screens/common/RatingStack";
 
 const HistoryStack = createStackNavigator(
     {
@@ -10,6 +11,9 @@ const HistoryStack = createStackNavigator(
         },
         HistoryMainEvent: {
             screen: Event
+        },
+        ReviewEvent: {
+            screen: Review
         }
     },
     {

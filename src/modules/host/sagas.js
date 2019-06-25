@@ -17,8 +17,7 @@ import * as hostSelectors from "Homecooked/src/modules/host/selectors";
 
 function* createApplicationWorkerSaga(action) {
     try {
-        console.log("APPLICATION DATA:", action.payload);
-        let { address, lat, lng, images, reason, experience } = action.payload;
+        let { applicationInput, images } = action.payload;
         let imageKeys = { 1: null, 2: null, 3: null, 4: null };
         for (let i = 0; i <= 3; i++) {
             if (images[i] && images[i].data) {
@@ -36,15 +35,8 @@ function* createApplicationWorkerSaga(action) {
             chefId = data;
         }
 
-        const { data } = yield call(
-            HostService.createApplication,
-            chefId,
-            address,
-            lat,
-            lng,
-            reason,
-            experience
-        );
+        applicationInput.chefId = chefId;
+        yield call(HostService.createApplication, userId, applicationInput);
 
         let result = yield all(
             Object.keys(imageKeys).map(type => {
@@ -67,8 +59,12 @@ function* createApplicationWorkerSaga(action) {
                 }
             })
         );
-        console.log(result);
-
+        yield put({
+            type: types.UPDATE_HOST_REQUEST,
+            payload: {
+                profileImageUrl: imageKeys[1]
+            }
+        });
         yield put({ type: types.CREATE_APPLICATION_SUCCESS });
 
         // TODO: call get chef

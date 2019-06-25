@@ -48,7 +48,8 @@ class Review extends Component {
     _goNext = () => {
         let { id } = this.props.navigation.state.params.event;
         // TODO: payment token placeholder
-        this.props.bookEvent("123");
+        // this.props.bookEvent("123");
+        this.props.navigation.navigate("Confirmed");
     };
 
     render() {

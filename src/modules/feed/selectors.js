@@ -18,11 +18,11 @@ const getActiveEvents = createSelector(
         // remove events that user is a part of
         eventsArray = eventsArray.filter(event => {
             if (event.status == "OPN") {
+                if (chefId && chefId == event.chef.id) {
+                    return false;
+                }
                 for (let x = 0; x < currentBookingsArray.length; x++) {
-                    if (
-                        event.id == currentBookingsArray[x].eventId ||
-                        (chefId && chefId == event.chef.id)
-                    ) {
+                    if (event.id == currentBookingsArray[x].eventId) {
                         return false;
                     }
                 }

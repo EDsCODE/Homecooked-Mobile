@@ -53,6 +53,7 @@ export function* getEventsByChefIdWorkerSaga(action) {
 export function* getEventWorkerSaga(action) {
     try {
         const { data } = yield call(EventService.getEventById, action.eventId);
+        console.log("NEW EVENT: ", data);
         let event = yield call(getEventMedia, data);
         yield put({ type: types.GET_EVENT_SUCCESS, event });
     } catch (error) {
@@ -63,9 +64,13 @@ export function* getEventWorkerSaga(action) {
 function* getEventMedia(event) {
     let media = yield all(event.media.map(media => call(getMedia, media)));
     let { data: chef } = yield call(HostService.getChefById, event.chef.id);
-    let chefMedia = _.find(chef.media, ["type", "AVATAR"]);
     yield call(getUserById, chef.userId);
-    let chefImageUrl = yield call(getMedia, chefMedia);
+
+    let { data: chefImageUrl } = yield call(
+        ImageService.getImage,
+        chef.profileImageUrl
+    );
+    console.log(chefImageUrl);
     media.unshift(chefImageUrl);
     event.images = media;
     return event;
@@ -107,8 +112,8 @@ export function* createEventWorkerSaga(action) {
         eventData.mediaKeys = mediaKeys;
         delete eventData.upload;
 
-        let { data: event } = yield call(EventService.createEvent, eventData);
-        yield put({ type: types.UPDATE_EVENT_SUCCESS, event });
+        let { data: eventId } = yield call(EventService.createEvent, eventData);
+        yield call(getEventWorkerSaga, { eventId });
         yield put({ type: types.CREATE_EVENT_SUCCESS });
         NavigationService.navigate("CongratulationsPage");
     } catch (error) {
@@ -160,10 +165,35 @@ function* refundBookingWorkerSaga(action) {
 function* markAttendanceWorkerSaga(action) {
     try {
         let { eventId, attendees, reports } = action.payload;
-        yield call(EventService.markAttendance, eventId, attendees, reports);
+        let chefId = yield select(hostSelectors.chefId);
+        yield call(
+            EventService.markAttendance,
+            eventId,
+            chefId,
+            attendees,
+            reports
+        );
         yield put({ type: types.MARK_ATTENDANCE_SUCCESS });
     } catch (error) {
         yield put({ type: types.MARK_ATTENDANCE_ERROR, error });
+    }
+}
+
+function* leaveReview(action) {
+    try {
+        let userId = yield select(currentUserSelectors.userId);
+        let { eventId, chefId, review, ratings } = action.payload;
+        yield call(
+            EventService.leaveReview,
+            userId,
+            eventId,
+            chefId,
+            review,
+            ratings
+        );
+        yield put({ type: types.LEAVE_REVIEW_SUCCESS });
+    } catch (error) {
+        yield put({ type: types.LEAVE_REVIEW_ERROR, error });
     }
 }
 
@@ -174,5 +204,6 @@ export const eventSagas = [
     takeLatest(types.REFUND_BOOKING_REQUEST, refundBookingWorkerSaga),
     takeLatest(types.CANCEL_EVENT_REQUEST, cancelEventWorkerSaga),
     takeLatest(types.CREATE_EVENT_REQUEST, createEventWorkerSaga),
-    takeLatest(types.MARK_ATTENDANCE_REQUEST, markAttendanceWorkerSaga)
+    takeLatest(types.MARK_ATTENDANCE_REQUEST, markAttendanceWorkerSaga),
+    takeLatest(types.LEAVE_REVIEW_REQUEST, leaveReview)
 ];

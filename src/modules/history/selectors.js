@@ -50,7 +50,12 @@ export const getPastEvents = createSelector(
         currentBookingsArray.forEach(booking => {
             if (events[booking.eventId]) {
                 let event = Object.assign({}, events[booking.eventId]);
-                event.mode = EventViewTypes.HISTORY_PAST;
+                if (booking.status == "ATT") {
+                    event.mode = EventViewTypes.HISTORY_REVIEW;
+                } else {
+                    event.mode = EventViewTypes.HISTORY_PAST;
+                }
+
                 pastEvents.push({
                     ...event,
                     userBooking: booking

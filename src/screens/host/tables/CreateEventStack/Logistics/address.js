@@ -46,7 +46,7 @@ export default class Address extends Component {
     }
 
     _goNext = async () => {
-        let { selected, secondaryAddress, query } = this.state;
+        let { selected, secondaryAddress } = this.state;
 
         let address = {
             ...selected,

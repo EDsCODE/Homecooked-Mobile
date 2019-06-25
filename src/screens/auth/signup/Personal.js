@@ -103,7 +103,7 @@ export default class Email extends Component {
                         bottom: Spacing.largest,
                         right: Spacing.largest
                     }}
-                    active={true}
+                    active={formattedDOB && lastName && firstName}
                 />
                 <DateTimePicker
                     isVisible={this.state.isDateTimePickerVisible}

@@ -56,13 +56,24 @@ const updatePaymentDetails = (id, source, customer) => {
     });
 };
 
+const checkIfEmailInUse = email => {
+    return request({
+        method: "GET",
+        url: `/user/email`,
+        params: {
+            email
+        }
+    });
+};
+
 const UserService = {
     updateUser,
     getBookingsForUser,
     getUserById,
     savePaymentDetails,
     updatePaymentDetails,
-    getNotificationsForUser
+    getNotificationsForUser,
+    checkIfEmailInUse
 };
 
 export default UserService;

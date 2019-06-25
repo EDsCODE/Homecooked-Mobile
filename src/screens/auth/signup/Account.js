@@ -13,11 +13,15 @@ import BarButton from "Homecooked/src/components/Buttons/BarButton";
 
 import { connect } from "react-redux";
 
+import { UserService } from "Homecooked/src/services/api";
+
 class AccountInformation extends Component {
     state = {
         email: "",
+        emailError: "",
         phoneNumber: "",
-        password: ""
+        password: "",
+        loading: false
     };
 
     _navigateNext = () => {
@@ -29,8 +33,28 @@ class AccountInformation extends Component {
         this.props.navigation.goback();
     };
 
-    _goNext = () => {
+    _goNext = async () => {
+        this.setState({
+            emailError: "",
+            loading: true
+        });
         let { email, phoneNumber, password } = this.state;
+        if (!emailIsValid(email)) {
+            this.setState({
+                emailError: "Please enter a valid email",
+                loading: false
+            });
+            return;
+        }
+        let { status } = await UserService.checkIfEmailInUse(email);
+        console.log(status);
+        if (status == "error") {
+            this.setState({
+                emailError: "This email is already in use",
+                loading: false
+            });
+            return;
+        }
         this.props.screenProps.updateData(
             "account",
             {
@@ -44,8 +68,14 @@ class AccountInformation extends Component {
         );
     };
 
+    onEnterEmail = email => {
+        this.setState({
+            email
+        });
+    };
+
     render() {
-        let { email, phoneNumberFormatted, password } = this.state;
+        let { email, phoneNumberFormatted, password, emailError } = this.state;
         return (
             <View style={{ flex: 1, marginTop: 30 }}>
                 <View style={styles.container}>
@@ -64,6 +94,7 @@ class AccountInformation extends Component {
                         label="Email"
                         value={email}
                         onChangeText={email => this.setState({ email })}
+                        error={emailError}
                     />
                     <TextField
                         containerStyle={styles.input}
@@ -104,7 +135,7 @@ class AccountInformation extends Component {
                     borderColor={Color.green}
                     fill={Color.green}
                     onPress={this._goNext}
-                    loading={this.props.loading}
+                    loading={this.state.loading || this.props.loading}
                 />
             </View>
         );
@@ -124,6 +155,10 @@ const mapStateToProps = state => {
         loading: state.auth.loading
     };
 };
+
+function emailIsValid(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
 
 export default connect(
     mapStateToProps,

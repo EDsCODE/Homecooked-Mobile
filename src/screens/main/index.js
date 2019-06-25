@@ -1,9 +1,8 @@
-import { createBottomTabNavigator } from 'react-navigation';
-import Feed from './feed';
-import HistoryStack from './history';
-import Notifications from './notifications';
-import Account from './account';
-import RatingStack from './common/RatingStack';
+import { createBottomTabNavigator } from "react-navigation";
+import Feed from "./feed";
+import HistoryStack from "./history";
+import Notifications from "./notifications";
+import Account from "./account";
 
 const MainStack = createBottomTabNavigator(
     {
@@ -21,7 +20,7 @@ const MainStack = createBottomTabNavigator(
         }
     },
     {
-        initialRouteName: 'Account'
+        initialRouteName: "Account"
     }
 );
 

@@ -82,6 +82,20 @@ const markAttendance = (eventId, senderId, attendees, reports) => {
     });
 };
 
+const leaveReview = (userId, eventId, chefId, review, ratings) => {
+    return request({
+        method: "POST",
+        url: `/rating`,
+        data: {
+            userId,
+            eventId,
+            chefId,
+            review,
+            ratings
+        }
+    });
+};
+
 const EventService = {
     getEvents,
     getBookingByEvent,
@@ -91,7 +105,8 @@ const EventService = {
     cancelEvent,
     getEventSettingsByType,
     createEvent,
-    markAttendance
+    markAttendance,
+    leaveReview
 };
 
 export default EventService;

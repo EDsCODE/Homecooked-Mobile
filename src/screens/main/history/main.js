@@ -72,6 +72,15 @@ class HistoryMain extends Component {
                     );
                     this.props.navigation.navigate("HistoryMainEvent");
                 }}
+                showUtility={item.mode == EventViewTypes.HISTORY_REVIEW}
+                utilityOnPress={() => {
+                    {
+                        this.props.navigation.navigate("ReviewEvent");
+                        this.props.selectEvent(item.id, item.mode);
+                    }
+                }}
+                utilityColor={Color.green}
+                utilityTitle={"Review"}
             />
         );
     };
