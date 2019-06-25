@@ -400,7 +400,7 @@ class Event extends Component {
                     TINT_COLOR: Color.green,
                     MAIN_TEXT: `Status: In Review`,
                     SUB_TEXT: `You will be notified soon`,
-                    ONPRESS: this.props.refund,
+                    ONPRESS: this.props.cancel,
                     BUTTON_TEXT: "Cancel"
                 });
                 break;
@@ -616,23 +616,6 @@ class Event extends Component {
                 onPress={onPress}
             />
         );
-    };
-
-    _onPress = () => {
-        switch (this.props.mode) {
-            case EventViewTypes.FEED:
-                return this._navigateToBooking;
-            case EventViewTypes.HISTORY_UPCOMING:
-                return this.props.refund;
-            case EventViewTypes.HISTORY_PAST:
-                return null;
-            case EventViewTypes.HOST_ACTIVE:
-                return this.props.cancel;
-            case EventViewTypes.HOST_IN_REVIEW:
-                return null;
-            default:
-                return null;
-        }
     };
 
     render() {

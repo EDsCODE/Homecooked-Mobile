@@ -124,9 +124,10 @@ export function* createEventWorkerSaga(action) {
 function* cancelEventWorkerSaga(action) {
     try {
         let eventId = yield select(eventSelectors.selectedEventId);
-        let { data: event } = yield call(EventService.cancelEvent, eventId);
-        yield put({ type: types.UPDATE_EVENT_SUCCESS, event });
+        yield call(EventService.cancelEvent, eventId);
+        yield call(getEventWorkerSaga, { eventId });
         yield put({ type: types.CANCEL_EVENT_SUCCESS });
+        NavigationService.navigate("CancelConfirmation");
     } catch (error) {
         yield put({ type: types.UPDATE_EVENT_ERROR, error });
     }
