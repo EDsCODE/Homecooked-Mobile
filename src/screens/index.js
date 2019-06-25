@@ -1,8 +1,8 @@
-import { createSwitchNavigator } from "react-navigation";
-import Auth from "./auth";
-import Main from "./main";
-import Host from "./host";
-import Loading from "./Loading";
+import { createSwitchNavigator } from 'react-navigation';
+import Auth from './auth';
+import Main from './main';
+import Host from './host';
+import Loading from './Loading';
 
 const AppStack = createSwitchNavigator(
     {
@@ -20,7 +20,7 @@ const AppStack = createSwitchNavigator(
         }
     },
     {
-        initialRouteName: "Loading"
+        initialRouteName: 'Loading'
     }
 );
 

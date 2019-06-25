@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import { View, TouchableOpacity, Text, StyleSheet, Image } from "react-native";
+import React from 'react';
+import { View, TouchableOpacity, StyleSheet, Image } from 'react-native';
 
-import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
-import MinorText from "Homecooked/src/components/Text/Minor";
+import { Color } from 'Homecooked/src/components/styles';
+import MinorText from 'Homecooked/src/components/Text/Minor';
 
 const Placeholder = props =>
     props.inactive ? (
         <View style={props.style}>
             <Image
-                resizeMode={"cover"}
+                resizeMode={'cover'}
                 style={{ flex: 1 }}
                 source={props.source}
             />
@@ -17,7 +17,7 @@ const Placeholder = props =>
         <TouchableOpacity onPress={props.onPress} style={props.style}>
             {props.source.uri ? (
                 <Image
-                    resizeMode={"cover"}
+                    resizeMode={'cover'}
                     style={{ flex: 1 }}
                     source={props.source}
                 />
@@ -36,18 +36,18 @@ const styles = StyleSheet.create({
         flex: 1,
         borderRadius: 5,
         backgroundColor: Color.lightestGray,
-        justifyContent: "center",
-        alignItems: "center"
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     innerSquare: {
-        width: "90%",
-        height: "90%",
+        width: '90%',
+        height: '90%',
         borderRadius: 5,
         borderWidth: 2,
         borderColor: Color.lightGray,
         backgroundColor: Color.white,
-        justifyContent: "center",
-        alignItems: "center"
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 });
 
