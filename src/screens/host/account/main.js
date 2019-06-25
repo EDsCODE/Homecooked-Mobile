@@ -40,16 +40,26 @@ class Host_Settings_Main extends Component {
                 onPress: () => Linking.openURL(STRIPE_URL)
             },
             {
-                title: "FAQ"
+                title: "FAQ",
+                onPress: () => this._goToFAQ()
             },
             {
-                title: "Settings"
+                title: "Settings",
+                onPress: () => this._goToSettings()
             }
         ];
         this.setState({
             data: SETTING_ROWS
         });
     }
+
+    _goToFAQ = () => {
+        Linking.openURL("https://www.gathrtable.com/faq");
+    };
+
+    _goToSettings = () => {
+        this.props.navigation.navigate("Settings");
+    };
 
     _renderProfileImage = () => {
         if (this.props.hostImage) {

@@ -19,7 +19,7 @@ class SettingsMain extends Component {
     }
 
     _goBack = () => {
-        NavigationService.navigate("AccountMain");
+        NavigationService.navigate("HostSettingsMain");
     };
 
     componentDidMount() {
