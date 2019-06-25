@@ -5,12 +5,15 @@ import { currentUserTypes } from "../types";
 import NavigationService from "Homecooked/src/utils/NavigationService";
 import SInfo from "react-native-sensitive-info";
 import branch from "react-native-branch";
+import { UrbanAirship } from "urbanairship-react-native";
+
 // ref: https://hackernoon.com/redux-saga-tutorial-for-beginners-and-dog-lovers-aa69a17db645
 
 // worker saga: makes the api call when watcher saga sees the action
 function* loginWorkerSaga(action) {
     try {
         let { email, password } = action.payload;
+
         const { accessToken, user, message, refreshToken } = yield call(
             AuthService.login,
             email,
@@ -20,6 +23,7 @@ function* loginWorkerSaga(action) {
         // dispatch a success action to the store with the new accesstoken
         SInfo.setItem("email", user.email, {});
         SInfo.setItem("refreshToken", refreshToken, {});
+        UrbanAirship.setNamedUser(user.id);
 
         yield put({ type: types.LOGIN_SUCCESS, accessToken });
         yield put({
@@ -48,6 +52,7 @@ function* facebookLoginWorkerSaga(action) {
         // dispatch a success action to the store with the new accesstoken
         SInfo.setItem("email", user.email, {});
         SInfo.setItem("refreshToken", refreshToken, {});
+        UrbanAirship.setNamedUser(user.id);
 
         yield put({ type: types.LOGIN_SUCCESS, accessToken });
         yield put({
@@ -76,12 +81,14 @@ function* facebookLoginWorkerSaga(action) {
 
 function* registerWorkerSaga(action) {
     try {
-        let { email, password, firstName } = action.payload;
+        let { personal, account } = action.payload;
+        let { email, password } = account;
         const payload = yield call(
             AuthService.register,
             email,
             password,
-            firstName
+            personal,
+            account
         );
         let { accessToken, user, message, refreshToken } = payload;
 
@@ -89,6 +96,7 @@ function* registerWorkerSaga(action) {
         SInfo.setItem("refreshToken", refreshToken, {});
 
         // register named user
+        UrbanAirship.setNamedUser(user.id);
         branch.setIdentity(user.id);
 
         // dispatch a success action to the store with the new access
@@ -114,6 +122,7 @@ function* logoutWorkerSaga(action) {
         yield put({ type: types.SIGNOUT_SUCCESS });
         SInfo.setItem("email", "", {});
         SInfo.setItem("refreshToken", "", {});
+        UrbanAirship.setNamedUser(null);
     } catch (error) {
         yield put({ type: types.SIGNOUT_ERROR, error });
     }
@@ -133,6 +142,9 @@ function* refreshTokenWorkerSaga(action) {
             type: currentUserTypes.UPDATE_USER_SUCCESS,
             payload: { ...user }
         });
+
+        UrbanAirship.setNamedUser(user.id);
+
         yield put({ type: currentUserTypes.GET_AVATAR_REQUEST });
 
         NavigationService.navigate("Main");

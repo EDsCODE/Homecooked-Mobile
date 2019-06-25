@@ -4,6 +4,7 @@ import Details from "./Details";
 import Food from "./Food";
 import Logistics from "./Logistics";
 import EventMedia from "./EventMedia";
+import CongratulationsPage from "./CongratulationsPage";
 import { connect } from "react-redux";
 import { hostTypes, eventTypes } from "Homecooked/src/modules/types";
 import * as hostSelectors from "Homecooked/src/modules/host/selectors";
@@ -29,6 +30,9 @@ const CreateEventStack = createStackNavigator(
         },
         CreateEventLogisticsEvent: {
             screen: Event
+        },
+        CongratulationsPage: {
+            screen: CongratulationsPage
         }
     },
     {

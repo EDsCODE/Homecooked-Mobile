@@ -1,18 +1,22 @@
 import request from "Homecooked/src/utils/request";
 
-const createApplication = (userId, address, lat, lng, reason, experience) => {
+const createApplication = (userId, applicationInput) => {
     return request({
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
         url: `/chef/${userId}/application`,
+        data: applicationInput
+    });
+};
+
+const updateHost = (id, hostInput) => {
+    return request({
+        method: "PUT",
+        url: `/chef/${id}`,
         data: {
-            address,
-            lat,
-            lng,
-            reason,
-            experience
+            hostInput
         }
     });
 };
@@ -56,7 +60,8 @@ const HostService = {
     getChefByUserId,
     createChefMedia,
     createChef,
-    getChefById
+    getChefById,
+    updateHost
 };
 
 export default HostService;

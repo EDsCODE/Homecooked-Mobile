@@ -12,16 +12,19 @@ const reducer = (state = initialState, action) => {
         case types.SIGNUP_ERROR:
             return {
                 ...state,
-                error: action.error
+                error: action.error,
+                loading: false
             };
         case types.SIGNUP_SUCCESS:
             return {
                 ...state,
-                accessToken: action.accessToken
+                accessToken: action.accessToken,
+                loading: false
             };
         case types.SIGNUP_REQUEST:
             return {
-                ...state
+                ...state,
+                loading: true
             };
         case types.AUTO_LOGIN_START:
             return {

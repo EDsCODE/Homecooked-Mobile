@@ -4,6 +4,7 @@ import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 
 import { mealType } from "Homecooked/src/utils/Date";
+import RowAction from "Homecooked/src/components/Buttons/RowAction";
 import moment from "moment";
 
 export default class HistoryCell extends Component {
@@ -17,7 +18,11 @@ export default class HistoryCell extends Component {
             style,
             onPress,
             upcoming,
-            tintColor
+            tintColor,
+            showUtility,
+            utilityOnPress,
+            utilityTitle,
+            utilityColor
         } = this.props;
         let dayOfWeek = moment(startTime).format("dddd");
         let type = mealType(startTime);
@@ -30,9 +35,20 @@ export default class HistoryCell extends Component {
 
         let subTitle = `${dayOfWeek} ${type}, ${startTimeParsed} to ${endTimeParsed}`;
 
+        let rowHeight = Spacing.deviceHeight / 6;
+
         return (
             <TouchableOpacity onPress={onPress} style={style}>
-                <View style={styles.row}>
+                <View
+                    style={[
+                        styles.row,
+                        {
+                            height: showUtility
+                                ? rowHeight + 10
+                                : rowHeight - 10
+                        }
+                    ]}
+                >
                     <View
                         style={{
                             flexDirection: "column",
@@ -51,6 +67,14 @@ export default class HistoryCell extends Component {
                             <Text style={styles.title}>{title}</Text>
                             <Text style={styles.subTitle}>{subTitle}</Text>
                         </View>
+                        {showUtility ? (
+                            <RowAction
+                                style={{ marginTop: Spacing.smaller }}
+                                onPress={utilityOnPress}
+                                title={utilityTitle}
+                                color={utilityColor}
+                            />
+                        ) : null}
                     </View>
                 </View>
             </TouchableOpacity>
@@ -62,8 +86,7 @@ const styles = StyleSheet.create({
     row: {
         paddingVertical: Spacing.base,
         paddingHorizontal: Spacing.small,
-        flexDirection: "row",
-        height: 100
+        flexDirection: "row"
     },
     title: {
         fontFamily: Typography.fontFamily,

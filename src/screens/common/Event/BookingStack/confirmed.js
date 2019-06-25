@@ -3,12 +3,15 @@ import { View, StyleSheet } from "react-native";
 import NavigationService from "Homecooked/src/utils/NavigationService";
 import HeadingText from "Homecooked/src/components/Text/Heading";
 import CloseButton from "Homecooked/src/components/Buttons/Close";
-import FloatyButton from "Homecooked/src/components/Buttons/FloatyButton";
 import InfoSection from "Homecooked/src/components/Event/Info";
+import BarButton from "Homecooked/src/components/Buttons/BarButton";
+
+import { connect } from "react-redux";
+import { getEvent } from "Homecooked/src/modules/event/selectors";
 
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 
-export default class Confirmed extends Component {
+class Confirmed extends Component {
     state = {
         modules: ["dateTime", "location", "reminder", "invite"]
     };
@@ -21,25 +24,50 @@ export default class Confirmed extends Component {
     };
 
     render() {
+        let { startTime, marker, duration } = this.props.event;
+        let { formattedAddress } = marker;
         return (
             <View style={{ flex: 1, paddingTop: 30 }}>
                 <View style={styles.headerContainer}>
                     <CloseButton onPress={this._goBack} />
-                    <HeadingText>Review</HeadingText>
+                    <HeadingText>Booking Confirmed!</HeadingText>
                 </View>
-                <InfoSection modules={this.state.modules} />
-                <FloatyButton
-                    onPress={this._goNext}
+                <InfoSection
+                    modules={this.state.modules}
+                    startTime={startTime}
+                    duration={duration}
+                    formattedAddress={formattedAddress}
+                />
+                <BarButton
+                    title="Invite"
                     style={{
                         position: "absolute",
-                        bottom: Spacing.largest,
-                        right: Spacing.largest
+                        bottom: Spacing.large,
+                        left: Spacing.large
                     }}
+                    borderColor={Color.orange}
+                    fill={Color.orange}
+                    onPress={this._goNext}
+                    loading={false}
                 />
             </View>
         );
     }
 }
+
+const mapStateToProps = state => {
+    const { events } = state;
+    return {
+        ...getEvent(state),
+        actionLoading: events.actionLoading,
+        error: events.error
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    null
+)(Confirmed);
 
 const styles = StyleSheet.create({
     headerContainer: {

@@ -19,7 +19,8 @@ import { hostTypes } from "Homecooked/src/modules/types";
 import * as hostSelectors from "Homecooked/src/modules/host/selectors";
 
 import { EventViewTypes } from "Homecooked/src/types";
-import { feedTypes, eventTypes } from "Homecooked/src/modules/types";
+import { eventTypes } from "Homecooked/src/modules/types";
+import NavigationService from "Homecooked/src/utils/NavigationService";
 
 class HostTablesMain extends Component {
     state = {
@@ -48,9 +49,19 @@ class HostTablesMain extends Component {
                 startTime={startTime}
                 endTime={endTime}
                 title={item.title}
-                onPress={() =>
-                    this.props.selectEvent(item.id, EventViewTypes.HOST_ACTIVE)
-                }
+                onPress={() => {
+                    NavigationService.navigate("HostTablesMainEvent");
+                    this.props.selectEvent(item.id, item.mode);
+                }}
+                showUtility={item.mode == EventViewTypes.HOST_CLOSEABLE}
+                utilityOnPress={() => {
+                    {
+                        this.props.navigation.navigate("CloseEventStack");
+                        this.props.selectEvent(item.id, item.mode);
+                    }
+                }}
+                utilityColor={Color.orange}
+                utilityTitle={"Close Event"}
             />
         );
     };
@@ -64,9 +75,11 @@ class HostTablesMain extends Component {
                 startTime={startTime}
                 endTime={endTime}
                 title={item.title}
-                onPress={() =>
-                    this.props.selectEvent(item.id, EventViewTypes.HOST_PAST)
-                }
+                onPress={() => {
+                    console.log(item);
+                    NavigationService.navigate("HostTablesMainEvent");
+                    this.props.selectEvent(item.id, item.mode);
+                }}
             />
         );
     };
@@ -80,12 +93,11 @@ class HostTablesMain extends Component {
                 startTime={startTime}
                 endTime={endTime}
                 title={item.title}
-                onPress={() =>
-                    this.props.selectEvent(
-                        item.id,
-                        EventViewTypes.HOST_IN_REVIEW
-                    )
-                }
+                onPress={() => {
+                    NavigationService.navigate("HostTablesMainEvent");
+
+                    this.props.selectEvent(item.id, item.mode);
+                }}
             />
         );
     };

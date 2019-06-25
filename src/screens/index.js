@@ -1,10 +1,11 @@
-import { createSwitchNavigator } from 'react-navigation';
-import Auth from './auth';
-import Main from './main';
-import Host from './host';
-import Loading from './Loading';
+import { createSwitchNavigator } from "react-navigation";
+import Auth from "./auth";
+import Main from "./main";
+import Host from "./host";
+import Loading from "./Loading";
+import createAnimatedSwitchNavigator from "react-navigation-animated-switch";
 
-const AppStack = createSwitchNavigator(
+const AppStack = createAnimatedSwitchNavigator(
     {
         Auth: {
             screen: Auth
@@ -20,7 +21,7 @@ const AppStack = createSwitchNavigator(
         }
     },
     {
-        initialRouteName: 'Loading'
+        initialRouteName: "Loading"
     }
 );
 

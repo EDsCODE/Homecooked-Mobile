@@ -1,6 +1,6 @@
 // get events user is not involved in
 import { createSelector } from "reselect";
-import { CityFilter } from "Homecooked/src/types";
+import { CityFilter, EventViewTypes } from "Homecooked/src/types";
 
 const getCurrentBookings = state => state.currentUser.bookings;
 const getEvents = state => state.events.byId;
@@ -17,34 +17,20 @@ const getActiveEvents = createSelector(
 
         // remove events that user is a part of
         eventsArray = eventsArray.filter(event => {
-            for (let x = 0; x < currentBookingsArray.length; x++) {
-                if (
-                    event.id == currentBookingsArray[x].eventId ||
-                    (chefId && chefId == event.chef.id)
-                ) {
+            if (event.status == "OPN") {
+                if (chefId && chefId == event.chef.id) {
                     return false;
                 }
+                for (let x = 0; x < currentBookingsArray.length; x++) {
+                    if (event.id == currentBookingsArray[x].eventId) {
+                        return false;
+                    }
+                }
+                event.mode = EventViewTypes.FEED;
+                return true;
             }
-            return true;
+            return false;
         });
-        eventsArray.forEach((event, i) => {
-            let media = [];
-            console.log();
-            if (event.chefProfileImageSignedUrl) {
-                media.push(event.chefProfileImageSignedUrl);
-            }
-            if (event.eventImage1SignedUrl) {
-                media.push(event.eventImage1SignedUrl);
-            }
-            if (event.eventImage2SignedUrl) {
-                media.push(event.eventImage2SignedUrl);
-            }
-            if (event.eventImage3SignedUrl) {
-                media.push(event.consoleeventImage3SignedUrl);
-            }
-            eventsArray[i].media = media;
-        });
-
         return eventsArray;
     }
 );

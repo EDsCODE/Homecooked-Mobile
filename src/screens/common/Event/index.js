@@ -5,6 +5,9 @@ import ProfileCreationStack from "Homecooked/src/screens/main/common/ProfileCrea
 import BookingStack from "./BookingStack";
 import Person from "Homecooked/src/screens/main/common/Person";
 import RefundConfirmation from "./RefundConfirmation";
+
+import CancelConfirmation from "./CancelConfirmation";
+
 const EventStack = createStackNavigator(
     {
         Event: {
@@ -23,6 +26,9 @@ const EventStack = createStackNavigator(
         },
         RefundConfirmation: {
             screen: RefundConfirmation
+        },
+        CancelConfirmation: {
+            screen: CancelConfirmation
         }
     },
     {

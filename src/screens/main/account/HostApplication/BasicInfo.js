@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { View, FlatList, Text, StyleSheet } from "react-native";
+import {
+    View,
+    FlatList,
+    Text,
+    StyleSheet,
+    TouchableOpacity,
+    Keyboard
+} from "react-native";
 
 import HeadingText from "Homecooked/src/components/Text/Heading";
 import PromptText from "Homecooked/src/components/Text/Prompt";
@@ -10,35 +17,85 @@ import FloatyButton from "Homecooked/src/components/Buttons/FloatyButton";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 import NavigationService from "Homecooked/src/utils/NavigationService";
 
+import {
+    getPossibleMatches,
+    getPlaceDetails
+} from "Homecooked/src/services/location";
+
 import TextField from "Homecooked/src/components/TextFields/Material";
 
 export default class BasicInfo extends Component {
     state = {
-        address: "",
+        query: "",
+        results: [],
+        selected: null,
         phoneNumber: ""
     };
-
-    componentDidMount() {
-        let { address, phoneNumber } = this.props.screenProps.state;
-        this.setState({
-            address,
-            phoneNumber
-        });
-    }
 
     _goBack = () => {
         NavigationService.navigate("AccountMain");
     };
 
     _goNext = () => {
-        let { address, phoneNumber } = this.state;
-        this.props.screenProps.updateData("address", address);
+        let { phoneNumber, selected } = this.state;
+
+        this.props.screenProps.updateData("address", selected);
         this.props.screenProps.updateData("phoneNumber", phoneNumber);
         this.props.navigation.navigate("ShortResponse");
     };
 
+    onChangeText = async query => {
+        this.setState({
+            query
+        });
+        if (query.length > 3) {
+            let results = await getPossibleMatches(
+                query,
+                this.state.sessionToken
+            );
+            results;
+            this.setState({
+                results
+            });
+        }
+    };
+
+    onRowPressed = async item => {
+        let data = await getPlaceDetails(
+            item.place_id,
+            this.state.sessionToken
+        );
+        data;
+        this.setState({
+            query: data.formattedAddress,
+            results: [],
+            selected: data
+        });
+        Keyboard.dismiss();
+    };
+
+    renderItem = ({ item }) => {
+        return (
+            <TouchableOpacity
+                key={item.description}
+                onPress={() => this.onRowPressed(item)}
+            >
+                <Text
+                    style={{
+                        fontFamily: Typography.fontFamily,
+                        marginVertical: Spacing.smallest
+                    }}
+                >
+                    {item.description}
+                </Text>
+            </TouchableOpacity>
+        );
+    };
+
+    _keyExtractor = (item, index) => item.description;
+
     render() {
-        let { address, phoneNumber } = this.state;
+        let { phoneNumber, query, results, selected } = this.state;
         return (
             <View style={styles.container}>
                 <CloseButton onPress={this._goBack} />
@@ -53,12 +110,25 @@ export default class BasicInfo extends Component {
                     area.
                 </PromptText>
                 <TextField
-                    tintColor={Color.gray}
-                    label="Address"
-                    value={address}
-                    onChangeText={address => this.setState({ address })}
+                    label={""}
+                    tintColor="#4A4A4A"
+                    placeholder="Address"
+                    multiline={true}
+                    value={query}
+                    returnKeyType="done"
+                    blurOnSubmit={true}
+                    onChangeText={this.onChangeText}
                 />
+                {results.length != 0 ? (
+                    <FlatList
+                        keyExtractor={this._keyExtractor}
+                        data={results}
+                        renderItem={this.renderItem}
+                        keyboardShouldPersistTaps={"handled"}
+                    />
+                ) : null}
                 <TextField
+                    returnKeyType={"done"}
                     tintColor={Color.gray}
                     label="Phone Number"
                     value={phoneNumber}
@@ -72,7 +142,7 @@ export default class BasicInfo extends Component {
                         bottom: Spacing.largest,
                         right: Spacing.largest
                     }}
-                    active={address && phoneNumber}
+                    active={selected && phoneNumber}
                 />
             </View>
         );

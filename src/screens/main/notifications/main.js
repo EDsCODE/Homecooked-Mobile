@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 import { historyTypes, eventTypes } from "Homecooked/src/modules/types";
 import { EventViewTypes } from "Homecooked/src/types";
 
-import { getNotificationsWithEvent } from "Homecooked/src/modules/notification/selectors";
+import { getGuestNotificationsWithEvent } from "Homecooked/src/modules/notification/selectors";
 
 let content = [
     {
@@ -38,13 +38,14 @@ class NotificationMain extends Component {
                 title={item.message}
                 prompt={item.message}
                 source={item.event.images[0]}
-                onPress={() => this._onPress(item.event.id)}
+                onPress={() => this._onPress(item.event)}
             />
         );
     };
 
-    _onPress = id => {
-        this.props.selectEvent(id);
+    _onPress = event => {
+        this.props.selectEvent(event.id, event.mode);
+        this.props.navigation.navigate("NotificationMainEvent");
     };
 
     _renderSeparator = () => <Separator />;
@@ -66,12 +67,12 @@ class NotificationMain extends Component {
 }
 
 const mapDisptchToProps = dispatch => {
-    const selectEvent = eventId => {
+    const selectEvent = (eventId, mode) => {
         dispatch({
             type: eventTypes.SELECT_EVENT,
             payload: {
                 eventId,
-                mode: EventViewTypes.FEED,
+                mode,
                 parentRoute: "NotificationMain"
             }
         });
@@ -89,7 +90,7 @@ const mapDisptchToProps = dispatch => {
 
 const mapStateToProps = state => {
     return {
-        notifications: getNotificationsWithEvent(state)
+        notifications: getGuestNotificationsWithEvent(state)
     };
 };
 

@@ -28,10 +28,11 @@ class Bio extends Component {
                 bio: this.state.bio
             });
         }
-        this.props.navigation.navigate(
-            "ProfilePreview",
-            this.props.currentUser
-        );
+        this.props.navigation.navigate("ProfilePreview", {
+            profileImageSignedUrl: this.props.currentUser.profileImageSignedUrl,
+            bio: this.state.bio,
+            firstName: this.props.currentUser.firstName
+        });
     };
 
     displayBio = () => {

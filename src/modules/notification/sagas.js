@@ -9,12 +9,13 @@ function* loadNotificationsWorkerSaga(action) {
         let userId = yield select(userSelectors.userId);
         let { data: notifications } = yield call(
             UserService.getNotificationsForUser,
-            userId
+            userId,
+            "GUEST"
         );
 
         yield all(
             notifications.map(notification =>
-                call(getEventWorkerSaga, { eventId: notification.entity_id })
+                call(getEventWorkerSaga, { eventId: notification.entityId })
             )
         );
 

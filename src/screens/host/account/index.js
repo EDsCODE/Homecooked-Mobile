@@ -1,11 +1,19 @@
 import React from "react";
 import { createStackNavigator } from "react-navigation";
 import Main from "./main";
+import Profile from "./Profile";
+import Settings from "./Settings";
 
 const SettingsStack = createStackNavigator(
     {
         HostSettingsMain: {
             screen: Main
+        },
+        Profile: {
+            screen: Profile
+        },
+        Settings: {
+            screen: Settings
         }
     },
     {

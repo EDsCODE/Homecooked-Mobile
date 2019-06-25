@@ -17,10 +17,13 @@ const getBookingsForUser = id => {
     });
 };
 
-const getNotificationsForUser = id => {
+const getNotificationsForUser = (id, userType) => {
     return request({
         method: "GET",
-        url: `/user/${id}/notifications`
+        url: `/user/${id}/notifications`,
+        params: {
+            userType
+        }
     });
 };
 
@@ -53,13 +56,24 @@ const updatePaymentDetails = (id, source, customer) => {
     });
 };
 
+const checkIfEmailInUse = email => {
+    return request({
+        method: "GET",
+        url: `/user/email`,
+        params: {
+            email
+        }
+    });
+};
+
 const UserService = {
     updateUser,
     getBookingsForUser,
     getUserById,
     savePaymentDetails,
     updatePaymentDetails,
-    getNotificationsForUser
+    getNotificationsForUser,
+    checkIfEmailInUse
 };
 
 export default UserService;

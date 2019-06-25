@@ -1,51 +1,10 @@
 import { createSelector } from "reselect";
 import { EventViewTypes } from "Homecooked/src/types/";
+import moment from "moment";
 
 export const selectedEventId = state => state.events.selectedEvent;
 export const eventForm = state => state.events.eventForm;
 export const relatedBooking = state => state.events.relatedBooking;
-
-// export const getEvent = createSelector(
-//     [getEvents, getBookings, getUsers, getSelectedEvent, getCurrentDetails],
-//     (events, bookingsByEvent, users, selectedEventId, details) => {
-//         let event = events[selectedEventId];
-//         if (details.loading) {
-//             return {
-//                 event,
-//                 ...details
-//             };
-//         }
-
-//         let bookings = bookingsByEvent[selectedEventId];
-//         bookings = bookings.forEach((booking, index) => {
-//             booking.user = users[booking.userId];
-//         });
-//         event.bookings = bookings;
-//         return {
-//             event,
-//             ...details
-//         };
-//     }
-// );
-
-// export const getEvent = state => {
-//     let eventsById = state.events.byId;
-//     let bookingsByEvent = state.bookings.byEvent;
-//     let usersById = state.users.byId;
-//     let details = state.events;
-//     if (state.events.loading) {
-//         return {
-//             loading: true
-//         };
-//     } else {
-//         return {
-//             loading: false
-//         };
-//     }
-//     return {
-//         loading: state.events.loading
-//     };
-// };
 
 export const getEvent = state => {
     let eventsById = state.events.byId;
@@ -82,7 +41,9 @@ export const getEvent = state => {
         let bookings = bookingsByEvent[selectedEvent];
         let users = [];
         bookings.forEach((booking, index) => {
-            users.push(usersById[booking.userId]);
+            if (booking.status == "CNF") {
+                users.push(usersById[booking.userId]);
+            }
         });
         event.users = users;
         event.chef.user = usersById[event.chef.userId];

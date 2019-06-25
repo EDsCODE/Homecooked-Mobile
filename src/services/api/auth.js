@@ -11,7 +11,7 @@ const login = (email, password) => {
     });
 };
 
-const register = (email, password, firstName) => {
+const register = (email, password, personal, account) => {
     return request({
         method: "POST",
         headers: {
@@ -21,7 +21,8 @@ const register = (email, password, firstName) => {
         data: {
             email,
             password,
-            firstName
+            personal,
+            account
         }
     });
 };

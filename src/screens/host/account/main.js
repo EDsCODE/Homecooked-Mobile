@@ -13,6 +13,8 @@ import { getHostImage } from "Homecooked/src/modules/host/selectors";
 
 const PROMPT = "Edit Host Profile";
 
+const PROFILE_PLACEHOLDER_IMAGE = "Homecooked/src/assets/img/filledTable.jpg";
+
 class Host_Settings_Main extends Component {
     constructor() {
         super();
@@ -38,16 +40,36 @@ class Host_Settings_Main extends Component {
                 onPress: () => Linking.openURL(STRIPE_URL)
             },
             {
-                title: "FAQ"
+                title: "FAQ",
+                onPress: () => this._goToFAQ()
             },
             {
-                title: "Settings"
+                title: "Settings",
+                onPress: () => this._goToSettings()
             }
         ];
         this.setState({
             data: SETTING_ROWS
         });
     }
+
+    _goToFAQ = () => {
+        Linking.openURL("https://www.gathrtable.com/faq");
+    };
+
+    _goToSettings = () => {
+        this.props.navigation.navigate("Settings");
+    };
+
+    _renderProfileImage = () => {
+        if (this.props.hostImage) {
+            return {
+                uri: this.props.hostImage
+            };
+        } else {
+            return require(PROFILE_PLACEHOLDER_IMAGE);
+        }
+    };
 
     _renderItem = ({ item, index }) => {
         let {
@@ -62,7 +84,8 @@ class Host_Settings_Main extends Component {
                     id={item.id}
                     name={firstName}
                     prompt={PROMPT}
-                    source={hostImage}
+                    source={this._renderProfileImage()}
+                    onPress={this._goToProfile}
                 />
             );
         } else {
@@ -76,6 +99,10 @@ class Host_Settings_Main extends Component {
                 />
             );
         }
+    };
+
+    _goToProfile = () => {
+        this.props.navigation.navigate("Profile");
     };
 
     _keyExtractor = (item, index) => index.toString();
@@ -109,7 +136,7 @@ const mapStateToProps = state => {
     return {
         host,
         currentUser,
-        hostImage: getHostImage(state)
+        hostImage: host.profileImageSignedUrl
     };
 };
 

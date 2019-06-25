@@ -25,8 +25,8 @@ class Feed extends Component {
     _keyExtractor = (item, index) => item.id;
 
     onPress = event => {
-        this.props.selectEvent(event.id);
-        // this.props.navigation.navigate("EventStack", { event });
+        this.props.selectEvent(event.id, event.mode);
+        this.props.navigation.navigate("FeedEvent");
     };
 
     _renderItem = ({ item }) => {
@@ -82,12 +82,12 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-    const selectEvent = eventId => {
+    const selectEvent = (eventId, mode) => {
         dispatch({
             type: eventTypes.SELECT_EVENT,
             payload: {
                 eventId,
-                mode: EventViewTypes.FEED,
+                mode,
                 parentRoute: "Feed"
             }
         });

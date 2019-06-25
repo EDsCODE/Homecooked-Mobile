@@ -48,11 +48,12 @@ class Review extends Component {
     _goNext = () => {
         let { id } = this.props.navigation.state.params.event;
         // TODO: payment token placeholder
-        this.props.bookEvent("123");
+        // this.props.bookEvent("123");
+        this.props.navigation.navigate("Confirmed");
     };
 
     render() {
-        let { bookingInProgress } = this.props;
+        let { actionLoading } = this.props;
         let { attributes, startTime } = this.props.event;
         let { price } = attributes;
         return (
@@ -89,7 +90,7 @@ class Review extends Component {
                     borderColor={Color.green}
                     fill={Color.green}
                     onPress={this._goNext}
-                    loading={bookingInProgress}
+                    loading={actionLoading}
                 />
             </View>
         );

@@ -15,9 +15,7 @@ import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 import Separator from "Homecooked/src/components/Separator";
 import { eventTypes } from "Homecooked/src/modules/types";
 import { connect } from "react-redux";
-
 import { EventViewTypes } from "Homecooked/src/types/";
-
 import { getEvent } from "Homecooked/src/modules/event/selectors";
 import NavigationService from "Homecooked/src/utils/NavigationService";
 import { extendedDateWithMealType } from "Homecooked/src/utils/Date";
@@ -125,6 +123,7 @@ class Event extends Component {
     };
 
     _setEventDetails = () => {
+        console.log(this.props);
         let {
             attributes,
             bookings,
@@ -138,7 +137,8 @@ class Event extends Component {
             specialDirections,
             startTime,
             title,
-            users
+            users,
+            closeable
         } = this.props.event;
 
         let {
@@ -162,6 +162,7 @@ class Event extends Component {
                     START_TIME: startTime,
                     MEDIA: media,
                     CHEF_NAME: chef.user.firstName,
+                    CHEF_DESCRIPTION: chef.description,
                     EVENT_TITLE: title,
                     EVENT_DESCRIPTION: description,
                     EVENT_PRICE: price,
@@ -195,6 +196,7 @@ class Event extends Component {
                     START_TIME: startTime,
                     MEDIA: media,
                     CHEF_NAME: chef.user.firstName,
+                    CHEF_DESCRIPTION: chef.description,
                     EVENT_TITLE: title,
                     EVENT_DESCRIPTION: description,
                     EVENT_PRICE: price,
@@ -217,6 +219,42 @@ class Event extends Component {
                     ONPRESS: this._refund,
                     BUTTON_TEXT: "Refund",
                     USERS: users
+                });
+                break;
+            case EventViewTypes.HISTORY_REVIEW:
+                this.setState({
+                    loading: false,
+                    renderHero: false,
+                    renderInfo: false,
+                    renderPeople: false,
+                    renderMenu: true,
+                    renderLocation: false,
+                    renderUtilityBar: false,
+                    renderTitle: true,
+                    START_TIME: startTime,
+                    MEDIA: media,
+                    CHEF_NAME: chef.user.firstName,
+                    EVENT_TITLE: title,
+                    EVENT_DESCRIPTION: description,
+                    EVENT_PRICE: price,
+                    EVENT_DURATION: duration,
+                    MODULES: [
+                        "dateTime",
+                        "location",
+                        "description",
+                        "refundPolicy"
+                    ],
+                    MENU: menu,
+                    MENU_TITLE: "What was served",
+                    DIETARY_RESTRICTION: dietaryRestriction,
+                    MEAL_TYPE: mealType,
+                    MARKER: marker,
+                    BUTTON_COLOR: Color.orange,
+                    TINT_COLOR: Color.green,
+                    MAIN_TEXT: `Status: Closing`,
+                    SUB_TEXT: `Review event`,
+                    ONPRESS: this._navigateToReview,
+                    BUTTON_TEXT: "Review"
                 });
                 break;
             case EventViewTypes.HISTORY_PAST:
@@ -268,6 +306,7 @@ class Event extends Component {
                     START_TIME: startTime,
                     MEDIA: media,
                     CHEF_NAME: chef.user.firstName,
+                    CHEF_DESCRIPTION: chef.description,
                     EVENT_TITLE: title,
                     EVENT_DESCRIPTION: description,
                     EVENT_PRICE: price,
@@ -291,6 +330,43 @@ class Event extends Component {
                     BUTTON_TEXT: "Cancel"
                 });
                 break;
+            case EventViewTypes.HOST_CLOSEABLE:
+                this.setState({
+                    loading: false,
+                    renderHero: true,
+                    renderInfo: true,
+                    renderPeople: false,
+                    renderMenu: true,
+                    renderLocation: true,
+                    renderUtilityBar: true,
+                    renderTitle: false,
+                    START_TIME: startTime,
+                    MEDIA: media,
+                    CHEF_NAME: chef.user.firstName,
+                    CHEF_DESCRIPTION: chef.description,
+                    EVENT_TITLE: title,
+                    EVENT_DESCRIPTION: description,
+                    EVENT_PRICE: price,
+                    EVENT_DURATION: duration,
+                    MODULES: [
+                        "dateTime",
+                        "location",
+                        "description",
+                        "refundPolicy"
+                    ],
+                    MENU: menu,
+                    MENU_TITLE: "What was served",
+                    DIETARY_RESTRICTION: dietaryRestriction,
+                    MEAL_TYPE: mealType,
+                    MARKER: marker,
+                    BUTTON_COLOR: Color.orange,
+                    TINT_COLOR: Color.green,
+                    MAIN_TEXT: "Status: Past",
+                    SUB_TEXT: "Event finished",
+                    ONPRESS: this._navigateToCloseEventStack,
+                    BUTTON_TEXT: "Close"
+                });
+                break;
             case EventViewTypes.HOST_IN_REVIEW:
                 this.setState({
                     loading: false,
@@ -304,6 +380,7 @@ class Event extends Component {
                     START_TIME: startTime,
                     MEDIA: media,
                     CHEF_NAME: chef.user.firstName,
+                    CHEF_DESCRIPTION: chef.description,
                     EVENT_TITLE: title,
                     EVENT_DESCRIPTION: description,
                     EVENT_PRICE: price,
@@ -323,8 +400,45 @@ class Event extends Component {
                     TINT_COLOR: Color.green,
                     MAIN_TEXT: `Status: In Review`,
                     SUB_TEXT: `You will be notified soon`,
-                    ONPRESS: this.props.refund,
+                    ONPRESS: this.props.cancel,
                     BUTTON_TEXT: "Cancel"
+                });
+                break;
+
+            case EventViewTypes.HOST_PAST:
+                this.setState({
+                    loading: false,
+                    renderHero: false,
+                    renderInfo: false,
+                    renderPeople: false,
+                    renderMenu: true,
+                    renderLocation: false,
+                    renderUtilityBar: false,
+                    renderTitle: true,
+                    START_TIME: startTime,
+                    MEDIA: media,
+                    CHEF_NAME: chef.user.firstName,
+                    EVENT_TITLE: title,
+                    EVENT_DESCRIPTION: description,
+                    EVENT_PRICE: price,
+                    EVENT_DURATION: duration,
+                    MODULES: [
+                        "dateTime",
+                        "location",
+                        "description",
+                        "refundPolicy"
+                    ],
+                    MENU: menu,
+                    MENU_TITLE: "What was served",
+                    DIETARY_RESTRICTION: dietaryRestriction,
+                    MEAL_TYPE: mealType,
+                    MARKER: marker,
+                    BUTTON_COLOR: Color.orange,
+                    TINT_COLOR: Color.green,
+                    MAIN_TEXT: `Status: Active`,
+                    SUB_TEXT: `Upcoming`,
+                    ONPRESS: this.props.refund,
+                    BUTTON_TEXT: "Refund"
                 });
                 break;
             default:
@@ -360,6 +474,14 @@ class Event extends Component {
         this.props.navigation.navigate("BookingStack", {
             event: this.props.event
         });
+    };
+
+    _navigateToReview = () => {
+        NavigationService.navigate("ReviewEvent");
+    };
+
+    _navigateToCloseEventStack = () => {
+        NavigationService.navigate("CloseEventStack");
     };
 
     _navigateToPerson = person => {
@@ -494,23 +616,6 @@ class Event extends Component {
                 onPress={onPress}
             />
         );
-    };
-
-    _onPress = () => {
-        switch (this.props.mode) {
-            case EventViewTypes.FEED:
-                return this._navigateToBooking;
-            case EventViewTypes.HISTORY_UPCOMING:
-                return this.props.refund;
-            case EventViewTypes.HISTORY_PAST:
-                return null;
-            case EventViewTypes.HOST_ACTIVE:
-                return this.props.cancel;
-            case EventViewTypes.HOST_IN_REVIEW:
-                return null;
-            default:
-                return null;
-        }
     };
 
     render() {

@@ -1,12 +1,11 @@
-import React, { Component } from 'react';
-import { View, StyleSheet, Image, ImageBackground, Text } from 'react-native';
-import NavigationService from 'Homecooked/src/utils/NavigationService';
-import HeadingText from 'Homecooked/src/components/Text/Heading';
-import PromptText from 'Homecooked/src/components/Text/Prompt';
-import UpvoteButton from 'Homecooked/src/components/Buttons/UpvoteButton';
-import CloseButton from 'Homecooked/src/components/Buttons/Close';
-import { Spacing, Typography, Color } from 'Homecooked/src/components/styles';
-import { colors } from 'react-native-elements';
+import React, { Component } from "react";
+import { View, StyleSheet, Image, ImageBackground, Text } from "react-native";
+import NavigationService from "Homecooked/src/utils/NavigationService";
+import HeadingText from "Homecooked/src/components/Text/Heading";
+import PromptText from "Homecooked/src/components/Text/Prompt";
+import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
+import { colors } from "react-native-elements";
+import { extendedDateWithMealType } from "Homecooked/src/utils/Date";
 
 export default props => {
     let { image } = props;
@@ -30,7 +29,7 @@ export default props => {
                         How was {props.eventName}?
                     </HeadingText>
                     <PromptText style={{ color: Color.white, fontSize: 12 }}>
-                        Dinner on {props.eventDate}
+                        {extendedDateWithMealType(props.eventDate)}
                     </PromptText>
                 </View>
             </ImageBackground>
@@ -43,26 +42,26 @@ const styles = StyleSheet.create({
         flex: 0.5,
         width: Spacing.deviceWidth,
         height: undefined,
-        flexDirection: 'row'
+        flexDirection: "row"
     },
     banner: {
         flex: 1,
         width: Spacing.deviceWidth,
         height: undefined,
-        justifyContent: 'space-around',
-        alignItems: 'center',
-        flexDirection: 'row'
+        justifyContent: "space-around",
+        alignItems: "center",
+        flexDirection: "row"
     },
     eventPhoto: {
         width: 100,
         height: 100,
         borderRadius: 50,
         margin: 15,
-        overflow: 'hidden'
+        overflow: "hidden"
     },
     textBox: {
         flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center'
+        flexDirection: "column",
+        justifyContent: "center"
     }
 });

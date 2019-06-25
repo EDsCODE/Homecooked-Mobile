@@ -3,7 +3,9 @@ import { Text, StyleSheet } from "react-native";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 
 export default props => (
-    <Text style={[styles.text, { ...props.style }]}>{props.children}</Text>
+    <Text onPress={props.onPress} style={[styles.text, { ...props.style }]}>
+        {props.children}
+    </Text>
 );
 
 const styles = StyleSheet.create({

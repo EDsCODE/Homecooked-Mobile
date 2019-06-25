@@ -1,29 +1,26 @@
 import React, { Component } from "react";
 import { createStackNavigator } from "react-navigation";
-import Email from "./Email";
-import Password from "./Password";
+import Personal from "./Personal";
+import Account from "./Account";
 import FirstName from "./FirstName";
 
-const state = {
-    email: "",
-    password: "",
-    firstName: ""
-};
+import { authTypes } from "Homecooked/src/modules/types";
+import { connect } from "react-redux";
 
 const SignUpStack = createStackNavigator(
     {
-        Email: {
-            screen: Email
+        PersonalInformation: {
+            screen: Personal
         },
-        Password: {
-            screen: Password
+        AccountInformation: {
+            screen: Account
         },
         FirstName: {
             screen: FirstName
         }
     },
     {
-        initialRouteName: "Email",
+        initialRouteName: "PersonalInformation",
         headerMode: "none"
     }
 );
@@ -32,15 +29,33 @@ class SignUp extends Component {
     static router = SignUpStack.router;
 
     state = {
-        email: "",
-        password: "",
-        firstName: ""
+        personal: {
+            firstName: "",
+            lastName: "",
+            dob: ""
+        },
+        account: {
+            email: "",
+            password: "",
+            phoneNumber: ""
+        }
     };
 
-    updateData = (key, value) => {
-        this.setState({
-            [key]: value
-        });
+    updateData = (key, value, cb) => {
+        this.setState(
+            {
+                [key]: value
+            },
+            () => {
+                typeof cb === "function" && cb();
+            }
+        );
+    };
+
+    submit = () => {
+        let { personal, account } = this.state;
+        this.props.register(personal, account);
+        console.log(this.state);
     };
 
     render() {
@@ -49,10 +64,29 @@ class SignUp extends Component {
         return (
             <SignUpStack
                 navigation={navigation}
-                screenProps={{ updateData: this.updateData, state: this.state }}
+                screenProps={{
+                    updateData: this.updateData,
+                    state: this.state,
+                    submit: this.submit
+                }}
             />
         );
     }
 }
 
-export default SignUp;
+const mapDispatchToProps = dispatch => {
+    const register = (personal, account) => {
+        dispatch({
+            type: authTypes.SIGNUP_REQUEST,
+            payload: { personal, account }
+        });
+    };
+    return {
+        register
+    };
+};
+
+export default connect(
+    null,
+    mapDispatchToProps
+)(SignUp);

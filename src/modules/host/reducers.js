@@ -12,7 +12,11 @@ const initialState = {
     cancelInProgress: false,
     postingInProgress: false,
     preferences: {},
-    loading: false
+    loading: false,
+    loadingAvatar: false,
+    profileImageSignedUrl: null,
+    description: null,
+    profileImageUrl: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -47,6 +51,8 @@ const reducer = (state = initialState, action) => {
                     ...action.payload.preferences,
                     fields: normalize(fields, "fieldType")
                 },
+                profileImageUrl: action.payload.chef.profileImageUrl,
+                description: action.payload.chef.description,
                 media: action.payload.media,
                 loading: false
             };
@@ -122,6 +128,36 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 stripeAccountId: action.payload.stripeAccountId
+            };
+        case types.UPLOAD_HOST_IMAGE_REQUEST:
+            return {
+                ...state
+            };
+        case types.UPLOAD_HOST_IMAGE_SUCCESS:
+            return {
+                ...state,
+                profileImageUrl: action.payload.key
+            };
+        case types.UPLOAD_HOST_IMAGE_ERROR:
+            return {
+                ...state
+            };
+        case types.GET_HOST_AVATAR_REQUEST:
+            return {
+                ...state,
+                loadingAvatar: true
+            };
+        case types.GET_HOST_AVATAR_SUCCESS:
+            return {
+                ...state,
+                loadingAvatar: false,
+                profileImageSignedUrl: action.payload.profileImageSignedUrl
+            };
+        case types.GET_HOST_AVATAR_ERROR:
+            return {
+                ...state,
+                loadingAvatar: false,
+                error: action.error
             };
         default:
             return state;
