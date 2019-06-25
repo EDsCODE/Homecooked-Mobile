@@ -45,5 +45,7 @@ target 'Homecooked' do
 
   pod 'tipsi-stripe', :path => '../node_modules/tipsi-stripe'
 
+  pod 'RNReanimated', :path => '../node_modules/react-native-reanimated'
+
 end
 
