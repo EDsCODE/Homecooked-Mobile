@@ -1,3 +1,4 @@
+import React, { Component } from "react";
 import { createBottomTabNavigator } from "react-navigation";
 import Feed from "./feed";
 import HistoryStack from "./history";
@@ -20,8 +21,17 @@ const MainStack = createBottomTabNavigator(
         }
     },
     {
-        initialRouteName: "History"
+        initialRouteName: "Feed"
     }
 );
 
-export default MainStack;
+class Main extends Component {
+    static router = MainStack.router;
+
+    render() {
+        const { navigation } = this.props;
+        return <MainStack navigation={navigation} />;
+    }
+}
+
+export default Main;
