@@ -8,10 +8,8 @@ import { connect } from "react-redux";
 
 import { historyTypes, eventTypes } from "Homecooked/src/modules/types";
 
-import CellList from "Homecooked/src/components/List/CellList";
 import EmptyComponent from "Homecooked/src/components/List/EmptyComponent";
-
-import { getGuestNotificationsWithEvent } from "Homecooked/src/modules/notification/selectors";
+import { getHostNotificationsWithEvent } from "Homecooked/src/modules/notification/selectors";
 
 class NotificationMain extends Component {
     _keyExtractor = (item, index) => item.id;
@@ -44,7 +42,7 @@ class NotificationMain extends Component {
 
     render() {
         return (
-            <View style={{ flex: 1 }}>
+            <View>
                 <Header title={"Notification"} leftComponent={() => null} />
                 {this.props.initialLoad ? (
                     <ActivityIndicator />
@@ -55,8 +53,8 @@ class NotificationMain extends Component {
                         data={this.props.notifications}
                         extraData={this.props.notifications}
                         renderItem={this._renderRow}
-                        refreshing={this.props.loading}
                         onRefresh={this._onRefresh}
+                        refreshing={this.props.loading}
                         ItemSeparatorComponent={this._renderSeparator}
                         ListEmptyComponent={() => (
                             <EmptyComponent>
@@ -65,7 +63,6 @@ class NotificationMain extends Component {
                         )}
                     />
                 )}
-                <CellList />
             </View>
         );
     }
@@ -86,7 +83,7 @@ const mapDisptchToProps = dispatch => {
     const loadNotifications = () => {
         dispatch({
             type: notificationTypes.GET_NOTIFICATIONS_REQUEST,
-            userType: "GUEST"
+            userType: "HOST"
         });
     };
 
@@ -98,9 +95,9 @@ const mapDisptchToProps = dispatch => {
 
 const mapStateToProps = state => {
     return {
-        loading: state.notifications.loading,
         initialLoad: state.notifications.initialLoad,
-        notifications: getGuestNotificationsWithEvent(state)
+        loading: state.notifications.loading,
+        notifications: getHostNotificationsWithEvent(state)
     };
 };
 

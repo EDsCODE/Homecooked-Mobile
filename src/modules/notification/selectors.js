@@ -11,6 +11,8 @@ export const getGuestNotificationsWithEvent = createSelector(
     [getEvents, getNotifications, getBookings],
     (events, notifications, currentBookings) => {
         let currentBookingsArray = Object.values(currentBookings);
+
+        notifications = _.filter(notifications, ["type", "GUEST"]);
         _.forEach(notifications, notification => {
             notification.event = events[notification.entityId];
             let mode = determineEventViewMode(
@@ -26,28 +28,53 @@ export const getGuestNotificationsWithEvent = createSelector(
 export const getHostNotificationsWithEvent = createSelector(
     [getEvents, getNotifications],
     (events, notifications) => {
+        notifications = _.filter(notifications, ["type", "HOST"]);
         _.forEach(notifications, notification => {
             notification.event = events[notification.entityId];
-            notification.event.mode = EventViewTypes.FEED;
+            let mode = determineHostViewMode(notification.event);
+            notification.event.mode = mode;
         });
         return notifications;
     }
 );
 
-function determineEventViewMode(event, currentBookings) {
+function determineHostViewMode(event) {
     let status = event.status;
     if (status == "OPN" || status == "FUL") {
         if (moment(event.startTime) < moment()) {
-            return EventViewTypes.HISTORY_PAST;
+            return EventViewTypes.HOST_CLOSEABLE;
         } else {
-            let atTheTable = determineUserRelation(event, currentBookings);
-            if (atTheTable) {
+            return EventViewTypes.HOST_ACTIVE;
+        }
+    } else if (status == "REV") {
+        return EventViewTypes.HOST_IN_REVIEW;
+    } else {
+        return EventViewTypes.HOST_PAST;
+    }
+}
+
+function determineEventViewMode(event, currentBookings) {
+    let status = event.status;
+    let booking = determineUserRelation(event, currentBookings);
+    if (booking) {
+        if (booking.status == "CNF") {
+            if (event.status == "OPN" || event.status == "FUL") {
                 return EventViewTypes.HISTORY_UPCOMING;
+            }
+        } else if (booking.status == "ATT") {
+            if (event.status == "CLO") {
+                return EventViewTypes.HISTORY_REVIEW;
+            }
+        }
+        return EventViewTypes.HISTORY_PAST;
+    } else {
+        if (status == "OPN" || status == "FUL") {
+            if (moment(event.startTime) < moment()) {
+                return EventViewTypes.HISTORY_PAST;
             } else {
                 return EventViewTypes.FEED;
             }
         }
-    } else {
         return EventViewTypes.HISTORY_PAST;
     }
 }
@@ -55,8 +82,8 @@ function determineEventViewMode(event, currentBookings) {
 function determineUserRelation(event, currentBookings) {
     currentBookings.forEach(booking => {
         if (booking.eventId == event.id) {
-            return true;
+            return booking;
         }
     });
-    return false;
+    return null;
 }

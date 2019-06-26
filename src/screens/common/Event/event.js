@@ -148,8 +148,7 @@ class Event extends Component {
             specialDirections,
             startTime,
             title,
-            users,
-            closeable
+            users
         } = this.props.event;
 
         let {

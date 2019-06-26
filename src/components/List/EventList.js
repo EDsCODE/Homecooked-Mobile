@@ -18,16 +18,7 @@ class EventList extends Component {
     };
 
     render() {
-        let { events, style } = this.props;
-        return (
-            <FlatList
-                keyExtractor={this._keyExtractor}
-                style={style}
-                data={events}
-                extraData={events}
-                renderItem={this._renderItem}
-            />
-        );
+        return <FlatList {...this.props} renderItem={this._renderItem} />;
     }
 }
 

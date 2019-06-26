@@ -1,25 +1,29 @@
-import React from "react";
-import { Text, TouchableOpacity } from "react-native";
-import { Header, Icon } from "react-native-elements";
-import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
+import React from 'react';
+import { Text, TouchableWithoutFeedback } from 'react-native';
+import { Header, Icon } from 'react-native-elements';
+import { Spacing, Typography, Color } from 'Homecooked/src/components/styles';
 
 const BasicHeader = props => (
     <Header
         containerStyle={{
             backgroundColor: Color.white,
-            justifyContent: "space-around"
+            justifyContent: 'space-around'
         }}
         leftComponent={
             props.leftComponent ? (
                 props.leftComponent
             ) : (
-                <Icon
-                    name="ios-arrow-round-back"
-                    type="ionicon"
-                    containerStyle={{ marginLeft: Spacing.base }}
-                    size={40}
+                <TouchableWithoutFeedback
                     onPress={props.leftOnPress}
-                />
+                    hitSlop={{ top: 100, bottom: 100, left: 100, right: 100 }}
+                >
+                    <Icon
+                        name="ios-arrow-round-back"
+                        type="ionicon"
+                        containerStyle={{ marginLeft: Spacing.base }}
+                        size={40}
+                    />
+                </TouchableWithoutFeedback>
             )
         }
         centerComponent={{
@@ -37,11 +41,14 @@ const BasicHeader = props => (
 
 let rightComponents = {
     share: {
-        icon: "home",
+        icon: 'home',
         color: Color.white
     },
     next: props => (
-        <TouchableOpacity onPress={props.rightOnPress}>
+        <TouchableWithoutFeedback
+            onPress={props.rightOnPress}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+        >
             <Text
                 style={{
                     color: Color.orange,
@@ -51,7 +58,7 @@ let rightComponents = {
             >
                 Next
             </Text>
-        </TouchableOpacity>
+        </TouchableWithoutFeedback>
     ),
     new: props => (
         <Icon

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View } from "react-native";
+import { View, FlatList, ActivityIndicator, Text } from "react-native";
 import Header from "Homecooked/src/components/Headers/Basic";
 import Tabs from "Homecooked/src/components/Headers/Tabs";
 import { feedTypes, eventTypes } from "Homecooked/src/modules/types";
@@ -8,7 +8,9 @@ import {
     getActiveEvents,
     getEventsForCity
 } from "Homecooked/src/modules/feed/selectors";
+import EventCell from "Homecooked/src/components/Cells/Event";
 
+import EmptyComponent from "Homecooked/src/components/List/EmptyComponent";
 import EventList from "Homecooked/src/components/List/EventList";
 
 import { CityFilter, EventViewTypes } from "Homecooked/src/types";
@@ -37,6 +39,20 @@ class Feed extends Component {
         });
     };
 
+    _onRefresh = () => {
+        this.props.loadFeed();
+    };
+
+    _renderItem = ({ item }) => {
+        return (
+            <EventCell
+                key={item.id}
+                event={item}
+                onPress={() => this.onPress(item)}
+            />
+        );
+    };
+
     render() {
         let FILTERS = Object.values(CityFilter);
 
@@ -48,12 +64,24 @@ class Feed extends Component {
                     activeTab={this.state.tabSelected}
                     tabs={FILTERS}
                 />
-                <EventList
-                    style={{ height: "100%" }}
-                    onPress={this.onPress}
-                    events={this.props.events}
-                    loading={this.props.initialLoad}
-                />
+                {this.props.initialLoad ? (
+                    <ActivityIndicator />
+                ) : (
+                    <FlatList
+                        style={{ flex: 1 }}
+                        onPress={this.onPress}
+                        data={this.props.events}
+                        extraData={this.props.events}
+                        keyExtractor={this._keyExtractor}
+                        loading={this.props.initialLoad}
+                        renderItem={this._renderItem}
+                        refreshing={this.props.loading}
+                        onRefresh={this._onRefresh}
+                        ListEmptyComponent={() => (
+                            <EmptyComponent>{"No Events"}</EmptyComponent>
+                        )}
+                    />
+                )}
             </View>
         );
     }
@@ -62,6 +90,7 @@ class Feed extends Component {
 const mapStateToProps = state => {
     const { feed, events, currentBookings } = state;
     return {
+        loading: feed.loading,
         initialLoad: feed.initialLoad,
         events: getEventsForCity(state)
     };

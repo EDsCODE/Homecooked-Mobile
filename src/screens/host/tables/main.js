@@ -22,7 +22,7 @@ import { EventViewTypes } from "Homecooked/src/types";
 import { eventTypes } from "Homecooked/src/modules/types";
 import NavigationService from "Homecooked/src/utils/NavigationService";
 
-import CellList from "Homecooked/src/components/List/CellList";
+import EmptyComponent from "Homecooked/src/components/List/EmptyComponent";
 
 class HostTablesMain extends Component {
     state = {
@@ -39,6 +39,10 @@ class HostTablesMain extends Component {
         });
         this.props.loadHostingEvents();
     }
+
+    _onRefresh = () => {
+        this.props.loadHostingEvents();
+    };
 
     _keyExtractor = (item, index) => item.id;
 
@@ -148,33 +152,50 @@ class HostTablesMain extends Component {
     displayList = tabSelected => {
         if (tabSelected == 0) {
             return (
-                <CellList
+                <FlatList
                     keyExtractor={this._keyExtractor}
                     style={{ height: "100%" }}
-                    events={this.props.activeEvents}
+                    data={this.props.activeEvents}
+                    extraData={this.props.activeEvents}
                     renderItem={this._renderUpcomingItem}
-                    loading={this.props.initialLoad}
+                    refreshing={this.props.loading}
+                    onRefresh={this._onRefresh}
+                    ItemSeparatorComponent={this._renderSeparator}
+                    ListEmptyComponent={() => (
+                        <EmptyComponent>{"No Events"}</EmptyComponent>
+                    )}
                 />
             );
         } else if (tabSelected == 1) {
             return (
-                <CellList
+                <FlatList
                     keyExtractor={this._keyExtractor}
                     style={{ height: "100%" }}
-                    events={this.props.inReviewEvents}
+                    data={this.props.inReviewEvents}
                     extraData={this.props.inReviewEvents}
                     renderItem={this._renderInReviewItem}
-                    loading={this.props.initialLoad}
+                    onRefresh={this._onRefresh}
+                    ItemSeparatorComponent={this._renderSeparator}
+                    refreshing={this.props.loading}
+                    ListEmptyComponent={() => (
+                        <EmptyComponent>{"No Events"}</EmptyComponent>
+                    )}
                 />
             );
         } else {
             return (
-                <CellList
+                <FlatList
                     keyExtractor={this._keyExtractor}
                     style={{ height: "100%" }}
-                    events={this.props.inactiveEvents}
+                    data={this.props.inactiveEvents}
+                    extraData={this.props.inactiveEvents}
                     renderItem={this._renderPastItem}
-                    loading={this.props.initialLoad}
+                    refreshing={this.props.loading}
+                    onRefresh={this._onRefresh}
+                    ItemSeparatorComponent={this._renderSeparator}
+                    ListEmptyComponent={() => (
+                        <EmptyComponent>{"No Events"}</EmptyComponent>
+                    )}
                 />
             );
         }
@@ -195,7 +216,11 @@ class HostTablesMain extends Component {
                         activeTab={this.state.tabSelected}
                         tabs={["Upcoming", "In Review", "Past"]}
                     />
-                    {this.displayList(this.state.tabSelected)}
+                    {this.props.initialLoad ? (
+                        <ActivityIndicator />
+                    ) : (
+                        this.displayList(this.state.tabSelected)
+                    )}
                 </View>
             </View>
         );
@@ -207,6 +232,7 @@ const mapStateToProps = state => {
     return {
         currentUser,
         host: host,
+        loading: host.eventsLoading,
         initialLoad: host.initialLoad,
         activeEvents: hostSelectors.getActiveEvents(state),
         inactiveEvents: hostSelectors.getInactiveEvents(state),

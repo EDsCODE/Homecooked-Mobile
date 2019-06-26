@@ -20,8 +20,10 @@ export default class Attendance extends Component {
 
     componentDidMount() {
         let attendees = [];
-
-        if (this.props.screenProps.event.users) {
+        if (
+            this.props.screenProps.event.users &&
+            this.props.screenProps.event.bookings
+        ) {
             let users = this.props.screenProps.event.users;
             this.props.screenProps.event.bookings.forEach(booking => {
                 let user = _.find(users, ["id", booking.userId]);
@@ -40,7 +42,12 @@ export default class Attendance extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (!this.state.loaded && nextProps.screenProps.event.users) {
+        console.log(nextProps);
+        if (
+            !this.state.loaded &&
+            nextProps.screenProps.event.users &&
+            nextProps.screenProps.event.bookings
+        ) {
             let attendees = [];
             let users = nextProps.screenProps.event.users;
             nextProps.screenProps.event.bookings.forEach(booking => {

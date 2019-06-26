@@ -20,11 +20,3 @@ function* loadFeedWorkerSaga(action) {
 export const feedSagas = [
     takeLatest(types.LOAD_FEED_REQUEST, loadFeedWorkerSaga)
 ];
-
-// const getKeys = events => {
-//     let keys = [];
-//     events.forEach(event => {
-//         keys.push(event.id);
-//     });
-//     return keys;
-// };

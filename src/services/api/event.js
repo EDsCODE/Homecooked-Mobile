@@ -55,6 +55,13 @@ const cancelEvent = id => {
     });
 };
 
+const closeEvent = id => {
+    return request({
+        method: "PATCH",
+        url: `/event/${id}/close`
+    });
+};
+
 const getEventSettingsByType = type => {
     return request({
         method: "GET",
@@ -106,7 +113,8 @@ const EventService = {
     getEventSettingsByType,
     createEvent,
     markAttendance,
-    leaveReview
+    leaveReview,
+    closeEvent
 };
 
 export default EventService;

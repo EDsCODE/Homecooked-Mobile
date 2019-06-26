@@ -7,10 +7,11 @@ import * as userSelectors from "Homecooked/src/modules/currentUser/selectors";
 function* loadNotificationsWorkerSaga(action) {
     try {
         let userId = yield select(userSelectors.userId);
+        let userType = action.userType;
         let { data: notifications } = yield call(
             UserService.getNotificationsForUser,
             userId,
-            "GUEST"
+            userType
         );
 
         yield all(

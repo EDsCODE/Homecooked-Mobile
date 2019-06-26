@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { Linking } from "react-native";
+import { Linking, Image } from "react-native";
 import { createBottomTabNavigator } from "react-navigation";
 import Tables from "./tables";
 // import Ratings from "./ratings";
-// import Notifications from "./notifications";
+import HostNotifications from "./notifications";
 import Account from "./account";
 
 import { stringUtils } from "Homecooked/src/utils";
@@ -11,17 +11,67 @@ import { stringUtils } from "Homecooked/src/utils";
 import { connect } from "react-redux";
 import { hostTypes } from "Homecooked/src/modules/types";
 
+import { Color, Spacing } from "Homecooked/src/components/styles";
+
 const HostStack = createBottomTabNavigator(
     {
         HostTables: {
-            screen: Tables
+            screen: Tables,
+            navigationOptions: {
+                tabBarLabel: "Hosting"
+            }
+        },
+        HostNotifications: {
+            screen: HostNotifications,
+            navigationOptions: {
+                tabBarLabel: "Notifications"
+            }
         },
         HostAccount: {
-            screen: Account
+            screen: Account,
+            navigationOptions: {
+                tabBarLabel: "Host Profile"
+            }
         }
     },
     {
-        initialRouteName: "HostTables"
+        initialRouteName: "HostTables",
+        defaultNavigationOptions: ({ navigation }) => ({
+            tabBarIcon: ({ focused, horizontal, tintColor }) => {
+                const { routeName } = navigation.state;
+                var imgSource;
+                if (routeName === "HostTables") {
+                    // Sometimes we want to add badges to some icons.
+                    // You can check the implementation below.
+                    imgSource = require("Homecooked/src/assets/img/HMyTables.png");
+                } else if (routeName === "HostAccount") {
+                    imgSource = require("Homecooked/src/assets/img/GHProfile.png");
+                } else if (routeName == "HostNotifications") {
+                    imgSource = require("Homecooked/src/assets/img/GHNotifs.png");
+                }
+
+                // You can return any component that you like here!
+                return (
+                    <Image
+                        source={imgSource}
+                        style={{
+                            width: 22,
+                            height: 22,
+                            tintColor,
+                            padding: Spacing.smaller
+                        }}
+                        resizeMode="contain"
+                    />
+                );
+            }
+        }),
+        tabBarOptions: {
+            showIcon: true,
+            activeTintColor: "#FF674F",
+            style: {
+                height: 45
+            }
+        }
     }
 );
 
