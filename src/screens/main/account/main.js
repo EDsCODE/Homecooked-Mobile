@@ -21,21 +21,24 @@ class Main extends Component {
     }
 
     hostRow = status => {
-        var title, onPress;
-        var icon = require('Homecooked/src/assets/img/Switch.png');
+        var title, onPress, icon;
         if (status) {
             if (status == 'REQ') {
                 title = 'Host application under review';
+                icon = require('Homecooked/src/assets/img/HMyTables.png');
             } else if (status == 'CNF') {
                 title = 'Switch to Host Mode';
                 onPress = () => NavigationService.navigate('Host');
+                icon = require('Homecooked/src/assets/img/sort.png');
             } else {
                 title = 'Become a host';
                 onPress = () => this._goToCreateApplication();
+                icon = require('Homecooked/src/assets/img/HMyTables.png');
             }
         } else {
             title = 'Become a host';
             onPress = () => this._goToCreateApplication();
+            icon = require('Homecooked/src/assets/img/HMyTables.png');
         }
 
         return {
@@ -53,22 +56,22 @@ class Main extends Component {
             {
                 title: 'Payment',
                 onPress: () => this._goToPayment(),
-                icon: require('Homecooked/src/assets/img/Payouts.png')
+                icon: require('Homecooked/src/assets/img/purse.png')
             },
             {
                 title: 'Invite Friends',
                 onPress: () => this.getReferralLink(),
-                icon: require('Homecooked/src/assets/img/InviteFriends.png')
+                icon: require('Homecooked/src/assets/img/giftbox.png')
             },
             {
                 title: 'FAQ',
                 onPress: () => this._goToFAQ(),
-                icon: require('Homecooked/src/assets/img/FAQ.png')
+                icon: require('Homecooked/src/assets/img/question.png')
             },
             {
                 title: 'Settings',
                 onPress: () => this._goToSettings(),
-                icon: require('Homecooked/src/assets/img/Settings.png')
+                icon: require('Homecooked/src/assets/img/gears.png')
             }
         ];
         this.setState({
