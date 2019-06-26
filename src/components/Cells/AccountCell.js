@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
+import React, { Component } from 'react';
+import { View, TouchableOpacity, Text, StyleSheet, Image } from 'react-native';
 
-import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
+import { Spacing, Typography, Color } from 'Homecooked/src/components/styles';
 
 const Cell = props => (
     <TouchableOpacity
@@ -10,6 +10,7 @@ const Cell = props => (
         activeOpacity={1.0}
     >
         <View style={styles.row}>
+            <Image style={styles.imgStyles} source={props.icon} />
             <Text style={styles.title}>{props.title}</Text>
             {props.prompt ? (
                 <Text style={styles.prompt}>{props.prompt}</Text>
@@ -21,7 +22,8 @@ const Cell = props => (
 const styles = StyleSheet.create({
     row: {
         marginVertical: Spacing.base,
-        marginHorizontal: Spacing.small
+        flexDirection: 'row',
+        alignItems: 'center'
     },
     title: {
         fontFamily: Typography.fontFamily,
@@ -31,6 +33,11 @@ const styles = StyleSheet.create({
         fontFamily: Typography.fontFamily,
         fontSize: Typography.smallFontSize,
         color: Color.lightGray
+    },
+    imgStyles: {
+        width: 25,
+        height: 25,
+        marginRight: Spacing.base
     }
 });
 

@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import { View, FlatList, Text, StyleSheet, Linking } from "react-native";
+import React, { Component } from 'react';
+import { View, FlatList, Text, StyleSheet, Linking } from 'react-native';
 
-import HeaderCell from "Homecooked/src/components/Cells/AccountHeaderCell";
-import Cell from "Homecooked/src/components/Cells/AccountCell";
-import NavigationService from "Homecooked/src/utils/NavigationService";
+import HeaderCell from 'Homecooked/src/components/Cells/AccountHeaderCell';
+import Cell from 'Homecooked/src/components/Cells/AccountCell';
+import NavigationService from 'Homecooked/src/utils/NavigationService';
 
-import { hostTypes } from "Homecooked/src/modules/types";
-import { connect } from "react-redux";
-import branch, { BranchEvent } from "react-native-branch";
-import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
+import { hostTypes } from 'Homecooked/src/modules/types';
+import { connect } from 'react-redux';
+import branch, { BranchEvent } from 'react-native-branch';
+import { Spacing, Typography, Color } from 'Homecooked/src/components/styles';
 
-const PROFILE_PLACEHOLDER_IMAGE = "Homecooked/src/assets/img/filledTable.jpg";
+const PROFILE_PLACEHOLDER_IMAGE = 'Homecooked/src/assets/img/filledTable.jpg';
 
 class Main extends Component {
     constructor() {
@@ -21,28 +21,28 @@ class Main extends Component {
     }
 
     hostRow = status => {
+        var title, onPress;
+        var icon = require('Homecooked/src/assets/img/Switch.png');
         if (status) {
-            if (status == "REQ") {
-                return {
-                    title: "Host application under review"
-                };
-            } else if (status == "CNF") {
-                return {
-                    title: "Switch to Host Mode",
-                    onPress: () => NavigationService.navigate("Host")
-                };
+            if (status == 'REQ') {
+                title = 'Host application under review';
+            } else if (status == 'CNF') {
+                title = 'Switch to Host Mode';
+                onPress = () => NavigationService.navigate('Host');
             } else {
-                return {
-                    title: "Submit application to become a host",
-                    onPress: () => this._goToCreateApplication()
-                };
+                title = 'Become a host';
+                onPress = () => this._goToCreateApplication();
             }
         } else {
-            return {
-                title: "Submit application to become a host",
-                onPress: () => this._goToCreateApplication()
-            };
+            title = 'Become a host';
+            onPress = () => this._goToCreateApplication();
         }
+
+        return {
+            title,
+            onPress,
+            icon
+        };
     };
 
     componentDidMount() {
@@ -51,20 +51,24 @@ class Main extends Component {
             {},
             this.hostRow(this.props.hostStatus),
             {
-                title: "Payment",
-                onPress: () => this._goToPayment()
+                title: 'Payment',
+                onPress: () => this._goToPayment(),
+                icon: require('Homecooked/src/assets/img/Payouts.png')
             },
             {
-                title: "Invite Friends",
-                onPress: () => this.getReferralLink()
+                title: 'Invite Friends',
+                onPress: () => this.getReferralLink(),
+                icon: require('Homecooked/src/assets/img/InviteFriends.png')
             },
             {
-                title: "FAQ",
-                onPress: () => this._goToFAQ()
+                title: 'FAQ',
+                onPress: () => this._goToFAQ(),
+                icon: require('Homecooked/src/assets/img/FAQ.png')
             },
             {
-                title: "Settings",
-                onPress: () => this._goToSettings()
+                title: 'Settings',
+                onPress: () => this._goToSettings(),
+                icon: require('Homecooked/src/assets/img/Settings.png')
             }
         ];
         this.setState({
@@ -83,23 +87,23 @@ class Main extends Component {
     }
 
     _goToCreateApplication = () => {
-        this.props.navigation.navigate("HostApplication");
+        this.props.navigation.navigate('HostApplication');
     };
 
     _goToSettings = () => {
-        this.props.navigation.navigate("Settings");
+        this.props.navigation.navigate('Settings');
     };
 
     _goToProfile = () => {
-        this.props.navigation.navigate("Profile");
+        this.props.navigation.navigate('Profile');
     };
 
     _goToPayment = () => {
-        this.props.navigation.navigate("Payment");
+        this.props.navigation.navigate('Payment');
     };
 
     _goToFAQ = () => {
-        Linking.openURL("https://www.gathrtable.com/faq");
+        Linking.openURL('https://www.gathrtable.com/faq');
     };
 
     _renderProfileImage = () => {
@@ -115,29 +119,30 @@ class Main extends Component {
     getReferralLink = async () => {
         //branch.setIdentity('theUserId') // <- Identifiy the user in branch
         let branchUniversalObject = await branch.createBranchUniversalObject(
-            "canonicalIdentifier",
+            'canonicalIdentifier',
             {
                 automaticallyListOnSpotlight: true,
-                metadata: { prop1: "test", prop2: "abc" },
+                metadata: { prop1: 'test', prop2: 'abc' },
                 title: "You're Invited!",
-                contentDescription: "Tarun has invited you to join Gathr!"
+                contentDescription:
+                    '' + firstName + ' has invited you to join Gathr!'
             }
         );
         let linkProperties = {
-            feature: "referral",
-            channel: "SMS"
+            feature: 'referral',
+            channel: 'SMS'
         };
         let controlParams = {
-            $desktop_url: "http://gathrtable.com"
+            $desktop_url: 'http://gathrtable.com'
         };
 
         var firstName = this.props.currentUser.firstName;
         let shareOptions = {
             messageHeader: "You're Invited!",
             messageBody:
-                "" +
+                '' +
                 firstName +
-                " has invited you to Gathr. Come join the table!"
+                ' has invited you to Gathr. Come join the table!'
         };
         let {
             channel,
@@ -177,6 +182,7 @@ class Main extends Component {
                     title={item.title}
                     prompt={item.prompt}
                     onPress={item.onPress}
+                    icon={item.icon}
                 />
             );
         }
@@ -221,7 +227,7 @@ const mapDispatchToProps = dispatch => {
         dispatch({
             type: hostTypes.GET_CHEF_REQUEST,
             payload: {
-                userId: "7aff6007-d658-4944-bd41-ea2d05589864"
+                userId: '7aff6007-d658-4944-bd41-ea2d05589864'
             }
         });
     };
