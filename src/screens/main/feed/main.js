@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import { View, FlatList, Text, ActivityIndicator } from "react-native";
-import Header from "Homecooked/src/components/Headers/Basic";
-import EventCell from "Homecooked/src/components/Cells/Event";
-import Tabs from "Homecooked/src/components/Headers/Tabs";
-import { feedTypes, eventTypes } from "Homecooked/src/modules/types";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { View, FlatList, Text, ActivityIndicator } from 'react-native';
+import Header from 'Homecooked/src/components/Headers/Basic';
+import EventCell from 'Homecooked/src/components/Cells/Event';
+import Tabs from 'Homecooked/src/components/Headers/Tabs';
+import { feedTypes, eventTypes } from 'Homecooked/src/modules/types';
+import { connect } from 'react-redux';
 import {
     getActiveEvents,
     getEventsForCity
-} from "Homecooked/src/modules/feed/selectors";
+} from 'Homecooked/src/modules/feed/selectors';
 
-import { CityFilter, EventViewTypes } from "Homecooked/src/types";
+import { CityFilter, EventViewTypes } from 'Homecooked/src/types';
 
 class Feed extends Component {
     state = {
@@ -22,11 +22,15 @@ class Feed extends Component {
         this.props.loadFeed();
     }
 
+    _onRefresh = () => {
+        this.props.loadFeed();
+    };
+
     _keyExtractor = (item, index) => item.id;
 
     onPress = event => {
         this.props.selectEvent(event.id, event.mode);
-        this.props.navigation.navigate("FeedEvent");
+        this.props.navigation.navigate('FeedEvent');
     };
 
     _renderItem = ({ item }) => {
@@ -47,9 +51,11 @@ class Feed extends Component {
             return (
                 <FlatList
                     keyExtractor={this._keyExtractor}
-                    style={{ height: "100%" }}
+                    style={{ height: '100%' }}
                     data={this.props.events}
                     extraData={this.props.events}
+                    onRefresh={() => this._onRefresh()}
+                    refreshing={this.props.loading}
                     renderItem={this._renderItem}
                 />
             );
@@ -61,7 +67,7 @@ class Feed extends Component {
 
         return (
             <View>
-                <Header title={"Open Tables"} leftComponent={() => null} />
+                <Header title={'Open Tables'} leftComponent={() => null} />
                 <Tabs
                     tabSelected={index => this.changeTab(index)}
                     activeTab={this.state.tabSelected}
@@ -76,6 +82,7 @@ class Feed extends Component {
 const mapStateToProps = state => {
     const { feed, events, currentBookings } = state;
     return {
+        loading: feed.loading,
         initialLoad: feed.initialLoad,
         events: getEventsForCity(state)
     };
@@ -88,7 +95,7 @@ const mapDispatchToProps = dispatch => {
             payload: {
                 eventId,
                 mode,
-                parentRoute: "Feed"
+                parentRoute: 'Feed'
             }
         });
     };
