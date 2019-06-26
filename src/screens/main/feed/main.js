@@ -25,6 +25,10 @@ class Feed extends Component {
         this.props.loadFeed();
     }
 
+    _onRefresh = () => {
+        this.props.loadFeed();
+    };
+
     _keyExtractor = (item, index) => item.id;
 
     onPress = event => {

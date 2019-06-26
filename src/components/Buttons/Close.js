@@ -1,12 +1,16 @@
 import React from "react";
-import { TouchableWithoutFeedback, View, Text } from "react-native";
+import {
+    TouchableOpacity,
+    View,
+    Text,
+    TouchableWithoutFeedback
+} from "react-native";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 import { Icon } from "react-native-elements";
 
 export default props => (
     <TouchableWithoutFeedback
-        hitSlop={{ top: 30, bottom: 30, left: 30, right: 30 }}
-        onPress={props.onPress}
+        hitSlop={{ top: 50, bottom: 50, left: 50, right: 50 }}
     >
         <Icon
             name={`ios-${props.icon || "close"}`}
@@ -16,6 +20,7 @@ export default props => (
             containerStyle={{
                 alignSelf: "flex-start"
             }}
+            onPress={props.onPress}
         />
     </TouchableWithoutFeedback>
 );

@@ -1,24 +1,25 @@
-import React, { Component } from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
-import { Icon } from "react-native-elements";
-import { Spacing, Color } from "Homecooked/src/components/styles";
-import Header from "Homecooked/src/components/Headers/Basic";
+import React, { Component } from 'react';
+import { View, Text, StyleSheet, Image } from 'react-native';
+import { Icon } from 'react-native-elements';
+import { Spacing, Color } from 'Homecooked/src/components/styles';
+import Header from 'Homecooked/src/components/Headers/Basic';
 
-import { authTypes } from "Homecooked/src/modules/types";
-import { connect } from "react-redux";
+import { authTypes } from 'Homecooked/src/modules/types';
+import { connect } from 'react-redux';
 
-import Button from "Homecooked/src/components/Buttons/BarButton";
-import TextField from "Homecooked/src/components/TextFields/Material";
+import Button from 'Homecooked/src/components/Buttons/BarButton';
+import TextField from 'Homecooked/src/components/TextFields/Material';
 
-import NavigationService from "Homecooked/src/utils/NavigationService";
-import { FacebookService } from "Homecooked/src/services";
+import NavigationService from 'Homecooked/src/utils/NavigationService';
+import { FacebookService } from 'Homecooked/src/services';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-const coverImageUri = "Homecooked/src/assets/img/filledTable.jpg";
+const coverImageUri = 'Homecooked/src/assets/img/filledTable.jpg';
 
 class Login extends Component {
     state = {
-        email: "",
-        password: ""
+        email: '',
+        password: ''
     };
 
     login = () => {
@@ -27,7 +28,7 @@ class Login extends Component {
     };
 
     _back = () => {
-        NavigationService.navigate("Landing");
+        NavigationService.navigate('Landing');
     };
 
     _facebookOnPress = () => {
@@ -55,45 +56,59 @@ class Login extends Component {
         let { email, password } = this.state;
         return (
             <View>
-                <Header title={"Login"} leftOnPress={this._back} />
-                <Image style={styles.image} source={require(coverImageUri)} />
-                <Text style={styles.caption}>Fayzeh's table, Nov. 2018</Text>
-                <TextField
-                    containerStyle={[styles.input]}
-                    tintColor={Color.gray}
-                    label="Email"
-                    value={email}
-                    onChangeText={email => this.setState({ email })}
-                />
-                <TextField
-                    containerStyle={styles.input}
-                    tintColor={Color.gray}
-                    label="Password"
-                    value={password}
-                    secureTextEntry={true}
-                    onChangeText={password => this.setState({ password })}
-                />
-                <Text style={styles.reset}>Forgot password?</Text>
-                <Button
-                    title="Continue with Facebook"
-                    borderColor={Color.facebookBlue}
-                    fill={Color.facebookBlue}
-                    style={{
-                        marginHorizontal: Spacing.large,
-                        marginTop: Spacing.largest
-                    }}
-                    onPress={this._facebookOnPress}
-                />
-                <Button
-                    title="Login"
-                    borderColor={Color.orange}
-                    textColor={Color.orange}
-                    style={{
-                        marginHorizontal: Spacing.large,
-                        marginTop: Spacing.small
-                    }}
-                    onPress={this.login}
-                />
+                <Header title={'Login'} leftOnPress={this._back} />
+                <KeyboardAwareScrollView
+                    extraScrollHeight={120}
+                    extraHeight={50}
+                    keyboardShouldPersistTaps={'handled'}
+                    showsVerticalScrollIndicator={false}
+                    bounces={false}
+                >
+                    <Image
+                        style={styles.image}
+                        source={require(coverImageUri)}
+                    />
+                    <Text style={styles.caption}>
+                        Fayzeh's table, Nov. 2018
+                    </Text>
+
+                    <TextField
+                        containerStyle={[styles.input]}
+                        tintColor={Color.gray}
+                        label="Email"
+                        value={email}
+                        onChangeText={email => this.setState({ email })}
+                    />
+                    <TextField
+                        containerStyle={styles.input}
+                        tintColor={Color.gray}
+                        label="Password"
+                        value={password}
+                        secureTextEntry={true}
+                        onChangeText={password => this.setState({ password })}
+                    />
+                    <Text style={styles.reset}>Forgot password?</Text>
+                    <Button
+                        title="Continue with Facebook"
+                        borderColor={Color.facebookBlue}
+                        fill={Color.facebookBlue}
+                        style={{
+                            marginHorizontal: Spacing.large,
+                            marginTop: Spacing.largest
+                        }}
+                        onPress={this._facebookOnPress}
+                    />
+                    <Button
+                        title="Login"
+                        borderColor={Color.orange}
+                        textColor={Color.orange}
+                        style={{
+                            marginHorizontal: Spacing.large,
+                            marginTop: Spacing.small
+                        }}
+                        onPress={this.login}
+                    />
+                </KeyboardAwareScrollView>
             </View>
         );
     }
@@ -126,20 +141,20 @@ export default connect(
 )(Login);
 
 const HeaderTitle = props => (
-    <Text style={{ fontFamily: "Avenir" }}>Log In</Text>
+    <Text style={{ fontFamily: 'Avenir' }}>Log In</Text>
 );
 
 const styles = StyleSheet.create({
     image: {
         width: Spacing.deviceWidth,
         height: 250,
-        backgroundColor: "white"
+        backgroundColor: 'white'
     },
     caption: {
-        fontFamily: "Avenir",
+        fontFamily: 'Avenir',
         fontSize: 10,
-        fontStyle: "italic",
-        alignSelf: "flex-end",
+        fontStyle: 'italic',
+        alignSelf: 'flex-end',
         margin: 5
     },
     input: {
@@ -147,7 +162,7 @@ const styles = StyleSheet.create({
     },
     reset: {
         fontSize: 11,
-        fontFamily: "Avenir",
+        fontFamily: 'Avenir',
         marginLeft: Spacing.large,
         color: Color.gray
     }
