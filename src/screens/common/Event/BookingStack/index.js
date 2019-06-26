@@ -4,6 +4,8 @@ import Review from "./review";
 import Confirmed from "./confirmed";
 import Invite from "./invite";
 
+import EditProfileStack from "Homecooked/src/screens/main/common/EditProfile";
+
 const BookingStack = createStackNavigator(
     {
         Review: {
@@ -20,6 +22,9 @@ const BookingStack = createStackNavigator(
         },
         Invite: {
             screen: Invite
+        },
+        EditProfileStack: {
+            screen: EditProfileStack
         }
     },
     {

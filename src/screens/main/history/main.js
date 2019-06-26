@@ -15,6 +15,8 @@ import {
     orderEventsByDateLatest
 } from "Homecooked/src/modules/history/selectors";
 
+import CellList from "Homecooked/src/components/List/CellList";
+
 import { EventViewTypes } from "Homecooked/src/types";
 
 class HistoryMain extends Component {
@@ -26,8 +28,6 @@ class HistoryMain extends Component {
         this.props.loadHistory();
     }
 
-    _keyExtractor = (item, index) => item.id;
-
     onPress = () => {
         this.props.navigation.navigate("EventStack");
     };
@@ -37,6 +37,7 @@ class HistoryMain extends Component {
         let endTime = new Date(startTime.getTime() + 60 * 60000);
         return (
             <HistoryCell
+                key={item.id}
                 tintColor={Color.green}
                 upcoming={true}
                 startTime={startTime}
@@ -59,6 +60,7 @@ class HistoryMain extends Component {
         let endTime = new Date(startTime.getTime() + 60 * 60000);
         return (
             <HistoryCell
+                key={item.id}
                 tintColor={Color.orange}
                 upcoming={false}
                 startTime={startTime}
@@ -85,57 +87,45 @@ class HistoryMain extends Component {
         );
     };
 
+    _keyExtractor = (item, index) => item.id;
+
     changeTab = index => {
         this.setState({
             tabSelected: index
         });
     };
 
-    _renderSeparator = () => (
-        <View
-            style={{
-                borderBottomColor: Color.black,
-                borderBottomWidth: 1,
-                width: "90%",
-                alignSelf: "center"
-            }}
-        />
-    );
-
     render() {
         return (
             <View>
                 <Header title={"Your Tables"} leftComponent={() => null} />
-                {this.props.initialLoad ? (
-                    <ActivityIndicator />
-                ) : (
-                    <View>
-                        <Tabs
-                            tabSelected={index => this.changeTab(index)}
-                            activeTab={this.state.tabSelected}
-                            tabs={["Upcoming", "Past"]}
+
+                <View>
+                    <Tabs
+                        tabSelected={index => this.changeTab(index)}
+                        activeTab={this.state.tabSelected}
+                        tabs={["Upcoming", "Past"]}
+                    />
+                    {this.state.tabSelected == 0 ? (
+                        <CellList
+                            style={{ height: "100%" }}
+                            events={this.props.upcomingEvents}
+                            cellTintColor={Color.orange}
+                            onPress={this._rowOnPress}
+                            loading={this.props.initialLoad}
+                            renderItem={this._renderUpcomingItem}
+                            keyExtractor={this._keyExtractor}
                         />
-                        {this.state.tabSelected == 0 ? (
-                            <FlatList
-                                keyExtractor={this._keyExtractor}
-                                style={{ height: "100%" }}
-                                data={this.props.upcomingEvents}
-                                extraData={this.props.upcomingEvents}
-                                renderItem={this._renderUpcomingItem}
-                                ItemSeparatorComponent={this._renderSeparator}
-                            />
-                        ) : (
-                            <FlatList
-                                keyExtractor={this._keyExtractor}
-                                style={{ height: "100%" }}
-                                data={this.props.pastEvents}
-                                extraData={this.props.pastEvents}
-                                renderItem={this._renderPastItem}
-                                ItemSeparatorComponent={this._renderSeparator}
-                            />
-                        )}
-                    </View>
-                )}
+                    ) : (
+                        <CellList
+                            style={{ height: "100%" }}
+                            events={this.props.pastEvents}
+                            loading={this.props.initialLoad}
+                            renderItem={this._renderPastItem}
+                            keyExtractor={this._keyExtractor}
+                        />
+                    )}
+                </View>
             </View>
         );
     }

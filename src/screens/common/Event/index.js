@@ -20,9 +20,7 @@ const EventStack = createStackNavigator(
             screen: BookingStack
         },
         EventPerson: {
-            screen: ({ navigation }) => (
-                <Person navigation={navigation} parentRoute={"Event"} />
-            )
+            screen: ({ navigation }) => <Person navigation={navigation} />
         },
         RefundConfirmation: {
             screen: RefundConfirmation

@@ -9,7 +9,7 @@ import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 
 export default class CancelConfirmation extends Component {
     _goNext = () => {
-        NavigationService.navigate("HostTables");
+        NavigationService.navigate("HostTablesMain");
     };
 
     render() {

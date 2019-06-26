@@ -13,8 +13,8 @@ const SAMPLE_IMAGE = "Homecooked/src/assets/img/filledTable.jpg";
 
 export default class Person extends Component {
     _goBack = () => {
-        let { parentRoute } = this.props;
-        NavigationService.navigate(parentRoute);
+        let { returnRoute } = this.props.navigation.state.params;
+        NavigationService.navigate(returnRoute);
     };
 
     render() {

@@ -33,7 +33,13 @@ class Login extends Component {
     _facebookOnPress = () => {
         onSuccess = result => {
             // TODO: call redux login with facebook
-            result;
+            let image = {
+                uri: result.picture.data.url,
+                fileName: result.id + "_avatar",
+                type: "image/jpeg"
+            };
+            let { email, first_name: firstName, last_name: lastName } = result;
+            this.props.facebookLogin(email, firstName, lastName, image);
         };
 
         onError = error => {
@@ -100,8 +106,17 @@ const mapDispatchToProps = dispatch => {
             payload: { email, password }
         });
     };
+
+    const facebookLogin = (email, firstName, lastName, image) => {
+        dispatch({
+            type: authTypes.FACEBOOK_LOGIN_REQUEST,
+            payload: { email, firstName, lastName, image }
+        });
+    };
+
     return {
-        login
+        login,
+        facebookLogin
     };
 };
 

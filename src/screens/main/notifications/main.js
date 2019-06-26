@@ -7,7 +7,8 @@ import { notificationTypes } from "Homecooked/src/modules/types";
 import { connect } from "react-redux";
 
 import { historyTypes, eventTypes } from "Homecooked/src/modules/types";
-import { EventViewTypes } from "Homecooked/src/types";
+
+import CellList from "Homecooked/src/components/List/CellList";
 
 import { getGuestNotificationsWithEvent } from "Homecooked/src/modules/notification/selectors";
 
@@ -54,13 +55,14 @@ class NotificationMain extends Component {
         return (
             <View>
                 <Header title={"Notification"} leftComponent={() => null} />
-                <FlatList
+                <CellList
                     keyExtractor={this._keyExtractor}
                     style={{ height: "100%" }}
-                    data={this.props.notifications}
+                    events={this.props.notifications}
                     renderItem={this._renderRow}
-                    ItemSeparatorComponent={this._renderSeparator}
+                    loading={this.props.loading}
                 />
+                <CellList />
             </View>
         );
     }
@@ -90,6 +92,7 @@ const mapDisptchToProps = dispatch => {
 
 const mapStateToProps = state => {
     return {
+        loading: state.notifications.initialLoad,
         notifications: getGuestNotificationsWithEvent(state)
     };
 };

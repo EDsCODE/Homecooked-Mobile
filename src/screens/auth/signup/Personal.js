@@ -62,12 +62,12 @@ export default class Email extends Component {
         return (
             <View style={{ flex: 1, marginTop: 30 }}>
                 <View style={styles.container}>
-                    <CloseButton icon={"arrow-round-back"} />
+                    <CloseButton
+                        icon={"arrow-round-back"}
+                        onPress={this._back}
+                    />
                     <MinorText>Step 1 of 2</MinorText>
                     <HeadingText>Welcome to </HeadingText>
-                    <PromptText>
-                        Let's get started with some basic information
-                    </PromptText>
                     <TextField
                         containerStyle={styles.input}
                         titleTextStyle={{ fontFamily: "Avenir" }}
@@ -87,7 +87,10 @@ export default class Email extends Component {
                         onChangeText={lastName => this.setState({ lastName })}
                     />
                     <ClickableField
-                        containerStyle={styles.input}
+                        containerStyle={[
+                            styles.input,
+                            { marginTop: Spacing.smaller }
+                        ]}
                         titleTextStyle={{ fontFamily: "Avenir" }}
                         labelTextStyle={{ fontFamily: "Avenir" }}
                         tintColor="#4A4A4A"

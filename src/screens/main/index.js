@@ -20,7 +20,7 @@ const MainStack = createBottomTabNavigator(
         }
     },
     {
-        initialRouteName: "Account"
+        initialRouteName: "History"
     }
 );
 

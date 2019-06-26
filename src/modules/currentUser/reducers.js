@@ -19,6 +19,7 @@ const initialState = {
     isComplete: false,
     imageKey: null,
     imageURL: null,
+    isComplete: false,
     error: null
 };
 
@@ -58,6 +59,9 @@ const reducer = (state = initialState, action) => {
                 dob: dob ? dob : state.dob,
                 phoneNumber: phoneNumber ? phoneNumber : state.phoneNumber,
                 isVerified: isVerified ? isVerified : state.isVerified,
+                isComplete:
+                    (state.bio || bio) &&
+                    (state.profileImageUrl || profileImageURL),
                 loading: false
             };
         case types.UPDATE_USER_ERROR:

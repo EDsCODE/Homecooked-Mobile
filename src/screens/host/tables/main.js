@@ -22,6 +22,8 @@ import { EventViewTypes } from "Homecooked/src/types";
 import { eventTypes } from "Homecooked/src/modules/types";
 import NavigationService from "Homecooked/src/utils/NavigationService";
 
+import CellList from "Homecooked/src/components/List/CellList";
+
 class HostTablesMain extends Component {
     state = {
         tabSelected: 0
@@ -146,35 +148,33 @@ class HostTablesMain extends Component {
     displayList = tabSelected => {
         if (tabSelected == 0) {
             return (
-                <FlatList
+                <CellList
                     keyExtractor={this._keyExtractor}
                     style={{ height: "100%" }}
-                    data={this.props.activeEvents}
-                    extraData={this.props.activeEvents}
+                    events={this.props.activeEvents}
                     renderItem={this._renderUpcomingItem}
-                    ItemSeparatorComponent={this._renderSeparator}
+                    loading={this.props.initialLoad}
                 />
             );
         } else if (tabSelected == 1) {
             return (
-                <FlatList
+                <CellList
                     keyExtractor={this._keyExtractor}
                     style={{ height: "100%" }}
-                    data={this.props.inReviewEvents}
+                    events={this.props.inReviewEvents}
                     extraData={this.props.inReviewEvents}
                     renderItem={this._renderInReviewItem}
-                    ItemSeparatorComponent={this._renderSeparator}
+                    loading={this.props.initialLoad}
                 />
             );
         } else {
             return (
-                <FlatList
+                <CellList
                     keyExtractor={this._keyExtractor}
                     style={{ height: "100%" }}
-                    data={this.props.inactiveEvents}
-                    extraData={this.props.inactiveEvents}
+                    events={this.props.inactiveEvents}
                     renderItem={this._renderPastItem}
-                    ItemSeparatorComponent={this._renderSeparator}
+                    loading={this.props.initialLoad}
                 />
             );
         }
@@ -182,25 +182,21 @@ class HostTablesMain extends Component {
 
     render() {
         return (
-            <View>
+            <View style={{ flex: 1 }}>
                 <Header
                     title={"Your Tables"}
                     leftComponent={() => null}
                     rightComponent={"new"}
                     rightOnPress={this._navigateToCreateEvent}
                 />
-                {this.props.initialLoad ? (
-                    <ActivityIndicator />
-                ) : (
-                    <View>
-                        <Tabs
-                            tabSelected={index => this.changeTab(index)}
-                            activeTab={this.state.tabSelected}
-                            tabs={["Upcoming", "In Review", "Past"]}
-                        />
-                        {this.displayList(this.state.tabSelected)}
-                    </View>
-                )}
+                <View style={{ flex: 1 }}>
+                    <Tabs
+                        tabSelected={index => this.changeTab(index)}
+                        activeTab={this.state.tabSelected}
+                        tabs={["Upcoming", "In Review", "Past"]}
+                    />
+                    {this.displayList(this.state.tabSelected)}
+                </View>
             </View>
         );
     }

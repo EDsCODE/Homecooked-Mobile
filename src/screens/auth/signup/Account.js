@@ -30,7 +30,7 @@ class AccountInformation extends Component {
     };
 
     _back = () => {
-        this.props.navigation.goback();
+        this.props.navigation.goBack();
     };
 
     _goNext = async () => {
@@ -79,7 +79,10 @@ class AccountInformation extends Component {
         return (
             <View style={{ flex: 1, marginTop: 30 }}>
                 <View style={styles.container}>
-                    <CloseButton icon={"arrow-round-back"} />
+                    <CloseButton
+                        icon={"arrow-round-back"}
+                        onPress={this._back}
+                    />
                     <MinorText>Step 2 of 2</MinorText>
                     <HeadingText>Welcome to </HeadingText>
                     <PromptText>
