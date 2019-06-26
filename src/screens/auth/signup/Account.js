@@ -1,62 +1,61 @@
-import React, { Component } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import CloseButton from "Homecooked/src/components/Buttons/Close";
-import HeadingText from "Homecooked/src/components/Text/Heading";
-import PromptText from "Homecooked/src/components/Text/Prompt";
-import MinorText from "Homecooked/src/components/Text/Minor";
+import React, { Component } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import CloseButton from 'Homecooked/src/components/Buttons/Close';
+import HeadingText from 'Homecooked/src/components/Text/Heading';
+import PromptText from 'Homecooked/src/components/Text/Prompt';
+import MinorText from 'Homecooked/src/components/Text/Minor';
 
-import TextField from "Homecooked/src/components/TextFields/Material";
-import { Spacing, Color, Typography } from "Homecooked/src/components/styles";
+import TextField from 'Homecooked/src/components/TextFields/Material';
+import { Spacing, Color, Typography } from 'Homecooked/src/components/styles';
 
-import PhoneInput from "react-native-phone-input";
-import BarButton from "Homecooked/src/components/Buttons/BarButton";
+import PhoneInput from 'react-native-phone-input';
+import BarButton from 'Homecooked/src/components/Buttons/BarButton';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { connect } from 'react-redux';
 
-import { connect } from "react-redux";
+import NavigationService from 'Homecooked/src/utils/NavigationService';
 
-import { UserService } from "Homecooked/src/services/api";
+import { UserService } from 'Homecooked/src/services/api';
+
+const GATHR_LOGO = require('Homecooked/src/assets/img/OrangeTextLogoNEW.png');
 
 class AccountInformation extends Component {
     state = {
-        email: "",
-        emailError: "",
-        phoneNumber: "",
-        password: "",
+        email: '',
+        emailError: '',
+        phoneNumber: '',
+        password: '',
         loading: false
     };
 
-    _navigateNext = () => {
-        this.props.screenProps.updateData("email", this.state.email);
-        this.props.navigation.navigate("Password");
-    };
-
     _back = () => {
-        this.props.navigation.goback();
+        this.props.navigation.navigate('PersonalInformation');
     };
 
     _goNext = async () => {
         this.setState({
-            emailError: "",
+            emailError: '',
             loading: true
         });
         let { email, phoneNumber, password } = this.state;
         if (!emailIsValid(email)) {
             this.setState({
-                emailError: "Please enter a valid email",
+                emailError: 'Please enter a valid email',
                 loading: false
             });
             return;
         }
         let { status } = await UserService.checkIfEmailInUse(email);
         console.log(status);
-        if (status == "error") {
+        if (status == 'error') {
             this.setState({
-                emailError: "This email is already in use",
+                emailError: 'This email is already in use',
                 loading: false
             });
             return;
         }
         this.props.screenProps.updateData(
-            "account",
+            'account',
             {
                 email,
                 phoneNumber,
@@ -79,56 +78,91 @@ class AccountInformation extends Component {
         return (
             <View style={{ flex: 1, marginTop: 30 }}>
                 <View style={styles.container}>
-                    <CloseButton icon={"arrow-round-back"} />
-                    <MinorText>Step 2 of 2</MinorText>
-                    <HeadingText>Welcome to </HeadingText>
-                    <PromptText>
-                        We use your account info to send you updates and
-                        receipts.
-                    </PromptText>
-                    <TextField
-                        containerStyle={styles.input}
-                        titleTextStyle={{ fontFamily: "Avenir" }}
-                        labelTextStyle={{ fontFamily: "Avenir" }}
-                        tintColor="#4A4A4A"
-                        label="Email"
-                        value={email}
-                        onChangeText={email => this.setState({ email })}
-                        error={emailError}
-                    />
-                    <TextField
-                        containerStyle={styles.input}
-                        titleTextStyle={{ fontFamily: "Avenir" }}
-                        labelTextStyle={{ fontFamily: "Avenir" }}
-                        tintColor="#4A4A4A"
-                        label="Password"
-                        secureTextEntry={true}
-                        value={password}
-                        onChangeText={password => this.setState({ password })}
-                    />
-                    <MinorText style={{ marginTop: Spacing.larger }}>
-                        Phone Number
-                    </MinorText>
-                    <PhoneInput
-                        ref="phone"
-                        onChangePhoneNumber={phoneNumber =>
-                            this.setState({ phoneNumber })
-                        }
-                        textStyle={{ fontFamily: Typography.fontFamily }}
-                        style={{
-                            borderWidth: 1,
-                            padding: Spacing.smaller,
-                            paddingVertical: Spacing.small,
-                            borderRadius: 6,
-                            borderColor: Color.lightGray
-                        }}
-                        textProps={{ returnKeyType: "done" }}
-                    />
+                    <KeyboardAwareScrollView
+                        extraScrollHeight={50}
+                        extraHeight={50}
+                        keyboardShouldPersistTaps={'handled'}
+                        showsVerticalScrollIndicator={false}
+                        bounces={false}
+                    >
+                        <CloseButton
+                            icon={'arrow-round-back'}
+                            onPress={this._back}
+                        />
+                        <MinorText>Step 2 of 2</MinorText>
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                alignItems: 'center'
+                            }}
+                        >
+                            <HeadingText>Welcome to</HeadingText>
+                            <Image
+                                source={GATHR_LOGO}
+                                style={{
+                                    height: 60,
+                                    width: 100,
+                                    marginLeft: Spacing.smallest
+                                }}
+                                resizeMode={'contain'}
+                            />
+                        </View>
+                        <PromptText style={{ marginBottom: 60 }}>
+                            We use your account info to send you updates and
+                            receipts.
+                        </PromptText>
+
+                        <TextField
+                            containerStyle={styles.input}
+                            titleTextStyle={{ fontFamily: 'Avenir' }}
+                            labelTextStyle={{ fontFamily: 'Avenir' }}
+                            tintColor="#4A4A4A"
+                            label="Email"
+                            value={email}
+                            onChangeText={email => this.setState({ email })}
+                            error={emailError}
+                        />
+                        <TextField
+                            containerStyle={styles.input}
+                            titleTextStyle={{ fontFamily: 'Avenir' }}
+                            labelTextStyle={{ fontFamily: 'Avenir' }}
+                            tintColor="#4A4A4A"
+                            label="Password"
+                            secureTextEntry={true}
+                            value={password}
+                            onChangeText={password =>
+                                this.setState({ password })
+                            }
+                        />
+                        <MinorText
+                            style={{
+                                marginTop: Spacing.larger,
+                                marginBottom: Spacing.smallest
+                            }}
+                        >
+                            Phone Number
+                        </MinorText>
+                        <PhoneInput
+                            ref="phone"
+                            onChangePhoneNumber={phoneNumber =>
+                                this.setState({ phoneNumber })
+                            }
+                            textStyle={{ fontFamily: Typography.fontFamily }}
+                            style={{
+                                borderWidth: 1,
+                                padding: Spacing.smaller,
+                                paddingVertical: Spacing.small,
+                                borderRadius: 6,
+                                borderColor: Color.lightGray
+                            }}
+                            textProps={{ returnKeyType: 'done' }}
+                        />
+                    </KeyboardAwareScrollView>
                 </View>
                 <BarButton
                     title="Submit"
                     style={{
-                        position: "absolute",
+                        position: 'absolute',
                         bottom: Spacing.large,
                         left: Spacing.large
                     }}

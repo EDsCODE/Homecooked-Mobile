@@ -1,12 +1,12 @@
-import React from "react";
-import { createStackNavigator } from "react-navigation";
-import Main from "./main";
-import HostApplication from "./HostApplication";
-import Settings from "./Settings";
-import Profile from "./Profile";
-import Payment from "./Payment";
-import Share from "./Share";
-
+import React from 'react';
+import { createStackNavigator } from 'react-navigation';
+import Main from './main';
+import HostApplication from './HostApplication';
+import Settings from './Settings';
+import Profile from './Profile';
+import Payment from './Payment';
+import Share from './Share';
+import RatingStack from '../../common/RatingStack';
 const AccountStack = createStackNavigator(
     {
         AccountMain: {
@@ -29,8 +29,8 @@ const AccountStack = createStackNavigator(
         }
     },
     {
-        initialRouteName: "AccountMain",
-        headerMode: "none"
+        initialRouteName: 'AccountMain',
+        headerMode: 'none'
     }
 );
 

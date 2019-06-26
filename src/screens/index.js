@@ -21,7 +21,7 @@ const AppStack = createAnimatedSwitchNavigator(
         }
     },
     {
-        initialRouteName: 'Main'
+        initialRouteName: 'Loading'
     }
 );
 
