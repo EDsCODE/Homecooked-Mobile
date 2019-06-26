@@ -5,7 +5,8 @@ import {
     StyleSheet,
     ImageBackground,
     Dimensions,
-    TouchableOpacity
+    TouchableOpacity,
+    Linking
 } from "react-native";
 
 import Swiper from "react-native-swiper";
@@ -28,22 +29,19 @@ const { width, height } = Dimensions.get("window");
 
 class Landing extends Component {
     openTerms = () => {
-        this.setState({
-            showWebView:
-                "https://sites.google.com/homecooked.io/applink/terms-and-conditions"
-        });
+        Linking.openURL(
+            "https://sites.google.com/homecooked.io/applink/terms-and-conditions"
+        );
     };
     openPrivacy = () => {
-        this.setState({
-            showWebView:
-                "https://sites.google.com/homecooked.io/applink/privacy-policy"
-        });
+        Linking.openURL(
+            "https://sites.google.com/homecooked.io/applink/privacy-policy"
+        );
     };
     openLiability = () => {
-        this.setState({
-            showWebView:
-                "https://sites.google.com/homecooked.io/applink/liability-waiver"
-        });
+        Linking.openURL(
+            "https://sites.google.com/homecooked.io/applink/liability-waiver"
+        );
     };
 
     navigateToLogin = () => {

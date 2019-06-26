@@ -14,7 +14,6 @@ export default class HistoryCell extends Component {
             startTime,
             endTime,
             title,
-            key,
             style,
             onPress,
             upcoming,

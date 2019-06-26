@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, FlatList } from "react-native";
+import { View, FlatList, ActivityIndicator } from "react-native";
 import Header from "Homecooked/src/components/Headers/Basic";
 import Separator from "Homecooked/src/components/Separator";
 import { NotificationCell } from "Homecooked/src/components/Cells";
@@ -7,23 +7,11 @@ import { notificationTypes } from "Homecooked/src/modules/types";
 import { connect } from "react-redux";
 
 import { historyTypes, eventTypes } from "Homecooked/src/modules/types";
-import { EventViewTypes } from "Homecooked/src/types";
+
+import CellList from "Homecooked/src/components/List/CellList";
+import EmptyComponent from "Homecooked/src/components/List/EmptyComponent";
 
 import { getGuestNotificationsWithEvent } from "Homecooked/src/modules/notification/selectors";
-
-let content = [
-    {
-        title: "New event invite",
-        prompt: "Join the event",
-        source: "https://picsum.photos/id/200/320/240"
-    },
-    {
-        title: "New event invite",
-        prompt:
-            "A Pakistani Feast: someone left you a review. Want to check it out?",
-        source: "https://picsum.photos/id/200/320/240"
-    }
-];
 
 class NotificationMain extends Component {
     _keyExtractor = (item, index) => item.id;
@@ -31,6 +19,10 @@ class NotificationMain extends Component {
     componentDidMount() {
         this.props.loadNotifications();
     }
+
+    _onRefresh = () => {
+        this.props.loadNotifications();
+    };
 
     _renderRow = ({ item }) => {
         return (
@@ -52,15 +44,28 @@ class NotificationMain extends Component {
 
     render() {
         return (
-            <View>
+            <View style={{ flex: 1 }}>
                 <Header title={"Notification"} leftComponent={() => null} />
-                <FlatList
-                    keyExtractor={this._keyExtractor}
-                    style={{ height: "100%" }}
-                    data={this.props.notifications}
-                    renderItem={this._renderRow}
-                    ItemSeparatorComponent={this._renderSeparator}
-                />
+                {this.props.initialLoad ? (
+                    <ActivityIndicator />
+                ) : (
+                    <FlatList
+                        keyExtractor={this._keyExtractor}
+                        style={{ height: "100%" }}
+                        data={this.props.notifications}
+                        extraData={this.props.notifications}
+                        renderItem={this._renderRow}
+                        refreshing={this.props.loading}
+                        onRefresh={this._onRefresh}
+                        ItemSeparatorComponent={this._renderSeparator}
+                        ListEmptyComponent={() => (
+                            <EmptyComponent>
+                                {"No Notifications"}
+                            </EmptyComponent>
+                        )}
+                    />
+                )}
+                <CellList />
             </View>
         );
     }
@@ -79,7 +84,10 @@ const mapDisptchToProps = dispatch => {
     };
 
     const loadNotifications = () => {
-        dispatch({ type: notificationTypes.GET_NOTIFICATIONS_REQUEST });
+        dispatch({
+            type: notificationTypes.GET_NOTIFICATIONS_REQUEST,
+            userType: "GUEST"
+        });
     };
 
     return {
@@ -90,6 +98,8 @@ const mapDisptchToProps = dispatch => {
 
 const mapStateToProps = state => {
     return {
+        loading: state.notifications.loading,
+        initialLoad: state.notifications.initialLoad,
         notifications: getGuestNotificationsWithEvent(state)
     };
 };

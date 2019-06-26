@@ -100,7 +100,7 @@ export default (Compo = props => {
 
     useEffect(() => {
         if (!props.loading) {
-            setTimeout(() => setReady(true), 500);
+            setReady(true);
         }
     });
 

@@ -43,7 +43,7 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 byId: {
                     ...state.byId,
-                    [action.event.id]: action.event
+                    [`${action.event.id}`]: formatEvent(action.event)
                 }
             };
         case types.GET_EVENT_ERROR:

@@ -15,6 +15,8 @@ import {
     orderEventsByDateLatest
 } from "Homecooked/src/modules/history/selectors";
 
+import EmptyComponent from "Homecooked/src/components/List/EmptyComponent";
+
 import { EventViewTypes } from "Homecooked/src/types";
 
 class HistoryMain extends Component {
@@ -26,10 +28,12 @@ class HistoryMain extends Component {
         this.props.loadHistory();
     }
 
-    _keyExtractor = (item, index) => item.id;
-
     onPress = () => {
         this.props.navigation.navigate("EventStack");
+    };
+
+    _onRefresh = () => {
+        this.props.loadHistory();
     };
 
     _renderUpcomingItem = ({ item, index }) => {
@@ -37,6 +41,7 @@ class HistoryMain extends Component {
         let endTime = new Date(startTime.getTime() + 60 * 60000);
         return (
             <HistoryCell
+                key={item.id}
                 tintColor={Color.green}
                 upcoming={true}
                 startTime={startTime}
@@ -59,6 +64,7 @@ class HistoryMain extends Component {
         let endTime = new Date(startTime.getTime() + 60 * 60000);
         return (
             <HistoryCell
+                key={item.id}
                 tintColor={Color.orange}
                 upcoming={false}
                 startTime={startTime}
@@ -85,6 +91,8 @@ class HistoryMain extends Component {
         );
     };
 
+    _keyExtractor = (item, index) => item.id;
+
     changeTab = index => {
         this.setState({
             tabSelected: index
@@ -106,36 +114,45 @@ class HistoryMain extends Component {
         return (
             <View>
                 <Header title={"Your Tables"} leftComponent={() => null} />
-                {this.props.initialLoad ? (
-                    <ActivityIndicator />
-                ) : (
-                    <View>
-                        <Tabs
-                            tabSelected={index => this.changeTab(index)}
-                            activeTab={this.state.tabSelected}
-                            tabs={["Upcoming", "Past"]}
+                <View>
+                    <Tabs
+                        tabSelected={index => this.changeTab(index)}
+                        activeTab={this.state.tabSelected}
+                        tabs={["Upcoming", "Past"]}
+                    />
+                    {this.props.initialLoad ? (
+                        <ActivityIndicator />
+                    ) : this.state.tabSelected == 0 ? (
+                        <FlatList
+                            style={{ height: "100%" }}
+                            data={this.props.upcomingEvents}
+                            extraData={this.props.upcomingEvents}
+                            cellTintColor={Color.orange}
+                            onPress={this._rowOnPress}
+                            loading={this.props.initialLoad}
+                            renderItem={this._renderUpcomingItem}
+                            keyExtractor={this._keyExtractor}
+                            ItemSeparatorComponent={this._renderSeparator}
+                            onRefresh={this._onRefresh}
+                            refreshing={this.props.loading}
+                            ListEmptyComponent={() => (
+                                <EmptyComponent>{"No Events"}</EmptyComponent>
+                            )}
                         />
-                        {this.state.tabSelected == 0 ? (
-                            <FlatList
-                                keyExtractor={this._keyExtractor}
-                                style={{ height: "100%" }}
-                                data={this.props.upcomingEvents}
-                                extraData={this.props.upcomingEvents}
-                                renderItem={this._renderUpcomingItem}
-                                ItemSeparatorComponent={this._renderSeparator}
-                            />
-                        ) : (
-                            <FlatList
-                                keyExtractor={this._keyExtractor}
-                                style={{ height: "100%" }}
-                                data={this.props.pastEvents}
-                                extraData={this.props.pastEvents}
-                                renderItem={this._renderPastItem}
-                                ItemSeparatorComponent={this._renderSeparator}
-                            />
-                        )}
-                    </View>
-                )}
+                    ) : (
+                        <FlatList
+                            style={{ height: "100%" }}
+                            data={this.props.pastEvents}
+                            extraData={this.props.pastEvents}
+                            loading={this.props.initialLoad}
+                            renderItem={this._renderPastItem}
+                            keyExtractor={this._keyExtractor}
+                            ItemSeparatorComponent={this._renderSeparator}
+                            onRefresh={this._onRefresh}
+                            refreshing={this.props.loading}
+                        />
+                    )}
+                </View>
             </View>
         );
     }
@@ -144,6 +161,7 @@ class HistoryMain extends Component {
 const mapStateToProps = state => {
     const { history, events, currentBookings } = state;
     return {
+        loading: history.loading,
         initialLoad: history.initialLoad,
         upcomingEvents: orderEventsByDateEarliest(getUpcomingEvents(state)),
         pastEvents: orderEventsByDateLatest(getPastEvents(state))

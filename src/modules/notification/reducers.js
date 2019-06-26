@@ -18,6 +18,7 @@ const reducer = (state = initialState, action) => {
         case types.GET_NOTIFICATIONS_SUCCESS:
             return {
                 ...state,
+                initialLoad: false,
                 loading: false,
                 data: action.payload.notifications,
                 error: null

@@ -5,8 +5,8 @@ import Attendance from "./Attendance";
 import AttendanceReview from "./AttendanceReview";
 import ReportOverview from "./ReportOverview";
 import ReportUser from "./ReportUser";
+import AttendanceConfirmation from "./AttendanceConfirmation";
 import { eventTypes } from "Homecooked/src/modules/types";
-
 import { connect } from "react-redux";
 import { getEvent } from "Homecooked/src/modules/event/selectors";
 
@@ -23,6 +23,9 @@ const CloseEventStack = createStackNavigator(
         },
         ReportUser: {
             screen: ReportUser
+        },
+        AttendanceConfirmation: {
+            screen: AttendanceConfirmation
         }
     },
     {

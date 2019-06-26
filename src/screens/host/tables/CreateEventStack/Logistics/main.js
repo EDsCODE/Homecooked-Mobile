@@ -138,7 +138,7 @@ export default class DetailsMain extends Component {
                 </ScrollView>
 
                 <BarButton
-                    title="Preview"
+                    title="Continue"
                     style={{
                         position: "absolute",
                         bottom: Spacing.large,

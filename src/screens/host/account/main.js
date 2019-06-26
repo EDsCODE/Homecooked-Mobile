@@ -33,19 +33,23 @@ class Host_Settings_Main extends Component {
             {},
             {
                 title: "Switch to Guest Mode",
-                onPress: () => NavigationService.navigate("Main")
+                onPress: () => NavigationService.navigate("Main"),
+                icon: require("Homecooked/src/assets/img/Switch.png")
             },
             {
                 title: "Payment Settings",
-                onPress: () => Linking.openURL(STRIPE_URL)
+                onPress: () => Linking.openURL(STRIPE_URL),
+                icon: require("Homecooked/src/assets/img/Payouts.png")
             },
             {
                 title: "FAQ",
-                onPress: () => this._goToFAQ()
+                onPress: () => this._goToFAQ(),
+                icon: require("Homecooked/src/assets/img/FAQ.png")
             },
             {
                 title: "Settings",
-                onPress: () => this._goToSettings()
+                onPress: () => this._goToSettings(),
+                icon: require("Homecooked/src/assets/img/Settings.png")
             }
         ];
         this.setState({
@@ -96,6 +100,7 @@ class Host_Settings_Main extends Component {
                     title={item.title}
                     prompt={item.prompt}
                     onPress={item.onPress}
+                    icon={item.icon}
                 />
             );
         }

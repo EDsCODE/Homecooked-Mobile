@@ -37,7 +37,7 @@ export const getUpcomingEvents = createSelector(
                 });
             }
         });
-        console.log(upcomingEvents);
+        console.log("UPCOMING:", upcomingEvents);
         return upcomingEvents;
     }
 );

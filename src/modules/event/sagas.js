@@ -167,6 +167,7 @@ function* markAttendanceWorkerSaga(action) {
     try {
         let { eventId, attendees, reports } = action.payload;
         let chefId = yield select(hostSelectors.chefId);
+        // mark attendance
         yield call(
             EventService.markAttendance,
             eventId,
@@ -175,6 +176,15 @@ function* markAttendanceWorkerSaga(action) {
             reports
         );
         yield put({ type: types.MARK_ATTENDANCE_SUCCESS });
+
+        // close vent
+        yield call(EventService.closeEvent, eventId);
+
+        // get event
+        yield call(getEventWorkerSaga, { eventId });
+
+        // navigate to success screen
+        NavigationService.navigate("AttendanceConfirmation");
     } catch (error) {
         yield put({ type: types.MARK_ATTENDANCE_ERROR, error });
     }

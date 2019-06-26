@@ -5,12 +5,22 @@ import PrimaryText from "Homecooked/src/components/Text/Primary";
 import PromptText from "Homecooked/src/components/Text/Prompt";
 import BarButton from "Homecooked/src/components/Buttons/BarButton";
 
+import Permissions from "react-native-permissions";
+import NavigationService from "Homecooked/src/utils/NavigationService";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 
 export default class Location extends Component {
     _goNext = () => {
-        this.props.navigation.navigate("ProfilePrompt");
+        NavigationService.navigate("Main");
     };
+
+    // Request permission to access photos
+    _requestPermission = () => {
+        Permissions.request("location").then(response => {
+            this._goNext();
+        });
+    };
+
     render() {
         return (
             <View style={styles.container}>
@@ -28,7 +38,7 @@ export default class Location extends Component {
                     We help you discover meals in your neighborhood
                 </PromptText>
                 <BarButton
-                    title="Continue"
+                    title="Enable Location"
                     style={{
                         position: "absolute",
                         bottom: Spacing.large,
@@ -36,7 +46,7 @@ export default class Location extends Component {
                     }}
                     borderColor={Color.orange}
                     fill={Color.orange}
-                    onPress={this._goNext}
+                    onPress={this._requestPermission}
                 />
             </View>
         );

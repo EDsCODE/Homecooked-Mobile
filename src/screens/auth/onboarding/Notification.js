@@ -6,9 +6,11 @@ import PromptText from "Homecooked/src/components/Text/Prompt";
 import BarButton from "Homecooked/src/components/Buttons/BarButton";
 
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
+import { UrbanAirship } from "urbanairship-react-native";
 
 export default class Notification extends Component {
     _goNext = () => {
+        UrbanAirship.setUserNotificationsEnabled(true);
         this.props.navigation.navigate("Location");
     };
 
@@ -29,7 +31,7 @@ export default class Notification extends Component {
                     We let you know when nearby meals are happening
                 </PromptText>
                 <BarButton
-                    title="Continue"
+                    title="Enable Notifications"
                     style={{
                         position: "absolute",
                         bottom: Spacing.large,

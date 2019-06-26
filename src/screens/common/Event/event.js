@@ -58,9 +58,20 @@ class Event extends Component {
         if (this.props.mode == EventViewTypes.PREVIEW) {
             this._setPreviewDetails();
         } else if (this.props.loading) {
-            this.setState({
-                loading: true
-            });
+            if (
+                [
+                    EventViewTypes.FEED,
+                    EventViewTypes.HISTORY_UPCOMING,
+                    EventViewTypes.HOST_ACTIVE,
+                    EventViewTypes.HOST_CLOSEABLE,
+                    EventViewTypes.HOST_IN_REVIEW
+                ].indexOf(this.props.mode > -1)
+            ) {
+                this.setState({
+                    loading: true,
+                    renderHero: true
+                });
+            }
         }
     }
 
@@ -137,8 +148,7 @@ class Event extends Component {
             specialDirections,
             startTime,
             title,
-            users,
-            closeable
+            users
         } = this.props.event;
 
         let {
@@ -485,7 +495,10 @@ class Event extends Component {
     };
 
     _navigateToPerson = person => {
-        this.props.navigation.navigate("EventPerson", person);
+        this.props.navigation.navigate("EventPerson", {
+            ...person,
+            returnRoute: "Event"
+        });
     };
 
     _renderHeroSection = (loading, title, chefName, chefDescription, media) => {
