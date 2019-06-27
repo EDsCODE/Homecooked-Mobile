@@ -13,8 +13,6 @@ import { mealType } from 'Homecooked/src/utils/Date';
 import RowAction from 'Homecooked/src/components/Buttons/RowAction';
 import moment from 'moment';
 
-const BLAH = require('Homecooked/src/assets/img/filledTable.jpg');
-
 export default class HistoryCell extends Component {
     render() {
         // format date
