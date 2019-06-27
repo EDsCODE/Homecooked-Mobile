@@ -48,7 +48,7 @@ export default class BasicInfo extends Component {
         this.setState({
             query
         });
-        if (query.length > 3) {
+        if (query.length > 1) {
             let results = await getPossibleMatches(
                 query,
                 this.state.sessionToken

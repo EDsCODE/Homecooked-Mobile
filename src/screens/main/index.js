@@ -1,12 +1,12 @@
-import { createBottomTabNavigator } from 'react-navigation';
-import React, { Component } from 'react';
-import { Image } from 'react-native';
-import Feed from './feed';
-import HistoryStack from './history';
-import Notifications from './notifications';
-import Account from './account';
-import { Color, Spacing } from 'Homecooked/src/components/styles';
-import branch from 'react-native-branch';
+import { createBottomTabNavigator } from "react-navigation";
+import React, { Component } from "react";
+import { Image } from "react-native";
+import Feed from "./feed";
+import HistoryStack from "./history";
+import Notifications from "./notifications";
+import Account from "./account";
+import { Color, Spacing } from "Homecooked/src/components/styles";
+import branch from "react-native-branch";
 
 const MainStack = createBottomTabNavigator(
     {
@@ -16,7 +16,7 @@ const MainStack = createBottomTabNavigator(
         History: {
             screen: HistoryStack,
             navigationOptions: {
-                tabBarLabel: 'My Tables'
+                tabBarLabel: "My Tables"
             }
         },
         Notification: {
@@ -27,21 +27,21 @@ const MainStack = createBottomTabNavigator(
         }
     },
     {
-        initialRouteName: 'Account',
+        initialRouteName: "Feed",
         defaultNavigationOptions: ({ navigation }) => ({
             tabBarIcon: ({ focused, horizontal, tintColor }) => {
                 const { routeName } = navigation.state;
                 var imgSource;
-                if (routeName === 'Feed') {
+                if (routeName === "Feed") {
                     // Sometimes we want to add badges to some icons.
                     // You can check the implementation below.
-                    imgSource = require('Homecooked/src/assets/img/GOpenTables.png');
-                } else if (routeName === 'History') {
-                    imgSource = require('Homecooked/src/assets/img/GMyTables.png');
-                } else if (routeName === 'Notification') {
-                    imgSource = require('Homecooked/src/assets/img/GHNotifs.png');
-                } else if (routeName === 'Account') {
-                    imgSource = require('Homecooked/src/assets/img/GHProfile.png');
+                    imgSource = require("Homecooked/src/assets/img/GOpenTables.png");
+                } else if (routeName === "History") {
+                    imgSource = require("Homecooked/src/assets/img/GMyTables.png");
+                } else if (routeName === "Notification") {
+                    imgSource = require("Homecooked/src/assets/img/GHNotifs.png");
+                } else if (routeName === "Account") {
+                    imgSource = require("Homecooked/src/assets/img/GHProfile.png");
                 }
 
                 // You can return any component that you like here!
@@ -61,7 +61,7 @@ const MainStack = createBottomTabNavigator(
         }),
         tabBarOptions: {
             showIcon: true,
-            activeTintColor: '#FF674F',
+            activeTintColor: "#FF674F",
             style: {
                 height: 50
             }
@@ -78,19 +78,19 @@ class Main extends Component {
 
         branch.subscribe(({ error, params }) => {
             if (error) {
-                console.error('Error from Branch: ' + error);
+                console.error("Error from Branch: " + error);
                 return;
             }
 
             // params will never be null if error is null
 
-            if (params['+non_branch_link']) {
-                const nonBranchUrl = params['+non_branch_link'];
+            if (params["+non_branch_link"]) {
+                const nonBranchUrl = params["+non_branch_link"];
                 // Route non-Branch URL if appropriate.
                 return;
             }
 
-            if (!params['+clicked_branch_link']) {
+            if (!params["+clicked_branch_link"]) {
                 // Indicates initialization success and some other conditions.
                 // No link was opened.
                 return;

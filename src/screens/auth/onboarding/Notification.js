@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Image } from "react-native";
 
 import PrimaryText from "Homecooked/src/components/Text/Primary";
 import PromptText from "Homecooked/src/components/Text/Prompt";
@@ -17,6 +17,11 @@ export default class Notification extends Component {
     render() {
         return (
             <View style={styles.container}>
+                <Image
+                    source={require("Homecooked/src/assets/img/GHNotifs.png")}
+                    style={{ width: 50, height: 50 }}
+                    resizeMode={"contain"}
+                />
                 <PrimaryText style={{ marginTop: Spacing.small }}>
                     Stay up to date
                 </PrimaryText>

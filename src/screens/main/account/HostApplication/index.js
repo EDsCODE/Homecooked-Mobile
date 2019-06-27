@@ -37,10 +37,10 @@ class HostApplication extends Component {
     static router = HostApplicationStack.router;
 
     state = {
-        address: "klnasd",
-        phoneNumber: "+17328775160",
-        reason: "test reason",
-        experience: "test experience",
+        address: {},
+        phoneNumber: "",
+        reason: "",
+        experience: "",
         images: null
     };
 

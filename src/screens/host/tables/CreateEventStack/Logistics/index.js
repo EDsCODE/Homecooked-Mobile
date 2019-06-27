@@ -46,13 +46,13 @@ class CreateEventLogistics extends Component {
 
     state = {
         address: null,
-        specialDirections: "test special directions",
-        date: moment(),
-        startTime: moment(),
-        duration: 1,
+        specialDirections: "",
+        date: null,
+        startTime: null,
+        duration: null,
         price: 15,
         minGuests: 4,
-        maxGuests: 6
+        maxGuests: 8
     };
 
     updateData = (key, value, cb) => {

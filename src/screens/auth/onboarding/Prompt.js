@@ -1,11 +1,13 @@
 import React, { Component } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Image } from "react-native";
 
 import HeadingText from "Homecooked/src/components/Text/Heading";
 import PromptText from "Homecooked/src/components/Text/Prompt";
 import BarButton from "Homecooked/src/components/Buttons/BarButton";
 
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
+
+const GATHR_LOGO = require("Homecooked/src/assets/img/OrangeTextLogoNEW.png");
 
 export default class Prompt extends Component {
     _goNext = () => {
@@ -15,14 +17,23 @@ export default class Prompt extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <HeadingText
+                <View
                     style={{
-                        marginTop: Spacing.small,
-                        marginHorizontal: Spacing.large
+                        flexDirection: "row",
+                        alignItems: "center"
                     }}
                 >
-                    Welcome to Homecooked!
-                </HeadingText>
+                    <HeadingText>Welcome to</HeadingText>
+                    <Image
+                        source={GATHR_LOGO}
+                        style={{
+                            height: 60,
+                            width: 100,
+                            marginLeft: Spacing.smallest
+                        }}
+                        resizeMode={"contain"}
+                    />
+                </View>
 
                 <PromptText
                     style={{
@@ -52,6 +63,8 @@ export default class Prompt extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: Spacing.larger
+        paddingTop: Spacing.larger,
+        justifyContent: "center",
+        alignItems: "center"
     }
 });

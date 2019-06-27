@@ -1,22 +1,22 @@
-import React, { Component } from 'react';
-import { View, FlatList, Text, StyleSheet } from 'react-native';
+import React, { Component } from "react";
+import { View, FlatList, Text, StyleSheet } from "react-native";
 
-import HeadingText from 'Homecooked/src/components/Text/Heading';
-import PromptText from 'Homecooked/src/components/Text/Prompt';
-import MinorText from 'Homecooked/src/components/Text/Minor';
-import CloseButton from 'Homecooked/src/components/Buttons/Close';
-import FloatyButton from 'Homecooked/src/components/Buttons/FloatyButton';
-import SecondaryText from 'Homecooked/src/components/Text/Secondary';
+import HeadingText from "Homecooked/src/components/Text/Heading";
+import PromptText from "Homecooked/src/components/Text/Prompt";
+import MinorText from "Homecooked/src/components/Text/Minor";
+import CloseButton from "Homecooked/src/components/Buttons/Close";
+import FloatyButton from "Homecooked/src/components/Buttons/FloatyButton";
+import SecondaryText from "Homecooked/src/components/Text/Secondary";
 
-import { Spacing, Typography, Color } from 'Homecooked/src/components/styles';
-import NavigationService from 'Homecooked/src/utils/NavigationService';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import TextField from 'Homecooked/src/components/TextFields/Material';
+import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
+import NavigationService from "Homecooked/src/utils/NavigationService";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import TextField from "Homecooked/src/components/TextFields/Material";
 
 export default class ShortResponse extends Component {
     state = {
-        reason: '',
-        experience: ''
+        reason: "",
+        experience: ""
     };
 
     componentDidMount() {
@@ -33,9 +33,9 @@ export default class ShortResponse extends Component {
 
     _goNext = () => {
         let { reason, experience } = this.state;
-        this.props.screenProps.updateData('reason', reason);
-        this.props.screenProps.updateData('experience', experience);
-        this.props.navigation.navigate('Photos');
+        this.props.screenProps.updateData("reason", reason);
+        this.props.screenProps.updateData("experience", experience);
+        this.props.navigation.navigate("Photos");
     };
 
     render() {
@@ -45,7 +45,7 @@ export default class ShortResponse extends Component {
                 <KeyboardAwareScrollView
                     extraScrollHeight={100}
                     extraHeight={50}
-                    keyboardShouldPersistTaps={'handled'}
+                    keyboardShouldPersistTaps={"handled"}
                     showsVerticalScrollIndicator={false}
                     bounces={false}
                 >
@@ -93,7 +93,7 @@ export default class ShortResponse extends Component {
                 <FloatyButton
                     onPress={this._goNext}
                     style={{
-                        position: 'absolute',
+                        position: "absolute",
                         bottom: Spacing.largest,
                         right: Spacing.largest
                     }}

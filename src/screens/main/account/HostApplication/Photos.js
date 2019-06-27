@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, FlatList, Text, StyleSheet } from "react-native";
+import { View, FlatList, Text, StyleSheet, Alert } from "react-native";
 
 import HeadingText from "Homecooked/src/components/Text/Heading";
 import PromptText from "Homecooked/src/components/Text/Prompt";
@@ -45,9 +45,14 @@ export default class Photos extends Component {
     };
 
     _goNext = () => {
-        this.setState({
-            loading: true
-        });
+        if (
+            !this.state.images[0] ||
+            !this.state.images[1] ||
+            !this.state.images[2]
+        ) {
+            Alert.alert("Must provide profile photo and photos of your space");
+            return;
+        }
         this.props.screenProps.updateData("images", this.state.images, () => {
             this.props.screenProps.submit();
         });
