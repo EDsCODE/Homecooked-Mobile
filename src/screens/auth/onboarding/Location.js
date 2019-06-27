@@ -8,6 +8,7 @@ import BarButton from "Homecooked/src/components/Buttons/BarButton";
 import Permissions from "react-native-permissions";
 import NavigationService from "Homecooked/src/utils/NavigationService";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
+import { Icon } from "react-native-elements";
 
 export default class Location extends Component {
     _goNext = () => {
@@ -24,6 +25,12 @@ export default class Location extends Component {
     render() {
         return (
             <View style={styles.container}>
+                <Icon
+                    name="ios-pin"
+                    type="ionicon"
+                    size={60}
+                    color={Color.black}
+                />
                 <PrimaryText style={{ marginTop: Spacing.small }}>
                     Join nearby meals
                 </PrimaryText>
