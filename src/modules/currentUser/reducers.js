@@ -20,7 +20,8 @@ const initialState = {
     imageKey: null,
     imageURL: null,
     isComplete: false,
-    error: null
+    error: null,
+    savingPayment: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -84,11 +85,13 @@ const reducer = (state = initialState, action) => {
             };
         case types.SAVE_PAYMENT_REQUEST:
             return {
-                ...state
+                ...state,
+                savingPayment: true
             };
         case types.SAVE_PAYMENT_SUCCESS:
             return {
                 ...state,
+                savingPayment: false,
                 stripeCustomerId: action.payload
                     ? action.payload.stripeCustomerId
                     : state.stripeCustomerId

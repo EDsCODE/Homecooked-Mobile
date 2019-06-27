@@ -20,7 +20,7 @@ const Button = props =>
                 <ActivityIndicator size="small" color={Color.white} />
             </View>
         </View>
-    ) : (
+    ) : props.active ? (
         <TouchableOpacity onPress={props.onPress} style={props.style}>
             <View
                 style={{
@@ -46,6 +46,35 @@ const Button = props =>
                 </Text>
             </View>
         </TouchableOpacity>
+    ) : (
+        <View style={props.style}>
+            <View
+                style={{
+                    width: Spacing.deviceWidth - 40,
+                    height: 50,
+                    borderColor: Color.lightGray,
+                    backgroundColor: Color.lightGray,
+                    borderRadius: 4,
+                    borderWidth: 2,
+                    justifyContent: "center",
+                    alignItems: "center"
+                }}
+            >
+                <Text
+                    style={{
+                        color: props.textColor || Color.white,
+                        fontSize: Typography.baseFontSize,
+                        fontFamily: Typography.fontFamily,
+                        fontWeight: Typography.heavy
+                    }}
+                >
+                    {props.title}
+                </Text>
+            </View>
+        </View>
     );
 
+Button.defaultProps = {
+    active: true
+};
 export default Button;

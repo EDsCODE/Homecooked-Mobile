@@ -61,6 +61,7 @@ export default class DetailsDescription extends Component {
                     borderColor={Color.orange}
                     fill={Color.orange}
                     onPress={this._goNext}
+                    active={eventDescription}
                 />
             </View>
         );

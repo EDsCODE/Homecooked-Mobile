@@ -46,7 +46,7 @@ class Review extends Component {
     _goNext = () => {
         let { id } = this.props.navigation.state.params.event;
         if (this.props.isProfileComplete) {
-            console.log("profile complete");
+            this.props.bookEvent("123");
         } else {
             Alert.alert(
                 "Profile incomplete",
@@ -70,7 +70,7 @@ class Review extends Component {
         }
 
         // TODO: payment token placeholder
-        // this.props.bookEvent("123");
+
         // this.props.navigation.navigate("Confirmed");
     };
 

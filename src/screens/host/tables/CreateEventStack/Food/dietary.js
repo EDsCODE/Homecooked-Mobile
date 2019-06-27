@@ -152,10 +152,21 @@ export default class DietaryRestriction extends Component {
                     borderColor={Color.orange}
                     fill={Color.orange}
                     onPress={this._goNext}
+                    active={isSelected(restrictions) && isSelected(mealType)}
                 />
             </View>
         );
     }
+}
+
+function isSelected(dict) {
+    for (var index in dict) {
+        console.log(dict);
+        if (dict[index].selected) {
+            return true;
+        }
+    }
+    return false;
 }
 
 const styles = StyleSheet.create({

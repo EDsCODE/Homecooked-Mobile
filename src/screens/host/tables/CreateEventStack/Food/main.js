@@ -14,7 +14,7 @@ import { objectUtils } from "Homecooked/src/utils";
 
 export default class DetailsMain extends Component {
     _goBack = () => {
-        this.props.navigation.goBack();
+        NavigationService.navigate("CreateEventDetails");
     };
 
     _navigateToMenuField = () => {

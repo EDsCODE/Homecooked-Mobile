@@ -17,6 +17,18 @@ class Payment extends Component {
         cardDetails: {}
     };
 
+    componentWillReceiveProps(nextProps) {
+        if (this.props.savingPayment && !nextProps.savingPayment) {
+            Alert.alert("Successfully saved payment", null, [
+                {
+                    text: "Done",
+                    mode: "Cancel",
+                    onPress: () => this.props.navigation.goBack()
+                }
+            ]);
+        }
+    }
+
     _goBack = () => {
         NavigationService.navigate("AccountMain");
     };
@@ -54,6 +66,7 @@ class Payment extends Component {
                     borderColor={Color.green}
                     fill={Color.green}
                     onPress={this._onPress}
+                    loading={this.props.savingPayment}
                 />
             </View>
         );
@@ -66,6 +79,12 @@ const styles = StyleSheet.create({
         flexDirection: "column"
     }
 });
+
+const mapStateToProps = state => {
+    return {
+        savingPayment: state.currentUser.savingPayment
+    };
+};
 
 const mapDispatchToProps = dispatch => {
     const savePaymentInfo = token => {
@@ -82,6 +101,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(Payment);

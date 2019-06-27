@@ -15,7 +15,7 @@ import { objectUtils } from "Homecooked/src/utils";
 
 export default class DetailsMain extends Component {
     _goBack = () => {
-        this.props.navigation.goBack();
+        NavigationService.navigate("CreateEventFood");
     };
 
     _navigateToAddressField = () => {
@@ -70,11 +70,10 @@ export default class DetailsMain extends Component {
                 moment(endTime).format("h:mm a");
         }
 
-        let formattedAddress = address.formattedAddress;
+        let formattedAddress = address ? address.formattedAddress : "";
 
         let isActive =
             address &&
-            specialDirections &&
             date &&
             startTime &&
             duration &&

@@ -58,6 +58,7 @@ export default class DetailsTitle extends Component {
                     borderColor={Color.orange}
                     fill={Color.orange}
                     onPress={this._goNext}
+                    active={eventTitle}
                 />
             </View>
         );

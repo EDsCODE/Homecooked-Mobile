@@ -1,11 +1,16 @@
 import React, { Component } from "react";
-import { View, StyleSheet, FlatList } from "react-native";
+import {
+    View,
+    StyleSheet,
+    FlatList,
+    TouchableWithoutFeedback
+} from "react-native";
 
 import PrimaryText from "Homecooked/src/components/Text/Primary";
 import SecondaryText from "Homecooked/src/components/Text/Secondary";
 import MinorText from "Homecooked/src/components/Text/Minor";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
-
+import { Icon } from "react-native-elements";
 export default class Menu extends Component {
     _keyExtractor = (item, index) => item.id;
 
@@ -15,6 +20,11 @@ export default class Menu extends Component {
                 key={item.id}
                 name={item.name}
                 description={item.description}
+                onPress={
+                    this.props.onRowPressed
+                        ? () => this.props.onRowPressed(item)
+                        : null
+                }
             />
         );
     };
@@ -58,6 +68,7 @@ export default class Menu extends Component {
                     renderItem={this._renderItem}
                     ItemSeparatorComponent={this._renderSeparator}
                     bounces={false}
+                    keyboardShouldPersistTaps={"handled"}
                 />
                 {dietaryInfo ? <MinorText>{dietaryInfo}</MinorText> : null}
             </View>
@@ -72,8 +83,28 @@ function formatArrayAttributes(arr) {
 
 const Row = props => (
     <View style={styles.row}>
-        <SecondaryText>{props.name}</SecondaryText>
-        <MinorText>{props.description}</MinorText>
+        <View style={{ flex: 3, flexDirection: "column" }}>
+            <SecondaryText>{props.name}</SecondaryText>
+            <MinorText>{props.description}</MinorText>
+        </View>
+        {props.onPress ? (
+            <TouchableWithoutFeedback
+                onPress={props.onPress}
+                hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
+            >
+                <Icon
+                    name={`ios-${props.icon || "close"}`}
+                    type="ionicon"
+                    color={Color.gray}
+                    size={45}
+                    containerStyle={{
+                        flex: 1,
+                        alignItems: "flex-end",
+                        marginRight: 15
+                    }}
+                />
+            </TouchableWithoutFeedback>
+        ) : null}
     </View>
 );
 
@@ -87,6 +118,8 @@ const styles = StyleSheet.create({
         margin: Spacing.large
     },
     row: {
-        marginVertical: Spacing.small
+        marginVertical: Spacing.small,
+        flexDirection: "row",
+        alignItems: "center"
     }
 });

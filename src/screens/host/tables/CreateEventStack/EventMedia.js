@@ -92,11 +92,11 @@ class EventMedia extends Component {
     };
 
     render() {
-        let { loading, images } = this.state;
+        let { loading, images, upload } = this.state;
 
         return (
             <View style={styles.container}>
-                <CloseButton onPress={this._goBack} />
+                <CloseButton onPress={this._goBack} icon={"arrow-round-back"} />
                 <MinorText>Step 4 of 4</MinorText>
                 <HeadingText>Review Photos</HeadingText>
                 <PromptText style={{ marginTop: Spacing.small }}>
@@ -136,6 +136,7 @@ class EventMedia extends Component {
                     fill={Color.orange}
                     onPress={this._goNext}
                     loading={loading}
+                    active={upload.length}
                 />
             </View>
         );

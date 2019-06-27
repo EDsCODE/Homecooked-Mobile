@@ -126,8 +126,6 @@ class HostTablesMain extends Component {
     );
 
     _navigateToCreateEvent = () => {
-        this.props.navigation.navigate("CreateEventStack");
-        return;
         if (this.props.host.stripeAccountId) {
             this.props.navigation.navigate("CreateEventStack");
         } else {

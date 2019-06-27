@@ -12,6 +12,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 import NavigationService from "Homecooked/src/utils/NavigationService";
+import _ from "lodash";
 
 export default class Menu extends Component {
     _goBack = () => {
@@ -51,6 +52,19 @@ export default class Menu extends Component {
         this._goBack();
     };
 
+    _onRowPressed = item => {
+        console.log(item);
+        let menu = this.state.menu.filter(
+            menuItem =>
+                menuItem.name != item.name &&
+                menuItem.description != item.description
+        );
+        console.log(menu);
+        this.setState({
+            menu
+        });
+    };
+
     render() {
         let { itemDescription, itemName, menu } = this.state;
         return (
@@ -72,6 +86,7 @@ export default class Menu extends Component {
                     <MenuSection
                         menu={menu}
                         containerStyle={{ marginHorizontal: 0 }}
+                        onRowPressed={this._onRowPressed}
                     />
                     <TextField
                         label={""}
@@ -98,6 +113,7 @@ export default class Menu extends Component {
                         borderColor={Color.orange}
                         fill={Color.orange}
                         onPress={this._addItem}
+                        active={itemDescription && itemName}
                     />
                     <BarButton
                         title="Confirm"
@@ -107,6 +123,7 @@ export default class Menu extends Component {
                         borderColor={Color.orange}
                         fill={Color.orange}
                         onPress={this._goNext}
+                        active={menu.length}
                     />
                 </KeyboardAwareScrollView>
             </View>

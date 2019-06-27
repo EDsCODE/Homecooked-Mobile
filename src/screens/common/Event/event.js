@@ -111,9 +111,9 @@ class Event extends Component {
             renderPeople: false,
             renderMenu: true,
             renderLocation: true,
-            renderUtilityBar: false,
+            renderUtilityBar: true,
             renderTitle: false,
-            renderBarButton: true,
+            renderBarButton: false,
             START_TIME: startTime,
             MEDIA: media,
             CHEF_NAME: chef.user.firstName,
@@ -127,7 +127,10 @@ class Event extends Component {
             DIETARY_RESTRICTION: dietaryRestriction,
             MEAL_TYPE: mealType,
             MARKER: marker,
-            BUTTON_COLOR: Color.orange,
+            BUTTON_COLOR: Color.green,
+            TINT_COLOR: Color.green,
+            MAIN_TEXT: `$${price} per person`,
+            SUB_TEXT: `${tableSizeMin} - ${tableSizeMax} seats available`,
             ONPRESS: this.props.submit,
             BUTTON_TEXT: "Publish"
         });
@@ -272,7 +275,7 @@ class Event extends Component {
                     loading: false,
                     renderHero: false,
                     renderInfo: false,
-                    renderPeople: false,
+                    renderPeople: true,
                     renderMenu: true,
                     renderLocation: false,
                     renderUtilityBar: false,
@@ -300,7 +303,8 @@ class Event extends Component {
                     MAIN_TEXT: `Status: Active`,
                     SUB_TEXT: `Upcoming`,
                     ONPRESS: this.props.refund,
-                    BUTTON_TEXT: "Refund"
+                    BUTTON_TEXT: "Refund",
+                    USERS: users
                 });
                 break;
             case EventViewTypes.HOST_ACTIVE:
@@ -516,7 +520,9 @@ class Event extends Component {
     _renderTitle = (title, startTime) => {
         let dateText = extendedDateWithMealType(startTime);
         return (
-            <View>
+            <View
+                style={{ marginTop: Spacing.base, marginBottom: Spacing.small }}
+            >
                 <PrimaryText style={{ marginHorizontal: Spacing.large }}>
                     {title}
                 </PrimaryText>
@@ -617,17 +623,25 @@ class Event extends Component {
 
     _renderBarButton = (buttonText, color, onPress) => {
         return (
-            <BarButton
-                title={buttonText}
+            <View
                 style={{
                     position: "absolute",
-                    bottom: Spacing.large,
-                    left: Spacing.large
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    height: 100,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    backgroundColor: "white"
                 }}
-                borderColor={color}
-                fill={color}
-                onPress={onPress}
-            />
+            >
+                <BarButton
+                    title={buttonText}
+                    borderColor={color}
+                    fill={color}
+                    onPress={onPress}
+                />
+            </View>
         );
     };
 
