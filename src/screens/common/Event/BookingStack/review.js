@@ -78,6 +78,8 @@ class Review extends Component {
         let { actionLoading } = this.props;
         let { attributes, startTime, duration } = this.props.event;
         let { price } = attributes;
+
+        let cardDetailsValid = this.state.cardDetails.valid ? true : false;
         return (
             <View style={{ flex: 1, paddingTop: 30 }}>
                 <KeyboardAwareScrollView
@@ -114,6 +116,7 @@ class Review extends Component {
                     fill={Color.green}
                     onPress={this._goNext}
                     loading={actionLoading}
+                    active={cardDetailsValid}
                 />
             </View>
         );

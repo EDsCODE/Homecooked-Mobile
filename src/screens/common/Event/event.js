@@ -312,7 +312,7 @@ class Event extends Component {
                     loading: false,
                     renderHero: true,
                     renderInfo: true,
-                    renderPeople: false,
+                    renderPeople: true,
                     renderMenu: true,
                     renderLocation: true,
                     renderUtilityBar: true,
@@ -341,7 +341,8 @@ class Event extends Component {
                     MAIN_TEXT: `Status: Upcoming`,
                     SUB_TEXT: `Happening soon`,
                     ONPRESS: this.props.cancel,
-                    BUTTON_TEXT: "Cancel"
+                    BUTTON_TEXT: "Cancel",
+                    USERS: users
                 });
                 break;
             case EventViewTypes.HOST_CLOSEABLE:
