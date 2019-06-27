@@ -81,7 +81,7 @@ class Review extends Component {
         return (
             <View style={{ flex: 1, paddingTop: 30 }}>
                 <KeyboardAwareScrollView
-                    extraScrollHeight={120}
+                    extraScrollHeight={100}
                     extraHeight={50}
                     keyboardShouldPersistTaps={"handled"}
                     showsVerticalScrollIndicator={false}

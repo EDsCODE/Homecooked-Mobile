@@ -36,8 +36,8 @@ class Login extends Component {
             // TODO: call redux login with facebook
             let image = {
                 uri: result.picture.data.url,
-                fileName: result.id + "_avatar",
-                type: "image/jpeg"
+                fileName: result.id + '_avatar',
+                type: 'image/jpeg'
             };
             let { email, first_name: firstName, last_name: lastName } = result;
             this.props.facebookLogin(email, firstName, lastName, image);
@@ -58,7 +58,7 @@ class Login extends Component {
             <View>
                 <Header title={'Login'} leftOnPress={this._back} />
                 <KeyboardAwareScrollView
-                    extraScrollHeight={120}
+                    extraScrollHeight={100}
                     extraHeight={50}
                     keyboardShouldPersistTaps={'handled'}
                     showsVerticalScrollIndicator={false}

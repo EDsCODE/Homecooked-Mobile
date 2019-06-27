@@ -47,7 +47,7 @@ let rightComponents = {
     next: props => (
         <TouchableWithoutFeedback
             onPress={props.rightOnPress}
-            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            hitSlop={{ top: 50, bottom: 50, left: 50, right: 50 }}
         >
             <Text
                 style={{
@@ -61,14 +61,19 @@ let rightComponents = {
         </TouchableWithoutFeedback>
     ),
     new: props => (
-        <Icon
-            name="ios-add"
-            type="ionicon"
-            containerStyle={{ marginRight: Spacing.smaller }}
-            size={30}
-            color={Color.gray}
+        <TouchableWithoutFeedback
             onPress={props.rightOnPress}
-        />
+            hitSlop={{ top: 50, bottom: 50, left: 50, right: 50 }}
+        >
+            <Icon
+                name="ios-add"
+                type="ionicon"
+                containerStyle={{ marginRight: Spacing.smaller }}
+                size={30}
+                color={Color.gray}
+                onPress={props.rightOnPress}
+            />
+        </TouchableWithoutFeedback>
     )
 };
 
