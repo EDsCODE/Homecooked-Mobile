@@ -10,7 +10,11 @@ const Cell = props => (
         activeOpacity={1.0}
     >
         <View style={styles.row}>
-            <Image style={styles.imgStyles} source={props.icon} />
+            <Image
+                style={styles.imgStyles}
+                source={props.icon}
+                resizeMode={'contain'}
+            />
             <Text style={styles.title}>{props.title}</Text>
             {props.prompt ? (
                 <Text style={styles.prompt}>{props.prompt}</Text>

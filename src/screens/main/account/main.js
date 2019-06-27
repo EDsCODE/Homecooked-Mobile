@@ -25,7 +25,7 @@ class Main extends Component {
         if (status) {
             if (status == 'REQ') {
                 title = 'Host application under review';
-                icon = require('Homecooked/src/assets/img/HMyTables.png');
+                icon = require('Homecooked/src/assets/img/Hospitality.png');
             } else if (status == 'CNF') {
                 title = 'Switch to Host Mode';
                 onPress = () => NavigationService.navigate('Host');
@@ -33,12 +33,12 @@ class Main extends Component {
             } else {
                 title = 'Become a host';
                 onPress = () => this._goToCreateApplication();
-                icon = require('Homecooked/src/assets/img/HMyTables.png');
+                icon = require('Homecooked/src/assets/img/Hospitality.png');
             }
         } else {
             title = 'Become a host';
             onPress = () => this._goToCreateApplication();
-            icon = require('Homecooked/src/assets/img/HMyTables.png');
+            icon = require('Homecooked/src/assets/img/Hospitality.png');
         }
 
         return {
