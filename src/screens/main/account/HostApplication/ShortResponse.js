@@ -10,7 +10,7 @@ import SecondaryText from "Homecooked/src/components/Text/Secondary";
 
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 import NavigationService from "Homecooked/src/utils/NavigationService";
-
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import TextField from "Homecooked/src/components/TextFields/Material";
 
 export default class ShortResponse extends Component {
@@ -42,40 +42,54 @@ export default class ShortResponse extends Component {
         let { reason, experience } = this.state;
         return (
             <View style={styles.container}>
-                <CloseButton onPress={this._goBack} />
-                <MinorText>Step 2 of 3</MinorText>
-                <HeadingText>Short Response</HeadingText>
-                <PromptText style={{ marginTop: Spacing.large }}>
-                    Our cooks range from Syrian refugees to food entrepreneurs
-                    to grad students with a flair for the culinary arts.
-                </PromptText>
-                <PromptText style={{ marginTop: Spacing.large }}>
-                    The one thing they have in common is a passion for building
-                    community over food.
-                </PromptText>
-                <SecondaryText style={{ marginTop: Spacing.large }}>
-                    What's your cooking experience?
-                </SecondaryText>
-                <TextField
-                    returnKeyType={"done"}
-                    multiline={true}
-                    containerStyle={{ marginTop: -20 }}
-                    tintColor={Color.gray}
-                    placeholder="Your answer"
-                    value={experience}
-                    onChangeText={experience => this.setState({ experience })}
-                />
-                <SecondaryText style={{ marginTop: Spacing.base }}>
-                    Why do you want to cook for Homecooked?
-                </SecondaryText>
-                <TextField
-                    multiline={true}
-                    containerStyle={{ marginTop: -20 }}
-                    tintColor={Color.gray}
-                    placeholder="Your answer"
-                    value={reason}
-                    onChangeText={reason => this.setState({ reason })}
-                />
+                <KeyboardAwareScrollView
+                    extraScrollHeight={100}
+                    extraHeight={50}
+                    keyboardShouldPersistTaps={"handled"}
+                    showsVerticalScrollIndicator={false}
+                    bounces={false}
+                >
+                    <CloseButton onPress={this._goBack} />
+                    <MinorText>Step 2 of 3</MinorText>
+                    <HeadingText>Short Response</HeadingText>
+                    <PromptText style={{ marginTop: Spacing.large }}>
+                        Our cooks range from Syrian refugees to food
+                        entrepreneurs to grad students with a flair for the
+                        culinary arts.
+                    </PromptText>
+                    <PromptText style={{ marginTop: Spacing.large }}>
+                        The one thing they have in common is a passion for
+                        building community over food.
+                    </PromptText>
+                    <SecondaryText style={{ marginTop: Spacing.large }}>
+                        What's your cooking experience?
+                    </SecondaryText>
+                    <TextField
+                        multiline={true}
+                        containerStyle={{ marginTop: -20 }}
+                        tintColor={Color.gray}
+                        placeholder="Your answer"
+                        value={experience}
+                        onChangeText={experience =>
+                            this.setState({ experience })
+                        }
+                    />
+                    <SecondaryText style={{ marginTop: Spacing.base }}>
+                        Why do you want to cook for Homecooked?
+                    </SecondaryText>
+                    <TextField
+                        multiline={true}
+                        containerStyle={{ marginTop: -20 }}
+                        tintColor={Color.gray}
+                        placeholder="Your answer"
+                        value={reason}
+                        returnKeyType="done"
+                        scrollEnabled={true}
+                        blurOnSubmit={true}
+                        enablesReturnKeyAutomatically={true}
+                        onChangeText={reason => this.setState({ reason })}
+                    />
+                </KeyboardAwareScrollView>
                 <FloatyButton
                     onPress={this._goNext}
                     style={{
