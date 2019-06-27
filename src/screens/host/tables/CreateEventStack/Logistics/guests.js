@@ -120,6 +120,7 @@ export default class Guests extends Component {
                     borderColor={Color.orange}
                     fill={Color.orange}
                     onPress={this._goNext}
+                    active={minGuests <= maxGuests}
                 />
                 <Picker
                     visible={minGuestPickerVisible}

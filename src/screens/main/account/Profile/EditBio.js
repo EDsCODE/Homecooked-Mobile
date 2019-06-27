@@ -31,7 +31,8 @@ class Bio extends Component {
         this.props.navigation.navigate("ProfilePreview", {
             profileImageSignedUrl: this.props.currentUser.profileImageSignedUrl,
             bio: this.state.bio,
-            firstName: this.props.currentUser.firstName
+            firstName: this.props.currentUser.firstName,
+            returnRoute: "AccountMain"
         });
     };
 

@@ -2,33 +2,61 @@ import React from "react";
 import { TouchableOpacity, View, Text } from "react-native";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 
-const Button = props => (
-    <TouchableOpacity onPress={props.onPress} style={props.style}>
-        <View
-            style={{
-                height: 30,
-                borderRadius: 15,
-                borderColor: props.borderColor || Color.transparent,
-                backgroundColor: props.fill || Color.transparent,
-                borderWidth: 2,
-                justifyContent: "center",
-                alignItems: "center",
-                paddingHorizontal: Spacing.small,
-                paddingVertical: Spacing.smallest
-            }}
-        >
-            <Text
+const Button = props =>
+    props.active ? (
+        <TouchableOpacity onPress={props.onPress} style={props.style}>
+            <View
                 style={{
-                    color: props.textColor || Color.white,
-                    fontSize: Typography.smallestFontSize,
-                    fontFamily: Typography.fontFamily,
-                    fontWeight: Typography.heavy
+                    height: 30,
+                    borderRadius: 15,
+                    borderColor: props.borderColor || Color.transparent,
+                    backgroundColor: props.fill || Color.transparent,
+                    borderWidth: 2,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    paddingHorizontal: Spacing.small,
+                    paddingVertical: Spacing.smallest
                 }}
             >
-                {props.title}
-            </Text>
+                <Text
+                    style={{
+                        color: props.textColor || Color.white,
+                        fontSize: Typography.smallestFontSize,
+                        fontFamily: Typography.fontFamily,
+                        fontWeight: Typography.heavy
+                    }}
+                >
+                    {props.title}
+                </Text>
+            </View>
+        </TouchableOpacity>
+    ) : (
+        <View style={props.style}>
+            <View
+                style={{
+                    height: 30,
+                    borderRadius: 15,
+                    borderColor: Color.lightGray,
+                    backgroundColor: Color.lightGray,
+                    borderWidth: 2,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    paddingHorizontal: Spacing.small,
+                    paddingVertical: Spacing.smallest
+                }}
+            >
+                <Text
+                    style={{
+                        color: props.textColor || Color.white,
+                        fontSize: Typography.smallestFontSize,
+                        fontFamily: Typography.fontFamily,
+                        fontWeight: Typography.heavy
+                    }}
+                >
+                    {props.title}
+                </Text>
+            </View>
         </View>
-    </TouchableOpacity>
-);
+    );
 
 export default Button;

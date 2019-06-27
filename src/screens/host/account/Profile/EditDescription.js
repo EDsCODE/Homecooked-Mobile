@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, FlatList, Text, StyleSheet } from "react-native";
+import { View, FlatList, Text, StyleSheet, Alert } from "react-native";
 import { NavigationActions } from "react-navigation";
 import HeadingText from "Homecooked/src/components/Text/Heading";
 import PromptText from "Homecooked/src/components/Text/Prompt";
@@ -18,6 +18,15 @@ class Description extends Component {
     state = {
         description: ""
     };
+
+    componentDidMount() {
+        if (this.props.host.description) {
+            this.setState({
+                description: this.props.host.description
+            });
+        }
+    }
+
     _goBack = () => {
         this.props.navigation.goBack();
     };
@@ -28,6 +37,13 @@ class Description extends Component {
                 description: this.state.description
             });
         }
+        Alert.alert("Updated host profile", null, [
+            {
+                text: "Done",
+                mode: "Cancel",
+                onPress: () => NavigationService.navigate("HostSettingsMain")
+            }
+        ]);
     };
 
     render() {
