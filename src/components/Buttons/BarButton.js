@@ -1,6 +1,6 @@
-import React from "react";
-import { TouchableOpacity, View, Text, ActivityIndicator } from "react-native";
-import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
+import React from 'react';
+import { TouchableOpacity, View, Text, ActivityIndicator } from 'react-native';
+import { Spacing, Typography, Color } from 'Homecooked/src/components/styles';
 
 const Button = props =>
     props.loading ? (
@@ -13,8 +13,8 @@ const Button = props =>
                     backgroundColor: props.fill || Color.transparent,
                     borderRadius: 4,
                     borderWidth: 2,
-                    justifyContent: "center",
-                    alignItems: "center"
+                    justifyContent: 'center',
+                    alignItems: 'center'
                 }}
             >
                 <ActivityIndicator size="small" color={Color.white} />
@@ -30,8 +30,9 @@ const Button = props =>
                     backgroundColor: props.fill || Color.transparent,
                     borderRadius: 4,
                     borderWidth: 2,
-                    justifyContent: "center",
-                    alignItems: "center"
+                    marginBottom: 20,
+                    justifyContent: 'center',
+                    alignItems: 'center'
                 }}
             >
                 <Text

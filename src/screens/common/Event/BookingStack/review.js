@@ -1,26 +1,26 @@
-import React, { Component } from "react";
-import { View, StyleSheet, Alert } from "react-native";
-import NavigationService from "Homecooked/src/utils/NavigationService";
-import HeadingText from "Homecooked/src/components/Text/Heading";
-import CloseButton from "Homecooked/src/components/Buttons/Close";
-import BarButton from "Homecooked/src/components/Buttons/BarButton";
-import InfoSection from "Homecooked/src/components/Event/Info";
-import CreditCardInput from "Homecooked/src/components/TextFields/CreditCardInput";
-import { eventTypes } from "Homecooked/src/modules/types";
-import { connect } from "react-redux";
-import { getEvent } from "Homecooked/src/modules/event/selectors";
+import React, { Component } from 'react';
+import { View, StyleSheet, Alert } from 'react-native';
+import NavigationService from 'Homecooked/src/utils/NavigationService';
+import HeadingText from 'Homecooked/src/components/Text/Heading';
+import CloseButton from 'Homecooked/src/components/Buttons/Close';
+import BarButton from 'Homecooked/src/components/Buttons/BarButton';
+import InfoSection from 'Homecooked/src/components/Event/Info';
+import CreditCardInput from 'Homecooked/src/components/TextFields/CreditCardInput';
+import { eventTypes } from 'Homecooked/src/modules/types';
+import { connect } from 'react-redux';
+import { getEvent } from 'Homecooked/src/modules/event/selectors';
 
-import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { Spacing, Typography, Color } from 'Homecooked/src/components/styles';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 class Review extends Component {
     state = {
-        modules: ["dateTime", "price"],
+        modules: ['dateTime', 'price'],
         cardDetails: {}
     };
 
     _goBack = () => {
-        NavigationService.navigate("Event");
+        NavigationService.navigate('Event');
     };
 
     componentWillReceiveProps(nextProps) {
@@ -29,7 +29,7 @@ class Review extends Component {
             !nextProps.actionLoading &&
             !nextProps.error
         ) {
-            this.props.navigation.navigate("Confirmed");
+            this.props.navigation.navigate('Confirmed');
         }
     }
 
@@ -46,23 +46,23 @@ class Review extends Component {
     _goNext = () => {
         let { id } = this.props.navigation.state.params.event;
         if (this.props.isProfileComplete) {
-            console.log("profile complete");
+            console.log('profile complete');
         } else {
             Alert.alert(
-                "Profile incomplete",
-                "In order to book this event complete your profile!",
+                'Profile incomplete',
+                'In order to book this event complete your profile!',
                 [
                     {
-                        text: "Edit",
+                        text: 'Edit',
                         onPress: () =>
-                            NavigationService.navigate("EditProfileStack", {
-                                parentRoute: "Review"
+                            NavigationService.navigate('EditProfileStack', {
+                                parentRoute: 'Review'
                             })
                     },
                     {
-                        text: "Cancel",
-                        onPress: () => console.log("Cancel Pressed"),
-                        style: "cancel"
+                        text: 'Cancel',
+                        onPress: () => console.log('Cancel Pressed'),
+                        style: 'cancel'
                     }
                 ],
                 { cancelable: false }
@@ -81,9 +81,9 @@ class Review extends Component {
         return (
             <View style={{ flex: 1, paddingTop: 30 }}>
                 <KeyboardAwareScrollView
-                    extraScrollHeight={120}
+                    extraScrollHeight={100}
                     extraHeight={50}
-                    keyboardShouldPersistTaps={"handled"}
+                    keyboardShouldPersistTaps={'handled'}
                     showsVerticalScrollIndicator={false}
                     bounces={false}
                 >
@@ -106,7 +106,7 @@ class Review extends Component {
                 <BarButton
                     title="RSVP"
                     style={{
-                        position: "absolute",
+                        position: 'absolute',
                         bottom: Spacing.large,
                         left: Spacing.large
                     }}

@@ -1,8 +1,8 @@
-import React from "react";
-import { createStackNavigator } from "react-navigation";
-import Bio from "./bio";
-import Photo from "./photo";
-import Prompt from "./prompt";
+import React from 'react';
+import { createStackNavigator } from 'react-navigation';
+import Bio from './bio';
+import Photo from './photo';
+import Prompt from './prompt';
 
 const ProfileCreationStack = createStackNavigator(
     {
@@ -17,8 +17,8 @@ const ProfileCreationStack = createStackNavigator(
         }
     },
     {
-        initialRouteName: "Prompt",
-        headerMode: "none"
+        initialRouteName: 'Prompt',
+        headerMode: 'none'
     }
 );
 
