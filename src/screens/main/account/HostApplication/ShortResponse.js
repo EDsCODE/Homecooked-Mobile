@@ -57,6 +57,7 @@ export default class ShortResponse extends Component {
                     What's your cooking experience?
                 </SecondaryText>
                 <TextField
+                    returnKeyType={"done"}
                     multiline={true}
                     containerStyle={{ marginTop: -20 }}
                     tintColor={Color.gray}

@@ -24,7 +24,8 @@ const reducer = (state = initialState, action) => {
         case types.SIGNUP_REQUEST:
             return {
                 ...state,
-                loading: true
+                loading: true,
+                error: null
             };
         case types.AUTO_LOGIN_START:
             return {
@@ -54,7 +55,8 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 authenticating: false,
-                accessToken: action.accessToken
+                accessToken: action.accessToken,
+                error: null
             };
         case types.LOGIN_ERROR:
             return {

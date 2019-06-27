@@ -27,8 +27,8 @@ class CreateEventDetails extends Component {
     static router = CreateEventDetailsStack.router;
 
     state = {
-        eventTitle: "hello",
-        eventDescription: "hello"
+        eventTitle: "",
+        eventDescription: ""
     };
 
     updateData = (key, value, cb) => {
