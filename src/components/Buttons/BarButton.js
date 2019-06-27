@@ -30,7 +30,6 @@ const Button = props =>
                     backgroundColor: props.fill || Color.transparent,
                     borderRadius: 4,
                     borderWidth: 2,
-                    marginBottom: 20,
                     justifyContent: 'center',
                     alignItems: 'center'
                 }}
@@ -57,8 +56,8 @@ const Button = props =>
                     backgroundColor: Color.lightGray,
                     borderRadius: 4,
                     borderWidth: 2,
-                    justifyContent: "center",
-                    alignItems: "center"
+                    justifyContent: 'center',
+                    alignItems: 'center'
                 }}
             >
                 <Text
