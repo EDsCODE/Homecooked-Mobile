@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
     View,
     Text,
@@ -9,21 +9,21 @@ import {
     Dimensions,
     SafeAreaView,
     TouchableOpacity
-} from "react-native";
-import CheckBox from "react-native-check-box";
+} from 'react-native';
+import CheckBox from 'react-native-check-box';
 
-import { Typography, Spacing, Color } from "Homecooked/src/components/styles";
+import { Typography, Spacing, Color } from 'Homecooked/src/components/styles';
 dinners = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday"
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday'
 ];
 
-brunches = ["Saturday", "Sunday"];
+brunches = ['Saturday', 'Sunday'];
 
 export default class Schedule extends Component {
     constructor() {
@@ -33,10 +33,10 @@ export default class Schedule extends Component {
             brunch: {}
         };
         dinners.forEach(day => {
-            state["dinner"][day] = false;
+            state['dinner'][day] = false;
         });
         brunches.forEach(day => {
-            state["brunch"][day] = false;
+            state['brunch'][day] = false;
         });
         this.state = state;
     }
@@ -59,9 +59,9 @@ export default class Schedule extends Component {
                                 <TouchableOpacity
                                     onPress={() => {
                                         this.setState({
-                                            ["dinner"]: {
-                                                ...this.state["dinner"],
-                                                [day]: !this.state["dinner"][
+                                            ['dinner']: {
+                                                ...this.state['dinner'],
+                                                [day]: !this.state['dinner'][
                                                     day
                                                 ]
                                             },
@@ -69,8 +69,8 @@ export default class Schedule extends Component {
                                         });
                                     }}
                                     style={{
-                                        flexDirection: "row",
-                                        alignItems: "center",
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
                                         marginBottom: 15
                                     }}
                                 >
@@ -78,13 +78,13 @@ export default class Schedule extends Component {
                                         style={{ paddingRight: 10 }}
                                         checkBoxColor={Color.lightGray}
                                         checkedCheckBoxColor={Color.orange}
-                                        isChecked={this.state["dinner"][day]}
+                                        isChecked={this.state['dinner'][day]}
                                         onClick={() => {
                                             this.setState({
-                                                ["dinner"]: {
-                                                    ...this.state["dinner"],
+                                                ['dinner']: {
+                                                    ...this.state['dinner'],
                                                     [day]: !this.state[
-                                                        "dinner"
+                                                        'dinner'
                                                     ][day]
                                                 },
                                                 noRestric: false
@@ -93,9 +93,9 @@ export default class Schedule extends Component {
                                     />
                                     <Text
                                         style={{
-                                            fontFamily: "Avenir",
+                                            fontFamily: 'Avenir',
                                             fontSize: 16,
-                                            fontWeight: "300"
+                                            fontWeight: '300'
                                         }}
                                     >
                                         {day}
@@ -111,9 +111,9 @@ export default class Schedule extends Component {
                                 <TouchableOpacity
                                     onPress={() => {
                                         this.setState({
-                                            ["brunch"]: {
-                                                ...this.state["brunch"],
-                                                [day]: !this.state["brunch"][
+                                            ['brunch']: {
+                                                ...this.state['brunch'],
+                                                [day]: !this.state['brunch'][
                                                     day
                                                 ]
                                             },
@@ -121,8 +121,8 @@ export default class Schedule extends Component {
                                         });
                                     }}
                                     style={{
-                                        flexDirection: "row",
-                                        alignItems: "center",
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
                                         marginBottom: 15
                                     }}
                                 >
@@ -130,13 +130,13 @@ export default class Schedule extends Component {
                                         style={{ paddingRight: 10 }}
                                         checkBoxColor={Color.lightGray}
                                         checkedCheckBoxColor={Color.orange}
-                                        isChecked={this.state["brunch"][day]}
+                                        isChecked={this.state['brunch'][day]}
                                         onClick={() => {
                                             this.setState({
-                                                ["brunch"]: {
-                                                    ...this.state["brunch"],
+                                                ['brunch']: {
+                                                    ...this.state['brunch'],
                                                     [day]: !this.state[
-                                                        "brunch"
+                                                        'brunch'
                                                     ][day]
                                                 },
                                                 noRestric: false
@@ -145,9 +145,9 @@ export default class Schedule extends Component {
                                     />
                                     <Text
                                         style={{
-                                            fontFamily: "Avenir",
+                                            fontFamily: 'Avenir',
                                             fontSize: 16,
-                                            fontWeight: "300"
+                                            fontWeight: '300'
                                         }}
                                     >
                                         {day}
@@ -160,10 +160,8 @@ export default class Schedule extends Component {
                 {isSomethingTrue(this.state.dinner) ||
                 isSomethingTrue(this.state.brunch) ? (
                     <Text style={styles.note}>
-                        Got it. The{" "}
-                        <Text style={{ fontWeight: "bold" }}>
-                            Homecooked Feed{" "}
-                        </Text>
+                        Got it. The{' '}
+                        <Text style={{ fontWeight: 'bold' }}>Gathr Feed </Text>
                         recommends events that best fit your schedule.
                     </Text>
                 ) : null}
@@ -197,7 +195,7 @@ const styles = StyleSheet.create({
         marginVertical: Spacing.large
     },
     columnContainer: {
-        flexDirection: "row"
+        flexDirection: 'row'
     },
     column: {
         marginRight: Spacing.extraLarge
