@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import { View, StyleSheet } from "react-native";
+import React, { Component } from 'react';
+import { View, StyleSheet } from 'react-native';
 
-import HeadingText from "Homecooked/src/components/Text/Heading";
-import PromptText from "Homecooked/src/components/Text/Prompt";
-import CloseButton from "Homecooked/src/components/Buttons/Close";
-import BarButton from "Homecooked/src/components/Buttons/BarButton";
-import TextField from "Homecooked/src/components/TextFields/Material";
+import HeadingText from 'Homecooked/src/components/Text/Heading';
+import PromptText from 'Homecooked/src/components/Text/Prompt';
+import CloseButton from 'Homecooked/src/components/Buttons/Close';
+import BarButton from 'Homecooked/src/components/Buttons/BarButton';
+import TextField from 'Homecooked/src/components/TextFields/Material';
 
-import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
-import NavigationService from "Homecooked/src/utils/NavigationService";
+import { Spacing, Typography, Color } from 'Homecooked/src/components/styles';
+import NavigationService from 'Homecooked/src/utils/NavigationService';
 
 export default class DetailsDescription extends Component {
     _goBack = () => {
@@ -16,7 +16,7 @@ export default class DetailsDescription extends Component {
     };
 
     state = {
-        eventDescription: ""
+        eventDescription: ''
     };
 
     componentDidMount() {
@@ -28,7 +28,7 @@ export default class DetailsDescription extends Component {
 
     _goNext = () => {
         let { eventDescription } = this.state;
-        this.props.screenProps.updateData("eventDescription", eventDescription);
+        this.props.screenProps.updateData('eventDescription', eventDescription);
         this._goBack();
     };
 
@@ -39,11 +39,11 @@ export default class DetailsDescription extends Component {
                 <CloseButton onPress={this._goBack} />
                 <HeadingText>Event Description</HeadingText>
                 <PromptText style={{ marginTop: Spacing.large }}>
-                    Ex. “Join me for my first Homecooked meal! Can’t wait to
-                    share my family’s secret gumbo recipe with you all.”
+                    Ex. “Join me for my first gathr meal! Can’t wait to share my
+                    family’s secret gumbo recipe with you all.”
                 </PromptText>
                 <TextField
-                    label={""}
+                    label={''}
                     tintColor="#4A4A4A"
                     placeholder="Ex. “Homemade Syrian Feast with Love”"
                     value={eventDescription}
@@ -54,7 +54,7 @@ export default class DetailsDescription extends Component {
                 <BarButton
                     title="Confirm"
                     style={{
-                        position: "absolute",
+                        position: 'absolute',
                         bottom: Spacing.large,
                         left: Spacing.large
                     }}

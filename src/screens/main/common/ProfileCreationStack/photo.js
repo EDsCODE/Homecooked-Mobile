@@ -1,18 +1,18 @@
-import React, { Component } from "react";
-import { View, FlatList, Text, StyleSheet } from "react-native";
+import React, { Component } from 'react';
+import { View, FlatList, Text, StyleSheet } from 'react-native';
 
-import HeadingText from "Homecooked/src/components/Text/Heading";
-import PromptText from "Homecooked/src/components/Text/Prompt";
-import CloseButton from "Homecooked/src/components/Buttons/Close";
-import FloatyButton from "Homecooked/src/components/Buttons/FloatyButton";
-import ImagePlaceholder from "Homecooked/src/components/Image/Placeholder";
+import HeadingText from 'Homecooked/src/components/Text/Heading';
+import PromptText from 'Homecooked/src/components/Text/Prompt';
+import CloseButton from 'Homecooked/src/components/Buttons/Close';
+import FloatyButton from 'Homecooked/src/components/Buttons/FloatyButton';
+import ImagePlaceholder from 'Homecooked/src/components/Image/Placeholder';
 
-import ImagePicker from "react-native-image-picker";
+import ImagePicker from 'react-native-image-picker';
 
-import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
+import { Spacing, Typography, Color } from 'Homecooked/src/components/styles';
 
-import { userTypes } from "Homecooked/src/modules/types";
-import { connect } from "react-redux";
+import { userTypes } from 'Homecooked/src/modules/types';
+import { connect } from 'react-redux';
 
 const placeHolderWidth = Spacing.deviceWidth - 80;
 
@@ -26,15 +26,15 @@ class Photo extends Component {
     };
 
     _goNext = () => {
-        this.props.navigation.navigate("Bio");
+        this.props.navigation.navigate('Bio');
     };
 
     openPicker = () => {
         const options = {
-            title: "Select Image",
+            title: 'Select Image',
             storageOptions: {
                 skipBackup: true,
-                path: "images"
+                path: 'images'
             }
         };
         ImagePicker.launchImageLibrary(options, response => {
@@ -47,20 +47,20 @@ class Photo extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <CloseButton onPress={this._goBack} icon={"arrow-round-back"} />
+                <CloseButton onPress={this._goBack} icon={'arrow-round-back'} />
                 <HeadingText>Profile Picture</HeadingText>
                 <PromptText style={{ marginTop: Spacing.small }}>
-                    Homecooked meals are warm and inviting. Upload a photo that
+                    gathr meals are warm and inviting. Upload a photo that
                     captures that spirit!
                 </PromptText>
                 <ImagePlaceholder
                     style={{
                         width: placeHolderWidth,
                         height: placeHolderWidth,
-                        alignSelf: "center",
+                        alignSelf: 'center',
                         marginTop: Spacing.base
                     }}
-                    caption={"Picture"}
+                    caption={'Picture'}
                     onPress={this.openPicker}
                     source={{
                         uri: this.state.image ? this.state.image.uri : null
@@ -69,7 +69,7 @@ class Photo extends Component {
                 <FloatyButton
                     onPress={this._goNext}
                     style={{
-                        position: "absolute",
+                        position: 'absolute',
                         bottom: Spacing.largest,
                         right: Spacing.largest
                     }}
@@ -106,10 +106,10 @@ const styles = StyleSheet.create({
         marginTop: Spacing.small,
         width: placeHolderWidth * 2 + 20,
         height: placeHolderWidth * 2 + 20,
-        alignSelf: "center",
-        flexDirection: "row",
-        flexWrap: "wrap",
-        justifyContent: "space-around",
-        alignContent: "space-around"
+        alignSelf: 'center',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-around',
+        alignContent: 'space-around'
     }
 });
