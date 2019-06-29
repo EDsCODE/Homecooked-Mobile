@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import { View, StyleSheet } from "react-native";
+import React, { Component } from 'react';
+import { View, StyleSheet } from 'react-native';
 
-import PrimaryText from "Homecooked/src/components/Text/Primary";
-import SecondaryText from "Homecooked/src/components/Text/Secondary";
-import MinorText from "Homecooked/src/components/Text/Minor";
-import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
-import { Icon } from "react-native-elements";
+import PrimaryText from 'Homecooked/src/components/Text/Primary';
+import SecondaryText from 'Homecooked/src/components/Text/Secondary';
+import MinorText from 'Homecooked/src/components/Text/Minor';
+import { Spacing, Typography, Color } from 'Homecooked/src/components/styles';
+import { Icon } from 'react-native-elements';
 
-import moment from "moment";
+import moment from 'moment';
 
 export default class Info extends Component {
     render() {
@@ -29,12 +29,12 @@ const ModuleScaffold = props => (
                 name={`ios-${props.iconName}`}
                 type="ionicon"
                 size={30}
-                containerStyle={{ width: 35, justifyContent: "center" }}
+                containerStyle={{ width: 35, justifyContent: 'center' }}
             />
         </View>
         <View
             style={{
-                flexDirection: "column",
+                flexDirection: 'column',
                 marginHorizontal: Spacing.large,
                 flex: 1
             }}
@@ -48,15 +48,15 @@ const ModuleScaffold = props => (
 const modules = {
     dateTime: (props, key) => {
         let date = props.startTime;
-        let firstLine = moment(date).format("dddd, MMMM Do");
-        let secondLine = `${moment(date).format("h:mm a")} - ${moment(date)
-            .add(props.duration, "hours")
-            .format("h:mm a")}`;
+        let firstLine = moment(date).format('dddd, MMMM Do');
+        let secondLine = `${moment(date).format('h:mm a')} - ${moment(date)
+            .add(props.duration, 'hours')
+            .format('h:mm a')}`;
         return (
             <ModuleScaffold
                 key={key}
-                title={"Date and Time"}
-                iconName={"calendar"}
+                title={'Date and Time'}
+                iconName={'calendar'}
             >
                 <MinorText style={{ marginTop: Spacing.small }}>
                     {firstLine}
@@ -66,14 +66,14 @@ const modules = {
         );
     },
     description: (props, key) => (
-        <ModuleScaffold key={key} title={"Description"} iconName={"clipboard"}>
+        <ModuleScaffold key={key} title={'Description'} iconName={'clipboard'}>
             <MinorText style={{ marginTop: Spacing.small }}>
                 {props.description}
             </MinorText>
         </ModuleScaffold>
     ),
     reminder: (props, key) => (
-        <ModuleScaffold key={key} title={"Reminder"} iconName="clipboard">
+        <ModuleScaffold key={key} title={'Reminder'} iconName="clipboard">
             <MinorText style={{ marginTop: Spacing.small }}>
                 Refunds must be requested at least 48 hours before to be
                 processed.
@@ -81,23 +81,23 @@ const modules = {
         </ModuleScaffold>
     ),
     location: (props, key) => (
-        <ModuleScaffold key={key} title={"Location"} iconName={"pin"}>
+        <ModuleScaffold key={key} title={'Location'} iconName={'pin'}>
             <MinorText style={{ marginTop: Spacing.small }}>
                 {props.formattedAddress}
             </MinorText>
         </ModuleScaffold>
     ),
     refundPolicy: (props, key) => (
-        <ModuleScaffold key={key} title={"Refund Policy"} iconName="clipboard">
+        <ModuleScaffold key={key} title={'Refund Policy'} iconName="clipboard">
             <MinorText style={{ marginTop: Spacing.small }}>
                 Refundable up to 2 days before event
             </MinorText>
         </ModuleScaffold>
     ),
     invite: (props, key) => (
-        <ModuleScaffold key={key} title={"Invite Friends"} iconName="mail">
+        <ModuleScaffold key={key} title={'Invite Friends'} iconName="mail">
             <MinorText style={{ marginTop: Spacing.small }}>
-                Homecooked events are meant to be shared.
+                gathr events are meant to be shared.
             </MinorText>
         </ModuleScaffold>
     ),
@@ -106,7 +106,7 @@ const modules = {
         let tax = (price * 0.07).toFixed(2);
         let total = (parseFloat(price) + parseFloat(tax)).toFixed(2);
         return (
-            <ModuleScaffold key={key} title={"Price"} iconName={"pricetag"}>
+            <ModuleScaffold key={key} title={'Price'} iconName={'pricetag'}>
                 <View style={styles.priceItemContainer}>
                     <SecondaryText style={styles.secondaryTextLeftExtraStyles}>
                         Barb's Table:
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     },
     rowContainer: {
         marginTop: Spacing.base,
-        flexDirection: "row"
+        flexDirection: 'row'
     },
     textContainer: {
         margin: Spacing.large
@@ -155,16 +155,16 @@ const styles = StyleSheet.create({
         marginVertical: Spacing.smaller
     },
     priceItemContainer: {
-        width: "100%",
-        flexDirection: "row",
+        width: '100%',
+        flexDirection: 'row',
         marginVertical: Spacing.smallest
     },
     secondaryTextLeftExtraStyles: {
         flex: 1,
-        textAlign: "left"
+        textAlign: 'left'
     },
     secondaryTextRightExtraStyles: {
         flex: 1,
-        textAlign: "right"
+        textAlign: 'right'
     }
 });

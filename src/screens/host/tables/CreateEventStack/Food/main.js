@@ -1,33 +1,33 @@
-import React, { Component } from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
+import React, { Component } from 'react';
+import { View, StyleSheet, ScrollView } from 'react-native';
 
-import HeadingText from "Homecooked/src/components/Text/Heading";
-import PromptText from "Homecooked/src/components/Text/Prompt";
-import MinorText from "Homecooked/src/components/Text/Minor";
-import CloseButton from "Homecooked/src/components/Buttons/Close";
-import FloatyButton from "Homecooked/src/components/Buttons/FloatyButton";
-import FieldButton from "Homecooked/src/components/TextFields/Button";
+import HeadingText from 'Homecooked/src/components/Text/Heading';
+import PromptText from 'Homecooked/src/components/Text/Prompt';
+import MinorText from 'Homecooked/src/components/Text/Minor';
+import CloseButton from 'Homecooked/src/components/Buttons/Close';
+import FloatyButton from 'Homecooked/src/components/Buttons/FloatyButton';
+import FieldButton from 'Homecooked/src/components/TextFields/Button';
 
-import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
-import NavigationService from "Homecooked/src/utils/NavigationService";
-import { objectUtils } from "Homecooked/src/utils";
+import { Spacing, Typography, Color } from 'Homecooked/src/components/styles';
+import NavigationService from 'Homecooked/src/utils/NavigationService';
+import { objectUtils } from 'Homecooked/src/utils';
 
 export default class DetailsMain extends Component {
     _goBack = () => {
-        NavigationService.navigate("CreateEventDetails");
+        NavigationService.navigate('CreateEventDetails');
     };
 
     _navigateToMenuField = () => {
-        this.props.navigation.navigate("FoodMenu");
+        this.props.navigation.navigate('FoodMenu');
     };
 
     _navigateToDietaryField = () => {
-        this.props.navigation.navigate("FoodDietary");
+        this.props.navigation.navigate('FoodDietary');
     };
 
     _goNext = () => {
         this.props.screenProps.submit();
-        this.props.navigation.navigate("CreateEventLogistics");
+        this.props.navigation.navigate('CreateEventLogistics');
     };
 
     render() {
@@ -35,39 +35,39 @@ export default class DetailsMain extends Component {
         let filteredRestrictions = Object.keys(restrictions).filter(
             key => restrictions[key].selected
         );
-        let parsedRestrictions = filteredRestrictions.join(", ");
+        let parsedRestrictions = filteredRestrictions.join(', ');
 
         let filteredPreferences = Object.keys(mealType).filter(
             key => mealType[key].selected
         );
-        let parsedPreferences = filteredPreferences.join(", ");
+        let parsedPreferences = filteredPreferences.join(', ');
 
         let dietaryInfo =
             (parsedRestrictions
-                ? "Contains: " +
+                ? 'Contains: ' +
                   parsedRestrictions +
-                  (parsedPreferences ? "\n" : "")
-                : "") + (parsedPreferences ? parsedPreferences : "");
+                  (parsedPreferences ? '\n' : '')
+                : '') + (parsedPreferences ? parsedPreferences : '');
         return (
             <View style={styles.container}>
-                <CloseButton onPress={this._goBack} icon={"arrow-round-back"} />
+                <CloseButton onPress={this._goBack} icon={'arrow-round-back'} />
                 <ScrollView>
                     <MinorText>Step 2 of 3</MinorText>
                     <HeadingText>The Food</HeadingText>
                     <PromptText style={{ marginTop: Spacing.large }}>
-                        It’s not quite a Homecooked experience without
-                        homecooked food.
+                        It’s not quite a gathr experience without homecooked
+                        food.
                     </PromptText>
                     <FieldButton
-                        type={"menu"}
+                        type={'menu'}
                         containerStyle={{ marginVertical: Spacing.smaller }}
-                        title={"Menu"}
+                        title={'Menu'}
                         value={menu}
                         onPress={this._navigateToMenuField}
                     />
                     <FieldButton
                         containerStyle={{ marginVertical: Spacing.smaller }}
-                        title={"Dietary Restrictions"}
+                        title={'Dietary Restrictions'}
                         value={dietaryInfo}
                         onPress={this._navigateToDietaryField}
                     />
@@ -76,7 +76,7 @@ export default class DetailsMain extends Component {
                 <FloatyButton
                     onPress={this._goNext}
                     style={{
-                        position: "absolute",
+                        position: 'absolute',
                         bottom: Spacing.largest,
                         right: Spacing.largest
                     }}
