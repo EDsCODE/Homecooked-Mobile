@@ -1,22 +1,22 @@
-import React, { Component } from "react";
-import { View, FlatList, Text, StyleSheet } from "react-native";
+import React, { Component } from 'react';
+import { View, FlatList, Text, StyleSheet } from 'react-native';
 
-import HeadingText from "Homecooked/src/components/Text/Heading";
-import PromptText from "Homecooked/src/components/Text/Prompt";
-import MinorText from "Homecooked/src/components/Text/Minor";
-import CloseButton from "Homecooked/src/components/Buttons/Close";
-import FloatyButton from "Homecooked/src/components/Buttons/FloatyButton";
-import SecondaryText from "Homecooked/src/components/Text/Secondary";
+import HeadingText from 'Homecooked/src/components/Text/Heading';
+import PromptText from 'Homecooked/src/components/Text/Prompt';
+import MinorText from 'Homecooked/src/components/Text/Minor';
+import CloseButton from 'Homecooked/src/components/Buttons/Close';
+import FloatyButton from 'Homecooked/src/components/Buttons/FloatyButton';
+import SecondaryText from 'Homecooked/src/components/Text/Secondary';
 
-import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
-import NavigationService from "Homecooked/src/utils/NavigationService";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import TextField from "Homecooked/src/components/TextFields/Material";
+import { Spacing, Typography, Color } from 'Homecooked/src/components/styles';
+import NavigationService from 'Homecooked/src/utils/NavigationService';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import TextField from 'Homecooked/src/components/TextFields/Material';
 
 export default class ShortResponse extends Component {
     state = {
-        reason: "",
-        experience: ""
+        reason: '',
+        experience: ''
     };
 
     componentDidMount() {
@@ -33,9 +33,9 @@ export default class ShortResponse extends Component {
 
     _goNext = () => {
         let { reason, experience } = this.state;
-        this.props.screenProps.updateData("reason", reason);
-        this.props.screenProps.updateData("experience", experience);
-        this.props.navigation.navigate("Photos");
+        this.props.screenProps.updateData('reason', reason);
+        this.props.screenProps.updateData('experience', experience);
+        this.props.navigation.navigate('Photos');
     };
 
     render() {
@@ -45,7 +45,7 @@ export default class ShortResponse extends Component {
                 <KeyboardAwareScrollView
                     extraScrollHeight={100}
                     extraHeight={50}
-                    keyboardShouldPersistTaps={"handled"}
+                    keyboardShouldPersistTaps={'handled'}
                     showsVerticalScrollIndicator={false}
                     bounces={false}
                 >
@@ -54,12 +54,11 @@ export default class ShortResponse extends Component {
                     <HeadingText>Short Response</HeadingText>
                     <PromptText style={{ marginTop: Spacing.large }}>
                         Our cooks range from Syrian refugees to food
-                        entrepreneurs to grad students with a flair for the
-                        culinary arts.
+                        entrepreneurs to grad students who love to cook.
                     </PromptText>
                     <PromptText style={{ marginTop: Spacing.large }}>
                         The one thing they have in common is a passion for
-                        building community over food.
+                        building community through food.
                     </PromptText>
                     <SecondaryText style={{ marginTop: Spacing.large }}>
                         What's your cooking experience?
@@ -73,9 +72,13 @@ export default class ShortResponse extends Component {
                         onChangeText={experience =>
                             this.setState({ experience })
                         }
+                        returnKeyType="done"
+                        scrollEnabled={true}
+                        blurOnSubmit={true}
+                        enablesReturnKeyAutomatically={true}
                     />
                     <SecondaryText style={{ marginTop: Spacing.base }}>
-                        Why do you want to cook for Homecooked?
+                        Tell us why you want to host?
                     </SecondaryText>
                     <TextField
                         multiline={true}
@@ -93,7 +96,7 @@ export default class ShortResponse extends Component {
                 <FloatyButton
                     onPress={this._goNext}
                     style={{
-                        position: "absolute",
+                        position: 'absolute',
                         bottom: Spacing.largest,
                         right: Spacing.largest
                     }}

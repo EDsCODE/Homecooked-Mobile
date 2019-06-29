@@ -14,38 +14,58 @@ export default class Notification extends Component {
         this.props.navigation.navigate('Location');
     };
 
+    _skipNotification = () => {
+        UrbanAirship.setUserNotificationsEnabled(false);
+        this.props.navigation.navigate('Location');
+    };
+
     render() {
         return (
-            <View style={styles.container}>
-                <Image
-                    source={require('Homecooked/src/assets/img/GHNotifs.png')}
-                    style={{ width: 50, height: 50 }}
-                    resizeMode={'contain'}
-                />
-                <PrimaryText style={{ marginTop: Spacing.small }}>
-                    Stay up to date
-                </PrimaryText>
+            <View style={{ flex: 1 }}>
+                <View style={styles.container}>
+                    <Image
+                        source={require('Homecooked/src/assets/img/GHNotifs.png')}
+                        style={{ width: 50, height: 50 }}
+                        resizeMode={'contain'}
+                    />
+                    <PrimaryText style={{ marginTop: Spacing.small }}>
+                        Stay up to date
+                    </PrimaryText>
 
-                <PromptText
-                    style={{
-                        marginTop: Spacing.small,
-                        textAlign: 'center',
-                        marginHorizontal: Spacing.large
-                    }}
-                >
-                    We let you know when nearby meals are happening
-                </PromptText>
-                <BarButton
-                    title="Enable Notifications"
-                    style={{
-                        position: 'absolute',
-                        bottom: Spacing.large,
-                        left: Spacing.large
-                    }}
-                    borderColor={Color.orange}
-                    fill={Color.orange}
-                    onPress={this._goNext}
-                />
+                    <PromptText
+                        style={{
+                            marginTop: Spacing.small,
+                            textAlign: 'center',
+                            marginHorizontal: Spacing.large
+                        }}
+                    >
+                        We let you know when nearby meals are happening
+                    </PromptText>
+                    <BarButton
+                        title="Enable Notifications"
+                        style={{
+                            position: 'absolute',
+                            bottom: Spacing.small,
+                            left: Spacing.large
+                        }}
+                        borderColor={Color.orange}
+                        fill={Color.orange}
+                        onPress={this._goNext}
+                    />
+                </View>
+                <View>
+                    <PromptText
+                        style={{
+                            marginBottom: Spacing.largest,
+                            color: Color.black,
+                            alignItems: 'center',
+                            textAlign: 'center'
+                        }}
+                        onPress={this._goNext}
+                    >
+                        No Thanks
+                    </PromptText>
+                </View>
             </View>
         );
     }
