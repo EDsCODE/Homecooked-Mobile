@@ -13,13 +13,21 @@ import { createToken, formatCardDetails } from "Homecooked/src/services/stripe";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import CheckBox from "react-native-check-box";
+import { Icon } from "react-native-elements";
 
 class Review extends Component {
     state = {
         modules: ["dateTime", "price"],
         cardDetails: {},
-        savePayment: false
+        savePayment: false,
+        useCustomer: false
     };
+
+    componentDidMount() {
+        this.setState({
+            useCustomer: this.props.isCustomer
+        });
+    }
 
     _goBack = () => {
         NavigationService.navigate("Event");
@@ -46,10 +54,9 @@ class Review extends Component {
         );
 
     _goNext = async () => {
-        let { id } = this.props.navigation.state.params.event;
         if (this.props.isProfileComplete) {
             try {
-                if (this.props.isCustomer) {
+                if (this.state.useCustomer) {
                     let payment = {
                         type: "customer"
                     };
@@ -99,6 +106,7 @@ class Review extends Component {
         let { actionLoading } = this.props;
         let { attributes, startTime, duration } = this.props.event;
         let { price } = attributes;
+        let { useCustomer } = this.state;
 
         let cardDetailsValid = this.state.cardDetails.valid ? true : false;
         return (
@@ -121,7 +129,51 @@ class Review extends Component {
                         duration={duration}
                     />
 
-                    {this.props.isCustomer ? null : (
+                    {useCustomer ? (
+                        <View
+                            style={{
+                                marginHorizontal: Spacing.larger,
+                                flexDirection: "row",
+                                alignItems: "center"
+                            }}
+                        >
+                            <Icon
+                                name={`ios-card`}
+                                type="ionicon"
+                                color={Color.black}
+                                size={35}
+                                containerStyle={{
+                                    alignSelf: "flex-start"
+                                }}
+                            />
+                            <Text style={{ fontWeight: "900", marginLeft: 10 }}>
+                                ****
+                            </Text>
+                            <TouchableOpacity
+                                style={{
+                                    marginHorizontal: Spacing.small,
+                                    backgroundColor: Color.lightGray,
+                                    padding: 5,
+                                    paddingHorizontal: 10,
+                                    borderRadius: 5
+                                }}
+                                onPress={() => {
+                                    this.setState({
+                                        useCustomer: false
+                                    });
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        color: Color.white,
+                                        fontFamily: Typography.fontFamily
+                                    }}
+                                >
+                                    Edit
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    ) : (
                         <CreditCardInput
                             onChange={this._onChange}
                             valid={this.state.cardDetails.valid}
@@ -176,7 +228,7 @@ class Review extends Component {
                     fill={Color.green}
                     onPress={this._goNext}
                     loading={actionLoading}
-                    active={cardDetailsValid || this.props.isCustomer}
+                    active={cardDetailsValid || useCustomer}
                 />
             </View>
         );
