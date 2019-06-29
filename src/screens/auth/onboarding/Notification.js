@@ -1,26 +1,26 @@
-import React, { Component } from "react";
-import { View, StyleSheet, Image } from "react-native";
+import React, { Component } from 'react';
+import { View, StyleSheet, Image } from 'react-native';
 
-import PrimaryText from "Homecooked/src/components/Text/Primary";
-import PromptText from "Homecooked/src/components/Text/Prompt";
-import BarButton from "Homecooked/src/components/Buttons/BarButton";
+import PrimaryText from 'Homecooked/src/components/Text/Primary';
+import PromptText from 'Homecooked/src/components/Text/Prompt';
+import BarButton from 'Homecooked/src/components/Buttons/BarButton';
 
-import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
-import { UrbanAirship } from "urbanairship-react-native";
+import { Spacing, Typography, Color } from 'Homecooked/src/components/styles';
+import { UrbanAirship } from 'urbanairship-react-native';
 
 export default class Notification extends Component {
     _goNext = () => {
         UrbanAirship.setUserNotificationsEnabled(true);
-        this.props.navigation.navigate("Location");
+        this.props.navigation.navigate('Location');
     };
 
     render() {
         return (
             <View style={styles.container}>
                 <Image
-                    source={require("Homecooked/src/assets/img/GHNotifs.png")}
+                    source={require('Homecooked/src/assets/img/GHNotifs.png')}
                     style={{ width: 50, height: 50 }}
-                    resizeMode={"contain"}
+                    resizeMode={'contain'}
                 />
                 <PrimaryText style={{ marginTop: Spacing.small }}>
                     Stay up to date
@@ -29,7 +29,7 @@ export default class Notification extends Component {
                 <PromptText
                     style={{
                         marginTop: Spacing.small,
-                        textAlign: "center",
+                        textAlign: 'center',
                         marginHorizontal: Spacing.large
                     }}
                 >
@@ -38,7 +38,7 @@ export default class Notification extends Component {
                 <BarButton
                     title="Enable Notifications"
                     style={{
-                        position: "absolute",
+                        position: 'absolute',
                         bottom: Spacing.large,
                         left: Spacing.large
                     }}
@@ -54,7 +54,7 @@ export default class Notification extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center"
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 });
