@@ -35,12 +35,22 @@ export default class AttendanceReview extends Component {
         this.props.screenProps.submit();
     };
 
+    _goBack = () => {
+        this.props.navigation.goBack();
+    };
+
     render() {
-        let { title, startTime, attributes } = this.props.screenProps.event;
+        let {
+            title,
+            startTime,
+            attributes,
+            bookings
+        } = this.props.screenProps.event;
         let { price } = attributes;
         let tax = (price * 0.07).toFixed(2);
 
-        let numGuests = this.state.attendees.length;
+        let numGuests = bookings.filter(booking => booking.status == "CNF")
+            .length;
         let total = price * numGuests;
 
         let fee = Math.round(total * 0.05 * 100) / 100;
@@ -48,7 +58,7 @@ export default class AttendanceReview extends Component {
 
         return (
             <View style={styles.container}>
-                <CloseButton />
+                <CloseButton onPress={this._goBack} />
                 <HeadingText>{"Review: " + title}</HeadingText>
                 <PromptText>
                     {"Happened on " + eventCardDate(startTime)}

@@ -16,6 +16,7 @@ import {
 import types from "./types";
 import { getBookingsForEvent } from "Homecooked/src/modules/booking/sagas";
 import { getUserById } from "Homecooked/src/modules/user/sagas";
+import { savePaymentWorkerSaga } from "Homecooked/src/modules/currentUser/sagas";
 import * as hostSelectors from "Homecooked/src/modules/host/selectors";
 import * as currentUserSelectors from "Homecooked/src/modules/currentUser/selectors";
 import * as eventSelectors from "Homecooked/src/modules/event/selectors";
@@ -135,14 +136,22 @@ function* cancelEventWorkerSaga(action) {
 
 function* bookEventWorkerSaga(action) {
     try {
-        let { paymentToken } = action.payload;
+        let { payment } = action.payload;
+        console.log(payment);
+        if (payment.type == "customer") {
+            yield call(savePaymentWorkerSaga, {
+                payload: {
+                    token: payment.source
+                }
+            });
+        }
         let eventId = yield select(eventSelectors.selectedEventId);
         let userId = yield select(currentUserSelectors.userId);
         const { data: booking } = yield call(
             BookingService.createBooking,
             userId,
             eventId,
-            paymentToken
+            payment
         );
         yield put({ type: currentUserTypes.ADD_BOOKING, booking });
         yield put({ type: types.BOOK_EVENT_SUCCESS });
@@ -193,16 +202,19 @@ function* markAttendanceWorkerSaga(action) {
 function* leaveReview(action) {
     try {
         let userId = yield select(currentUserSelectors.userId);
+        let booking = yield select(eventSelectors.relatedBooking);
         let { eventId, chefId, review, ratings } = action.payload;
         yield call(
             EventService.leaveReview,
             userId,
+            booking.id,
             eventId,
             chefId,
             review,
             ratings
         );
         yield put({ type: types.LEAVE_REVIEW_SUCCESS });
+        yield put({ type: currentUserTypes.GET_CURRENT_BOOKINGS_REQUEST });
     } catch (error) {
         yield put({ type: types.LEAVE_REVIEW_ERROR, error });
     }

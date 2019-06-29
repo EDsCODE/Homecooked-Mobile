@@ -89,12 +89,13 @@ const markAttendance = (eventId, senderId, attendees, reports) => {
     });
 };
 
-const leaveReview = (userId, eventId, chefId, review, ratings) => {
+const leaveReview = (userId, bookingId, eventId, chefId, review, ratings) => {
     return request({
         method: "POST",
         url: `/rating`,
         data: {
             userId,
+            bookingId,
             eventId,
             chefId,
             review,

@@ -70,6 +70,10 @@ export default class Address extends Component {
             this.setState({
                 results
             });
+        } else if (query.length == 0) {
+            this.setState({
+                results: []
+            });
         }
     };
 

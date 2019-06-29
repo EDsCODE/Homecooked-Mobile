@@ -27,6 +27,7 @@ class NotificationMain extends Component {
             <NotificationCell
                 title={item.message}
                 prompt={item.message}
+                createdAt={item.createdAt}
                 source={item.event.images[0]}
                 onPress={() => this._onPress(item.event)}
             />

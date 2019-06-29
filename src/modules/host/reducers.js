@@ -147,6 +147,12 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 loadingAvatar: true
             };
+        case types.UPDATE_HOST_SUCCESS:
+            let { description } = action.payload;
+            return {
+                ...state,
+                description: description
+            };
         case types.GET_HOST_AVATAR_SUCCESS:
             return {
                 ...state,

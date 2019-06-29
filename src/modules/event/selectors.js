@@ -41,10 +41,15 @@ export const getEvent = state => {
         let bookings = bookingsByEvent[selectedEvent];
         let users = [];
         bookings.forEach((booking, index) => {
-            if (booking.status == "CNF") {
+            if (
+                booking.status == "CNF" ||
+                booking.status == "ATT" ||
+                booking.status == "NTT"
+            ) {
                 users.push(usersById[booking.userId]);
             }
         });
+        event.bookings = bookings;
         event.users = users;
         event.chef.user = usersById[event.chef.userId];
         console.log(event);

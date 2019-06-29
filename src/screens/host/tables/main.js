@@ -67,7 +67,7 @@ class HostTablesMain extends Component {
                     }
                 }}
                 utilityColor={Color.orange}
-                utilityTitle={"Close Event"}
+                utilityTitle={"Closeable"}
             />
         );
     };
@@ -126,9 +126,12 @@ class HostTablesMain extends Component {
     );
 
     _navigateToCreateEvent = () => {
-        if (this.props.host.stripeAccountId) {
-            this.props.navigation.navigate("CreateEventStack");
-        } else {
+        if (!this.props.host.description || !this.props.host.profileImageUrl) {
+            Alert.alert(
+                "You must create a host profile before creating an event"
+            );
+            return;
+        } else if (!this.props.host.stripeAccountId) {
             Alert.alert(
                 "Payment Account",
                 "Please add a payment account before you start hosting events.",
@@ -144,6 +147,8 @@ class HostTablesMain extends Component {
                     }
                 ]
             );
+        } else {
+            this.props.navigation.navigate("CreateEventStack");
         }
     };
 

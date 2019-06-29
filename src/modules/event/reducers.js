@@ -99,12 +99,14 @@ const reducer = (state = initialState, action) => {
         case types.BOOK_EVENT_SUCCESS:
             return {
                 ...state,
-                actionLoading: false
+                actionLoading: false,
+                error: false
             };
         case types.BOOK_EVENT_ERROR:
             return {
                 ...state,
-                error: action.error
+                error: action.error,
+                actionLoading: false
             };
         case types.REFUND_BOOKING_REQUEST:
             return {

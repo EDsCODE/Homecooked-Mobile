@@ -9,6 +9,7 @@ export const hostSignUpUrl = chefId => {
 
 export const createToken = details => {
     let convertedDetails = _convertCardDetails(details);
+    console.log(convertedDetails);
     return axios
         .post(STRIPE_URL + "tokens", qs.stringify(convertedDetails), {
             headers: {
