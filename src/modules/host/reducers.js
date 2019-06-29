@@ -16,7 +16,8 @@ const initialState = {
     loadingAvatar: false,
     profileImageSignedUrl: null,
     description: null,
-    profileImageUrl: null
+    profileImageUrl: null,
+    actionLoading: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -64,17 +65,20 @@ const reducer = (state = initialState, action) => {
             };
         case types.CREATE_APPLICATION_REQUEST:
             return {
-                ...state
+                ...state,
+                actionLoading: true
             };
         case types.CREATE_APPLICATION_SUCCESS:
             return {
                 ...state,
-                status: "REQ"
+                status: "REQ",
+                actionLoading: false
             };
         case types.CREATE_APPLICATION_ERROR:
             return {
                 ...state,
-                error: action.error
+                error: action.error,
+                actionLoading: false
             };
         case types.LOAD_HOSTING_EVENTS_REQUEST:
             return {

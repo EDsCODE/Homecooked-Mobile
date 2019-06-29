@@ -24,7 +24,7 @@ export default props => (
                         { backgroundColor: props.buttonColor }
                     ]}
                 >
-                    <ActivityIndicator />
+                    <ActivityIndicator color={Color.white} />
                 </View>
             ) : (
                 <TouchableOpacity onPress={props.onPress}>

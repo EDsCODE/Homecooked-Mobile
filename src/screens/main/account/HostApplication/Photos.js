@@ -12,6 +12,7 @@ import NavigationService from "Homecooked/src/utils/NavigationService";
 
 import ImagePicker from "react-native-image-picker";
 import ImagePlaceholder from "Homecooked/src/components/Image/Placeholder";
+import { connect } from "react-redux";
 
 const placeHolderWidth = 140;
 
@@ -30,7 +31,7 @@ const placeholders = [
     }
 ];
 
-export default class Photos extends Component {
+class Photos extends Component {
     state = {
         images: {
             0: null,
@@ -119,12 +120,23 @@ export default class Photos extends Component {
                     borderColor={Color.orange}
                     fill={Color.orange}
                     onPress={this._goNext}
-                    loading={loading}
+                    loading={this.props.actionLoading}
                 />
             </View>
         );
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        actionLoading: state.host.actionLoading
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    null
+)(Photos);
 
 const styles = StyleSheet.create({
     container: {

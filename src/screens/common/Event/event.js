@@ -610,7 +610,8 @@ class Event extends Component {
         mainText,
         subText,
         buttonText,
-        onPress
+        onPress,
+        loading
     ) => {
         return (
             <UtilityBar
@@ -620,6 +621,7 @@ class Event extends Component {
                 subText={subText}
                 buttonText={buttonText}
                 onPress={onPress}
+                loading={loading}
             />
         );
     };
@@ -733,7 +735,8 @@ class Event extends Component {
                           MAIN_TEXT,
                           SUB_TEXT,
                           BUTTON_TEXT,
-                          ONPRESS
+                          ONPRESS,
+                          this.props.actionLoading
                       )
                     : null}
                 {renderBarButton
@@ -746,7 +749,8 @@ class Event extends Component {
 
 const mapStateToProps = state => {
     return {
-        ...getEvent(state)
+        ...getEvent(state),
+        actionLoading: state.events.actionLoading
     };
 };
 
