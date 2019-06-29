@@ -56,6 +56,7 @@
 		7827ADC90D2A454D8134A22F /* libAppCenterReactNativeAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72174E4416F64E31952DC45C /* libAppCenterReactNativeAnalytics.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		851B314E9FC14ADA918925BD /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 42225989C1BB4ED89F9E11CE /* MaterialCommunityIcons.ttf */; };
+		8D0B581222C7BC58007ECC2C /* white g transparent.png in Resources */ = {isa = PBXBuildFile; fileRef = 8D0B581122C7BC58007ECC2C /* white g transparent.png */; };
 		8D24BD8F22BE99C5009136DF /* libUARCTModule.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D24BD7922BE9858009136DF /* libUARCTModule.a */; };
 		8D32B6DE22B2DD7300DF6895 /* libreact-native-branch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D32B6D622B2DD6800DF6895 /* libreact-native-branch.a */; };
 		8D32B72422B3EC9A00DF6895 /* Homecooked.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 1ACA43AD22AECD6D006CFC0C /* Homecooked.entitlements */; };
@@ -504,6 +505,7 @@
 		72174E4416F64E31952DC45C /* libAppCenterReactNativeAnalytics.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAppCenterReactNativeAnalytics.a; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		8D0B581122C7BC58007ECC2C /* white g transparent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "white g transparent.png"; path = "../../../Downloads/Gathr Logo Variations/G icon/G - Transparent/white g transparent.png"; sourceTree = "<group>"; };
 		8D32B6A922B2DD6800DF6895 /* RNBranch.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNBranch.xcodeproj; path = "../node_modules/react-native-branch/ios/RNBranch.xcodeproj"; sourceTree = "<group>"; };
 		8EE496B563364370ACB2143B /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		93E004371CE3C33F000598E3 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = /Documents/FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<absolute>"; };
@@ -711,6 +713,7 @@
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
+				8D0B581122C7BC58007ECC2C /* white g transparent.png */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
@@ -1066,6 +1069,9 @@
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = ZR8H25WQZY;
 						SystemCapabilities = {
+							com.apple.ApplePay = {
+								enabled = 1;
+							};
 							com.apple.BackgroundModes = {
 								enabled = 1;
 							};
@@ -1590,6 +1596,7 @@
 				A18651BC7184420BB105CD30 /* Foundation.ttf in Resources */,
 				A7A171B9E1634CB78D3D2F16 /* Ionicons.ttf in Resources */,
 				851B314E9FC14ADA918925BD /* MaterialCommunityIcons.ttf in Resources */,
+				8D0B581222C7BC58007ECC2C /* white g transparent.png in Resources */,
 				8FEE063C00FF47BFA16C183B /* MaterialIcons.ttf in Resources */,
 				1214910F206144938BB829D7 /* Octicons.ttf in Resources */,
 				1ACA43CD22AECE76006CFC0C /* AirshipConfig.plist in Resources */,

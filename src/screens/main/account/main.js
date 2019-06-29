@@ -24,7 +24,7 @@ class Main extends Component {
         var title, onPress, icon;
         if (status) {
             if (status == 'REQ') {
-                title = 'Host application under review';
+                title = 'App in review (talk soon!)';
                 icon = require('Homecooked/src/assets/img/Hospitality.png');
             } else if (status == 'CNF') {
                 title = 'Switch to Host Mode';

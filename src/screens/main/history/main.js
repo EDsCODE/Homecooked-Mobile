@@ -1,23 +1,25 @@
-import React, { Component } from "react";
-import { View, FlatList, Text, ActivityIndicator } from "react-native";
-import Header from "Homecooked/src/components/Headers/Basic";
-import Tabs from "Homecooked/src/components/Headers/Tabs";
-import HistoryCell from "Homecooked/src/components/Cells/History";
+import React, { Component } from 'react';
+import { View, FlatList, Text, ActivityIndicator } from 'react-native';
+import Header from 'Homecooked/src/components/Headers/Basic';
+import Tabs from 'Homecooked/src/components/Headers/Tabs';
+import PromptText from 'Homecooked/src/components/Text/Prompt';
+import HistoryCell from 'Homecooked/src/components/Cells/History';
 
-import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
+import { Spacing, Typography, Color } from 'Homecooked/src/components/styles';
 
-import { historyTypes, eventTypes } from "Homecooked/src/modules/types";
-import { connect } from "react-redux";
+import { historyTypes, eventTypes } from 'Homecooked/src/modules/types';
+import { connect } from 'react-redux';
 import {
     getUpcomingEvents,
     getPastEvents,
     orderEventsByDateEarliest,
     orderEventsByDateLatest
-} from "Homecooked/src/modules/history/selectors";
+} from 'Homecooked/src/modules/history/selectors';
 
-import EmptyComponent from "Homecooked/src/components/List/EmptyComponent";
+import EmptyComponent from 'Homecooked/src/components/List/EmptyComponent';
 
-import { EventViewTypes } from "Homecooked/src/types";
+import { EventViewTypes } from 'Homecooked/src/types';
+import BarButton from '../../../components/Buttons/BarButton';
 
 class HistoryMain extends Component {
     state = {
@@ -29,7 +31,7 @@ class HistoryMain extends Component {
     }
 
     onPress = () => {
-        this.props.navigation.navigate("EventStack");
+        this.props.navigation.navigate('EventStack');
     };
 
     _onRefresh = () => {
@@ -53,7 +55,7 @@ class HistoryMain extends Component {
                         item.mode,
                         item.userBooking
                     );
-                    this.props.navigation.navigate("HistoryMainEvent");
+                    this.props.navigation.navigate('HistoryMainEvent');
                 }}
             />
         );
@@ -76,17 +78,17 @@ class HistoryMain extends Component {
                         item.mode,
                         item.userBooking
                     );
-                    this.props.navigation.navigate("HistoryMainEvent");
+                    this.props.navigation.navigate('HistoryMainEvent');
                 }}
                 showUtility={item.mode == EventViewTypes.HISTORY_REVIEW}
                 utilityOnPress={() => {
                     {
-                        this.props.navigation.navigate("ReviewEvent");
+                        this.props.navigation.navigate('ReviewEvent');
                         this.props.selectEvent(item.id, item.mode);
                     }
                 }}
                 utilityColor={Color.green}
-                utilityTitle={"Review"}
+                utilityTitle={'Review'}
             />
         );
     };
@@ -104,8 +106,8 @@ class HistoryMain extends Component {
             style={{
                 borderBottomColor: Color.black,
                 borderBottomWidth: 1,
-                width: "90%",
-                alignSelf: "center"
+                width: '90%',
+                alignSelf: 'center'
             }}
         />
     );
@@ -113,18 +115,18 @@ class HistoryMain extends Component {
     render() {
         return (
             <View>
-                <Header title={"Your Tables"} leftComponent={() => null} />
+                <Header title={'Your Tables'} leftComponent={() => null} />
                 <View>
                     <Tabs
                         tabSelected={index => this.changeTab(index)}
                         activeTab={this.state.tabSelected}
-                        tabs={["Upcoming", "Past"]}
+                        tabs={['Upcoming', 'Past']}
                     />
                     {this.props.initialLoad ? (
                         <ActivityIndicator />
                     ) : this.state.tabSelected == 0 ? (
                         <FlatList
-                            style={{ height: "100%" }}
+                            style={{ height: '100%' }}
                             data={this.props.upcomingEvents}
                             extraData={this.props.upcomingEvents}
                             cellTintColor={Color.orange}
@@ -136,12 +138,40 @@ class HistoryMain extends Component {
                             onRefresh={this._onRefresh}
                             refreshing={this.props.loading}
                             ListEmptyComponent={() => (
-                                <EmptyComponent>{"No Events"}</EmptyComponent>
+                                <View
+                                    style={{ flex: 1, alignContent: 'center' }}
+                                >
+                                    <EmptyComponent
+                                        style={{ fontWeight: 'bold' }}
+                                    >
+                                        {'No Upcoming Tables'}
+                                    </EmptyComponent>
+                                    <PromptText
+                                        style={{
+                                            marginTop: 20,
+                                            alignSelf: 'center',
+                                            fontSize: 16
+                                        }}
+                                    >
+                                        Hungry for adventure?
+                                    </PromptText>
+                                    <PromptText
+                                        style={{
+                                            alignSelf: 'center',
+                                            textAlign: 'center',
+                                            fontSize: 14
+                                        }}
+                                    >
+                                        {
+                                            'Tap "Feed" to explore meals near you.'
+                                        }
+                                    </PromptText>
+                                </View>
                             )}
                         />
                     ) : (
                         <FlatList
-                            style={{ height: "100%" }}
+                            style={{ height: '100%' }}
                             data={this.props.pastEvents}
                             extraData={this.props.pastEvents}
                             loading={this.props.initialLoad}
@@ -150,6 +180,17 @@ class HistoryMain extends Component {
                             ItemSeparatorComponent={this._renderSeparator}
                             onRefresh={this._onRefresh}
                             refreshing={this.props.loading}
+                            ListEmptyComponent={() => (
+                                <View
+                                    style={{ flex: 1, alignContent: 'center' }}
+                                >
+                                    <EmptyComponent
+                                        style={{ fontWeight: 'bold' }}
+                                    >
+                                        {'No Past Tables'}
+                                    </EmptyComponent>
+                                </View>
+                            )}
                         />
                     )}
                 </View>
@@ -175,7 +216,7 @@ const mapDispatchToProps = dispatch => {
             payload: {
                 eventId,
                 mode,
-                parentRoute: "HistoryMain",
+                parentRoute: 'HistoryMain',
                 relatedBooking
             }
         });

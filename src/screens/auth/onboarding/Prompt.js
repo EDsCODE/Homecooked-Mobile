@@ -1,17 +1,17 @@
-import React, { Component } from "react";
-import { View, StyleSheet, Image } from "react-native";
+import React, { Component } from 'react';
+import { View, StyleSheet, Image } from 'react-native';
 
-import HeadingText from "Homecooked/src/components/Text/Heading";
-import PromptText from "Homecooked/src/components/Text/Prompt";
-import BarButton from "Homecooked/src/components/Buttons/BarButton";
+import HeadingText from 'Homecooked/src/components/Text/Heading';
+import PromptText from 'Homecooked/src/components/Text/Prompt';
+import BarButton from 'Homecooked/src/components/Buttons/BarButton';
 
-import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
+import { Spacing, Typography, Color } from 'Homecooked/src/components/styles';
 
-const GATHR_LOGO = require("Homecooked/src/assets/img/OrangeTextLogoNEW.png");
+const GATHR_LOGO = require('Homecooked/src/assets/img/OrangeTextLogoNEW.png');
 
 export default class Prompt extends Component {
     _goNext = () => {
-        this.props.navigation.navigate("Notification");
+        this.props.navigation.navigate('Notification');
     };
 
     render() {
@@ -19,8 +19,8 @@ export default class Prompt extends Component {
             <View style={styles.container}>
                 <View
                     style={{
-                        flexDirection: "row",
-                        alignItems: "center"
+                        flexDirection: 'row',
+                        alignItems: 'center'
                     }}
                 >
                     <HeadingText>Welcome to</HeadingText>
@@ -28,26 +28,27 @@ export default class Prompt extends Component {
                         source={GATHR_LOGO}
                         style={{
                             height: 60,
-                            width: 100,
-                            marginLeft: Spacing.smallest
+                            width: 100
                         }}
-                        resizeMode={"contain"}
+                        resizeMode={'contain'}
                     />
                 </View>
 
                 <PromptText
                     style={{
                         marginTop: Spacing.small,
-                        marginHorizontal: Spacing.large
+                        marginHorizontal: Spacing.large,
+                        alignItems: 'center',
+                        textAlign: 'center'
                     }}
                 >
-                    Before you explore the app, we have a few questions that’ll
-                    help us personalize your experience.
+                    Are you ready to explore your neighborhood through
+                    homecooked food?
                 </PromptText>
                 <BarButton
                     title="Continue"
                     style={{
-                        position: "absolute",
+                        position: 'absolute',
                         bottom: Spacing.large,
                         left: Spacing.large
                     }}
@@ -64,7 +65,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingTop: Spacing.larger,
-        justifyContent: "center",
-        alignItems: "center"
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 });
