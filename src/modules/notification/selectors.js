@@ -21,6 +21,9 @@ export const getGuestNotificationsWithEvent = createSelector(
             );
             notification.event.mode = mode;
         });
+        notifications.sort((a, b) => {
+            return new Date(b.createdAt) - new Date(a.createdAt);
+        });
         return notifications;
     }
 );
@@ -33,6 +36,9 @@ export const getHostNotificationsWithEvent = createSelector(
             notification.event = events[notification.entityId];
             let mode = determineHostViewMode(notification.event);
             notification.event.mode = mode;
+        });
+        notifications.sort((a, b) => {
+            return new Date(b.createdAt) - new Date(a.createdAt);
         });
         return notifications;
     }

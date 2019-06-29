@@ -26,7 +26,9 @@ class Login extends Component {
     componentWillReceiveProps(nextProps) {
         if (!this.props.error && nextProps.error) {
             this.setState({
-                emailError: nextProps.error.data.error
+                emailError: nextProps.error.data
+                    ? nextProps.error.data.error
+                    : "Error logging in"
             });
         }
     }

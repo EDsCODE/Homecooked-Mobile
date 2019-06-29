@@ -63,10 +63,14 @@ export default class ReportUser extends Component {
         this.props.navigation.goBack();
     };
 
+    _goBack = () => {
+        this.props.navigation.goBack();
+    };
+
     render() {
         return (
             <View style={styles.container}>
-                <CloseButton />
+                <CloseButton onPress={this._goBack} />
                 <HeadingText>Report a User</HeadingText>
                 <PromptText>
                     We want all of our users to have great experiences at the

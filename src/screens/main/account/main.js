@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { View, FlatList, Text, StyleSheet, Linking } from 'react-native';
+import {
+    View,
+    FlatList,
+    Text,
+    StyleSheet,
+    Linking,
+    ActivityIndicator
+} from 'react-native';
 
 import HeaderCell from 'Homecooked/src/components/Cells/AccountHeaderCell';
 import Cell from 'Homecooked/src/components/Cells/AccountCell';
@@ -177,6 +184,12 @@ class Main extends Component {
                     loading={this.props.currentUser.loadingAvatar}
                 />
             );
+        } else if (index == 1 && this.props.loading) {
+            return (
+                <View style={{ marginVertical: Spacing.base }}>
+                    <ActivityIndicator />
+                </View>
+            );
         } else {
             return (
                 <Cell
@@ -221,6 +234,7 @@ class Main extends Component {
 const mapStateToProps = state => {
     return {
         hostStatus: state.host.status,
+        loading: state.host.loading,
         currentUser: state.currentUser
     };
 };

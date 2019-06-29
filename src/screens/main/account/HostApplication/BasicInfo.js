@@ -13,6 +13,7 @@ import PromptText from "Homecooked/src/components/Text/Prompt";
 import MinorText from "Homecooked/src/components/Text/Minor";
 import CloseButton from "Homecooked/src/components/Buttons/Close";
 import FloatyButton from "Homecooked/src/components/Buttons/FloatyButton";
+import { connect } from "react-redux";
 
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 import NavigationService from "Homecooked/src/utils/NavigationService";
@@ -21,16 +22,23 @@ import {
     getPossibleMatches,
     getPlaceDetails
 } from "Homecooked/src/services/location";
+import PhoneInput from "react-native-phone-input";
 
 import TextField from "Homecooked/src/components/TextFields/Material";
 
-export default class BasicInfo extends Component {
+class BasicInfo extends Component {
     state = {
         query: "",
         results: [],
         selected: null,
         phoneNumber: ""
     };
+
+    componentDidMount() {
+        this.setState({
+            phoneNumber: this.props.phoneNumber
+        });
+    }
 
     _goBack = () => {
         NavigationService.navigate("AccountMain");
@@ -56,6 +64,10 @@ export default class BasicInfo extends Component {
             results;
             this.setState({
                 results
+            });
+        } else if (query.length == 0) {
+            this.setState({
+                results: []
             });
         }
     };
@@ -127,13 +139,29 @@ export default class BasicInfo extends Component {
                         keyboardShouldPersistTaps={"handled"}
                     />
                 ) : null}
-                <TextField
-                    returnKeyType={"done"}
-                    tintColor={Color.gray}
-                    label="Phone Number"
-                    value={phoneNumber}
-                    keyboardType={"phone-pad"}
-                    onChangeText={phoneNumber => this.setState({ phoneNumber })}
+                <MinorText
+                    style={{
+                        marginTop: Spacing.larger,
+                        marginBottom: Spacing.smallest
+                    }}
+                >
+                    Phone Number
+                </MinorText>
+                <PhoneInput
+                    ref="phone"
+                    onChangePhoneNumber={phoneNumber =>
+                        this.setState({ phoneNumber })
+                    }
+                    value={this.state.phoneNumber}
+                    textStyle={{ fontFamily: Typography.fontFamily }}
+                    style={{
+                        borderWidth: 1,
+                        padding: Spacing.smaller,
+                        paddingVertical: Spacing.small,
+                        borderRadius: 6,
+                        borderColor: Color.lightGray
+                    }}
+                    textProps={{ returnKeyType: "done" }}
                 />
                 <FloatyButton
                     onPress={this._goNext}
@@ -148,6 +176,17 @@ export default class BasicInfo extends Component {
         );
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        phoneNumber: state.currentUser.phoneNumber
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    null
+)(BasicInfo);
 
 const styles = StyleSheet.create({
     container: {

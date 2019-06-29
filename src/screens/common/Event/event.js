@@ -242,7 +242,7 @@ class Event extends Component {
                     renderPeople: false,
                     renderMenu: true,
                     renderLocation: false,
-                    renderUtilityBar: false,
+                    renderUtilityBar: true,
                     renderTitle: true,
                     START_TIME: startTime,
                     MEDIA: media,
@@ -262,12 +262,13 @@ class Event extends Component {
                     DIETARY_RESTRICTION: dietaryRestriction,
                     MEAL_TYPE: mealType,
                     MARKER: marker,
-                    BUTTON_COLOR: Color.orange,
+                    BUTTON_COLOR: Color.green,
                     TINT_COLOR: Color.green,
                     MAIN_TEXT: `Status: Closing`,
                     SUB_TEXT: `Review event`,
                     ONPRESS: this._navigateToReview,
-                    BUTTON_TEXT: "Review"
+                    BUTTON_TEXT: "Review",
+                    USERS: users
                 });
                 break;
             case EventViewTypes.HISTORY_PAST:
@@ -453,7 +454,8 @@ class Event extends Component {
                     MAIN_TEXT: `Status: Active`,
                     SUB_TEXT: `Upcoming`,
                     ONPRESS: this.props.refund,
-                    BUTTON_TEXT: "Refund"
+                    BUTTON_TEXT: "Refund",
+                    USERS: users
                 });
                 break;
             default:

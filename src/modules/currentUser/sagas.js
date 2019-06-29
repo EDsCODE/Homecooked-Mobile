@@ -86,7 +86,7 @@ function* getBookingsForUserWorkerSaga(action) {
     }
 }
 
-function* savePaymentWorkerSaga(action) {
+export function* savePaymentWorkerSaga(action) {
     try {
         let currentUser = yield select(selectors.currentUser);
         let { id, stripeCustomerId, email } = currentUser;

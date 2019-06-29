@@ -6,6 +6,7 @@ import PromptText from "Homecooked/src/components/Text/Prompt";
 import HeadingText from "Homecooked/src/components/Text/Heading";
 import BarButton from "Homecooked/src/components/Buttons/BarButton";
 import _ from "lodash";
+import NavigationService from "Homecooked/src/utils/NavigationService";
 
 import {
     SelectableGrid,
@@ -20,26 +21,33 @@ export default class Attendance extends Component {
 
     componentDidMount() {
         let attendees = [];
+        console.log("SCREENPROPS", this.props.screenProps);
         if (
             this.props.screenProps.event.users &&
             this.props.screenProps.event.bookings
         ) {
             let users = this.props.screenProps.event.users;
             this.props.screenProps.event.bookings.forEach(booking => {
-                let user = _.find(users, ["id", booking.userId]);
-                attendees.push({
-                    bookingId: booking.id,
-                    userId: user.id,
-                    name: user.firstName,
-                    selected: false,
-                    profileImageSignedUrl: user.profileImageSignedUrl
-                });
+                if (booking.status == "CNF") {
+                    let user = _.find(users, ["id", booking.userId]);
+                    attendees.push({
+                        bookingId: booking.id,
+                        userId: user.id,
+                        name: user.firstName,
+                        selected: false,
+                        profileImageSignedUrl: user.profileImageSignedUrl
+                    });
+                }
             });
             this.setState({
                 attendees: attendees
             });
         }
     }
+
+    _goBack = () => {
+        NavigationService.navigate("HostTablesMainEvent");
+    };
 
     componentWillReceiveProps(nextProps) {
         console.log(nextProps);
@@ -51,14 +59,16 @@ export default class Attendance extends Component {
             let attendees = [];
             let users = nextProps.screenProps.event.users;
             nextProps.screenProps.event.bookings.forEach(booking => {
-                let user = _.find(users, ["id", booking.userId]);
-                attendees.push({
-                    bookingId: booking.id,
-                    userId: user.id,
-                    name: user.firstName,
-                    selected: false,
-                    profileImageSignedUrl: user.profileImageSignedUrl
-                });
+                if (booking.status == "CNF") {
+                    let user = _.find(users, ["id", booking.userId]);
+                    attendees.push({
+                        bookingId: booking.id,
+                        userId: user.id,
+                        name: user.firstName,
+                        selected: false,
+                        profileImageSignedUrl: user.profileImageSignedUrl
+                    });
+                }
             });
             this.setState({
                 attendees: attendees,
@@ -114,7 +124,7 @@ export default class Attendance extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <CloseButton />
+                <CloseButton onPress={this._goBack} />
                 <HeadingText>Close Table</HeadingText>
                 <PromptText style={{ marginTop: Spacing.base }}>
                     One final step before you receive payment! Please let us

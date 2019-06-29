@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
     View,
     TouchableOpacity,
     Text,
     StyleSheet,
     ImageBackground
-} from 'react-native';
+} from "react-native";
 
-import { Spacing, Typography, Color } from 'Homecooked/src/components/styles';
+import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 
-import { mealType } from 'Homecooked/src/utils/Date';
-import RowAction from 'Homecooked/src/components/Buttons/RowAction';
-import moment from 'moment';
+import { mealType } from "Homecooked/src/utils/Date";
+import RowAction from "Homecooked/src/components/Buttons/RowAction";
+import moment from "moment";
 
 export default class HistoryCell extends Component {
     render() {
@@ -29,14 +29,14 @@ export default class HistoryCell extends Component {
             utilityTitle,
             utilityColor
         } = this.props;
-        let dayOfWeek = moment(startTime).format('dddd');
+        let dayOfWeek = moment(startTime).format("dddd");
         let type = mealType(startTime);
 
-        let startTimeParsed = moment(startTime).format('h A');
-        let endTimeParsed = moment(endTime).format('h A');
+        let startTimeParsed = moment(startTime).format("h A");
+        let endTimeParsed = moment(endTime).format("h A");
 
-        let month = moment(startTime).format('MMM');
-        let day = moment(startTime).format('D');
+        let month = moment(startTime).format("MMM");
+        let day = moment(startTime).format("D");
 
         let subTitle = `${type} on ${dayOfWeek}, ${startTimeParsed} to ${endTimeParsed}`;
 
@@ -56,10 +56,10 @@ export default class HistoryCell extends Component {
                 >
                     <View
                         style={{
-                            flexDirection: 'column',
+                            flexDirection: "column",
                             flex: 2.5,
-                            justifyContent: 'center',
-                            alignItems: 'center'
+                            justifyContent: "center",
+                            alignItems: "center"
                         }}
                     >
                         <Text style={[styles.dateMonth, { color: tintColor }]}>
@@ -68,19 +68,18 @@ export default class HistoryCell extends Component {
                         <Text style={styles.dateNumber}>{day}</Text>
                     </View>
 
-                    <View style={{ flexDirection: 'column', flex: 8 }}>
-                        <View style={{ flex: 1, justifyContent: 'center' }}>
+                    <View style={{ flexDirection: "column", flex: 8 }}>
+                        <View style={{ flex: 1, justifyContent: "center" }}>
                             <Text style={styles.title}>{title}</Text>
                             <Text style={styles.subTitle}>{subTitle}</Text>
+                            {showUtility ? (
+                                <RowAction
+                                    onPress={utilityOnPress}
+                                    title={utilityTitle}
+                                    color={utilityColor}
+                                />
+                            ) : null}
                         </View>
-                        {showUtility ? (
-                            <RowAction
-                                style={{ marginTop: Spacing.smaller }}
-                                onPress={utilityOnPress}
-                                title={utilityTitle}
-                                color={utilityColor}
-                            />
-                        ) : null}
                     </View>
                 </View>
             </TouchableOpacity>
@@ -92,7 +91,7 @@ const styles = StyleSheet.create({
     row: {
         paddingVertical: Spacing.base,
         paddingHorizontal: Spacing.small,
-        flexDirection: 'row'
+        flexDirection: "row"
     },
     title: {
         fontFamily: Typography.fontFamily,

@@ -37,7 +37,6 @@ export const getUpcomingEvents = createSelector(
                 });
             }
         });
-        console.log("UPCOMING:", upcomingEvents);
         return upcomingEvents;
     }
 );
@@ -62,17 +61,6 @@ export const getPastEvents = createSelector(
                 });
             }
         });
-
-        // pastEvents.forEach((event, i) => {
-        //     let bookings = event.bookings.filter(
-        //         booking => booking.status == "CNF"
-        //     );
-        //     bookings.forEach((booking, j) => {
-        //         bookings[j].user = users[booking.userId];
-        //     });
-        //     pastEvents[i].bookings = bookings;
-        // });
-
         return pastEvents;
     }
 );

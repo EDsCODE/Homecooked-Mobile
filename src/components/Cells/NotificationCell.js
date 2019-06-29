@@ -39,7 +39,16 @@ export default class NotificationCell extends PureComponent {
     };
 
     render() {
-        let { onPress, style, key, source, title, prompt } = this.props;
+        let {
+            onPress,
+            style,
+            key,
+            source,
+            title,
+            prompt,
+            createdAt
+        } = this.props;
+        let timeSinceText = timeSince(createdAt);
         return (
             <TouchableOpacity
                 onPress={onPress}
@@ -51,12 +60,40 @@ export default class NotificationCell extends PureComponent {
                     {this._renderImage(this.state.width, source)}
                     <View style={styles.content}>
                         <Text style={styles.title}>{prompt}</Text>
-                        <Text style={styles.prompt}>{"2h"}</Text>
+                        <Text style={styles.prompt}>{timeSinceText}</Text>
                     </View>
                 </View>
             </TouchableOpacity>
         );
     }
+}
+
+function timeSince(createdAt) {
+    let date = new Date(createdAt);
+    var seconds = Math.floor((new Date() - date) / 1000);
+
+    var interval = Math.floor(seconds / 31536000);
+
+    if (interval > 1) {
+        return interval + "yr";
+    }
+    interval = Math.floor(seconds / 2592000);
+    if (interval > 1) {
+        return interval + "mo";
+    }
+    interval = Math.floor(seconds / 86400);
+    if (interval > 1) {
+        return interval + "d";
+    }
+    interval = Math.floor(seconds / 3600);
+    if (interval > 1) {
+        return interval + "hr";
+    }
+    interval = Math.floor(seconds / 60);
+    if (interval > 1) {
+        return interval + "m";
+    }
+    return Math.floor(seconds) + " seconds";
 }
 
 const styles = StyleSheet.create({

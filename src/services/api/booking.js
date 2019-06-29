@@ -1,6 +1,6 @@
 import request from "Homecooked/src/utils/request";
 
-const createBooking = (userId, eventId, paymentToken) => {
+const createBooking = (userId, eventId, payment) => {
     return request({
         method: "POST",
         headers: {
@@ -10,7 +10,7 @@ const createBooking = (userId, eventId, paymentToken) => {
         data: {
             userId,
             eventId,
-            paymentToken
+            payment
         }
     });
 };

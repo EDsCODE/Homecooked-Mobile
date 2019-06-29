@@ -28,29 +28,50 @@ export default class Row extends Component {
         let { people, onPress, style } = this.props;
         return (
             <View style={styles.imageContainer}>
-                {people.slice(0, 4 || people.length).map((person, index) => (
-                    <TouchableOpacity
-                        key={index.toString()}
-                        onPress={() => onPress(person)}
-                    >
-                        <FastImage
-                            style={{
-                                width: imageWidth,
-                                height: imageWidth,
-                                borderRadius: imageWidth / 2,
-                                backgroundColor: "blue",
-                                borderColor: Color.orange,
-                                borderWidth: 1,
-                                marginRight: Spacing.smallest
-                            }}
-                            source={{
-                                uri: person.profileImageSignedUrl,
-                                priority: FastImage.priority.normal
-                            }}
-                            resizeMode={FastImage.resizeMode.cover}
-                        />
-                    </TouchableOpacity>
-                ))}
+                {people.slice(0, 4 || people.length).map((person, index) =>
+                    onPress ? (
+                        <TouchableOpacity
+                            key={index.toString()}
+                            onPress={() => onPress(person)}
+                        >
+                            <FastImage
+                                style={{
+                                    width: imageWidth,
+                                    height: imageWidth,
+                                    borderRadius: imageWidth / 2,
+                                    backgroundColor: "blue",
+                                    borderColor: Color.orange,
+                                    borderWidth: 1,
+                                    marginRight: Spacing.smallest
+                                }}
+                                source={{
+                                    uri: person.profileImageSignedUrl,
+                                    priority: FastImage.priority.normal
+                                }}
+                                resizeMode={FastImage.resizeMode.cover}
+                            />
+                        </TouchableOpacity>
+                    ) : (
+                        <View>
+                            <FastImage
+                                style={{
+                                    width: imageWidth,
+                                    height: imageWidth,
+                                    borderRadius: imageWidth / 2,
+                                    backgroundColor: "blue",
+                                    borderColor: Color.orange,
+                                    borderWidth: 1,
+                                    marginRight: Spacing.smallest
+                                }}
+                                source={{
+                                    uri: person.profileImageSignedUrl,
+                                    priority: FastImage.priority.normal
+                                }}
+                                resizeMode={FastImage.resizeMode.cover}
+                            />
+                        </View>
+                    )
+                )}
                 {people.length > 4 ? this._renderExtraTile(imageWidth) : null}
             </View>
         );

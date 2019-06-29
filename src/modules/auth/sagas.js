@@ -6,6 +6,7 @@ import NavigationService from "Homecooked/src/utils/NavigationService";
 import SInfo from "react-native-sensitive-info";
 import branch from "react-native-branch";
 import { UrbanAirship } from "urbanairship-react-native";
+import Permissions from "react-native-permissions";
 
 // ref: https://hackernoon.com/redux-saga-tutorial-for-beginners-and-dog-lovers-aa69a17db645
 
@@ -23,7 +24,11 @@ function* loginWorkerSaga(action) {
         // dispatch a success action to the store with the new accesstoken
         SInfo.setItem("email", user.email, {});
         SInfo.setItem("refreshToken", refreshToken, {});
-        UrbanAirship.setNamedUser(user.id);
+        Permissions.request("notification").then(response => {
+            if (response == "authorized") {
+                UrbanAirship.setNamedUser(user.id);
+            }
+        });
 
         yield put({ type: types.LOGIN_SUCCESS, accessToken });
         yield put({

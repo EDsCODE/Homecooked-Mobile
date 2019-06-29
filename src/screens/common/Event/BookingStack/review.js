@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, StyleSheet, Alert } from "react-native";
+import { View, StyleSheet, Alert, TouchableOpacity, Text } from "react-native";
 import NavigationService from "Homecooked/src/utils/NavigationService";
 import HeadingText from "Homecooked/src/components/Text/Heading";
 import CloseButton from "Homecooked/src/components/Buttons/Close";
@@ -9,15 +9,25 @@ import CreditCardInput from "Homecooked/src/components/TextFields/CreditCardInpu
 import { eventTypes } from "Homecooked/src/modules/types";
 import { connect } from "react-redux";
 import { getEvent } from "Homecooked/src/modules/event/selectors";
-
+import { createToken, formatCardDetails } from "Homecooked/src/services/stripe";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import CheckBox from "react-native-check-box";
+import { Icon } from "react-native-elements";
 
 class Review extends Component {
     state = {
         modules: ["dateTime", "price"],
-        cardDetails: {}
+        cardDetails: {},
+        savePayment: false,
+        useCustomer: false
     };
+
+    componentDidMount() {
+        this.setState({
+            useCustomer: this.props.isCustomer
+        });
+    }
 
     _goBack = () => {
         NavigationService.navigate("Event");
@@ -43,10 +53,28 @@ class Review extends Component {
             }
         );
 
-    _goNext = () => {
-        let { id } = this.props.navigation.state.params.event;
+    _goNext = async () => {
         if (this.props.isProfileComplete) {
-            this.props.bookEvent("123");
+            try {
+                if (this.state.useCustomer) {
+                    let payment = {
+                        type: "customer"
+                    };
+                    this.props.bookEvent(payment);
+                } else {
+                    let details = formatCardDetails(
+                        this.state.cardDetails.values
+                    );
+                    let res = await createToken(details);
+                    let payment = {
+                        source: res.id,
+                        type: this.state.savePayment ? "customer" : "token"
+                    };
+                    this.props.bookEvent(payment);
+                }
+            } catch (err) {
+                console.log(err.message);
+            }
         } else {
             Alert.alert(
                 "Profile incomplete",
@@ -78,6 +106,7 @@ class Review extends Component {
         let { actionLoading } = this.props;
         let { attributes, startTime, duration } = this.props.event;
         let { price } = attributes;
+        let { useCustomer } = this.state;
 
         let cardDetailsValid = this.state.cardDetails.valid ? true : false;
         return (
@@ -100,10 +129,93 @@ class Review extends Component {
                         duration={duration}
                     />
 
-                    <CreditCardInput
-                        onChange={this._onChange}
-                        valid={this.state.cardDetails.valid}
-                    />
+                    {useCustomer ? (
+                        <View
+                            style={{
+                                marginHorizontal: Spacing.larger,
+                                flexDirection: "row",
+                                alignItems: "center"
+                            }}
+                        >
+                            <Icon
+                                name={`ios-card`}
+                                type="ionicon"
+                                color={Color.black}
+                                size={35}
+                                containerStyle={{
+                                    alignSelf: "flex-start"
+                                }}
+                            />
+                            <Text style={{ fontWeight: "900", marginLeft: 10 }}>
+                                ****
+                            </Text>
+                            <TouchableOpacity
+                                style={{
+                                    marginHorizontal: Spacing.small,
+                                    backgroundColor: Color.lightGray,
+                                    padding: 5,
+                                    paddingHorizontal: 10,
+                                    borderRadius: 5
+                                }}
+                                onPress={() => {
+                                    this.setState({
+                                        useCustomer: false
+                                    });
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        color: Color.white,
+                                        fontFamily: Typography.fontFamily
+                                    }}
+                                >
+                                    Edit
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    ) : (
+                        <CreditCardInput
+                            onChange={this._onChange}
+                            valid={this.state.cardDetails.valid}
+                        />
+                    )}
+                    {this.state.cardDetails.valid ? (
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.setState({
+                                    savePayment: !this.state.savePayment
+                                });
+                            }}
+                            style={{
+                                flexDirection: "row",
+                                alignItems: "center",
+                                alignSelf: "center",
+                                marginVertical: 15,
+                                marginRight: Spacing.largest
+                            }}
+                        >
+                            <CheckBox
+                                style={{ paddingRight: 10 }}
+                                checkBoxColor={Color.lightGray}
+                                checkedCheckBoxColor={Color.green}
+                                isChecked={this.state.savePayment}
+                                onClick={() => {
+                                    this.setState({
+                                        savePayment: !this.state.savePayment
+                                    });
+                                }}
+                            />
+                            <Text
+                                style={{
+                                    fontFamily: "Avenir",
+                                    fontSize: 14,
+                                    fontWeight: "300"
+                                }}
+                            >
+                                {"Save Payment Information"}
+                            </Text>
+                        </TouchableOpacity>
+                    ) : null}
                 </KeyboardAwareScrollView>
                 <BarButton
                     title="RSVP"
@@ -116,7 +228,7 @@ class Review extends Component {
                     fill={Color.green}
                     onPress={this._goNext}
                     loading={actionLoading}
-                    active={cardDetailsValid}
+                    active={cardDetailsValid || useCustomer}
                 />
             </View>
         );
@@ -127,6 +239,7 @@ const mapStateToProps = state => {
     const { events, currentUser } = state;
     return {
         isProfileComplete: currentUser.isComplete,
+        isCustomer: currentUser.stripeCustomerId,
         ...getEvent(state),
         actionLoading: events.actionLoading,
         error: events.error
@@ -134,11 +247,11 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-    const bookEvent = paymentToken => {
+    const bookEvent = payment => {
         dispatch({
             type: eventTypes.BOOK_EVENT_REQUEST,
             payload: {
-                paymentToken
+                payment
             }
         });
     };
