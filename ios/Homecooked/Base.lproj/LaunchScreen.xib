@@ -15,7 +15,7 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="25" verticalHuggingPriority="251" image="white g transparent.png" translatesAutoresizingMaskIntoConstraints="NO" id="b05-VI-60r">
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="25" verticalHuggingPriority="251" image="gtransparent.png" translatesAutoresizingMaskIntoConstraints="NO" id="b05-VI-60r">
                     <rect key="frame" x="144.66666666666666" y="-287.66666666666674" width="124.99999999999997" height="1471.3333333333333"/>
                 </imageView>
             </subviews>
@@ -36,6 +36,6 @@
         </view>
     </objects>
     <resources>
-        <image name="white g transparent.png" width="1135" height="1471"/>
+        <image name="gtransparent.png" width="1135" height="1471"/>
     </resources>
 </document>

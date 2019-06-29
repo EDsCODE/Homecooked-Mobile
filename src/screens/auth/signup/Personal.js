@@ -1,5 +1,13 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import {
+    View,
+    Text,
+    StyleSheet,
+    TouchableOpacity,
+    Image,
+    Keyboard,
+    Alert
+} from "react-native";
 import { Icon } from "react-native-elements";
 import CloseButton from "Homecooked/src/components/Buttons/Close";
 import HeadingText from "Homecooked/src/components/Text/Heading";
@@ -13,6 +21,7 @@ import ClickableField from "Homecooked/src/components/TextFields/ClickableMateri
 
 import Header from "Homecooked/src/components/Headers/Basic";
 import { Spacing, Color } from "Homecooked/src/components/styles";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import NavigationService from "Homecooked/src/utils/NavigationService";
 import DateTimePicker from "react-native-modal-datetime-picker";
@@ -29,6 +38,7 @@ export default class Email extends Component {
     };
 
     showDateTimePicker = () => {
+        Keyboard.dismiss();
         this.setState({ isDateTimePickerVisible: true });
     };
 
@@ -51,6 +61,13 @@ export default class Email extends Component {
 
     _goNext = () => {
         let { firstName, lastName, dob } = this.state;
+        let now = moment();
+        let dobDate = moment(dob);
+        let diff = now.diff(dob, "years");
+        if (diff < 18) {
+            Alert.alert("Users must be 18 years or older to use this app");
+            return;
+        }
         this.props.screenProps.updateData("personal", {
             firstName,
             lastName,
@@ -64,63 +81,77 @@ export default class Email extends Component {
         return (
             <View style={{ flex: 1, marginTop: 30 }}>
                 <View style={styles.container}>
-                    <CloseButton
-                        icon={"arrow-round-back"}
-                        onPress={this._back}
-                    />
-                    <MinorText>Step 1 of 2</MinorText>
-                    <View
-                        style={{ flexDirection: "row", alignItems: "center" }}
+                    <KeyboardAwareScrollView
+                        extraScrollHeight={50}
+                        extraHeight={50}
+                        keyboardShouldPersistTaps={"handled"}
+                        showsVerticalScrollIndicator={false}
+                        bounces={false}
                     >
-                        <HeadingText>Welcome to</HeadingText>
-                        <Image
-                            source={GATHR_LOGO}
-                            style={{
-                                height: 60,
-                                width: 100,
-                                marginLeft: Spacing.smallest
-                            }}
-                            resizeMode={"contain"}
+                        <CloseButton
+                            icon={"arrow-round-back"}
+                            onPress={this._back}
                         />
-                    </View>
-                    {/* <View
+                        <MinorText>Step 1 of 2</MinorText>
+                        <View
+                            style={{
+                                flexDirection: "row",
+                                alignItems: "center"
+                            }}
+                        >
+                            <HeadingText>Welcome to</HeadingText>
+                            <Image
+                                source={GATHR_LOGO}
+                                style={{
+                                    height: 60,
+                                    width: 100,
+                                    marginLeft: Spacing.smallest
+                                }}
+                                resizeMode={"contain"}
+                            />
+                        </View>
+                        {/* <View
                         style={{
                             alignContent: 'center',
                             justifyContent: 'center'
                         }}
                     > */}
-                    <PromptText style={{ marginBottom: 60 }}>
-                        Let's get started with some basic information
-                    </PromptText>
-                    <TextField
-                        containerStyle={styles.input}
-                        titleTextStyle={{ fontFamily: "Avenir" }}
-                        labelTextStyle={{ fontFamily: "Avenir" }}
-                        tintColor="#4A4A4A"
-                        label="First name"
-                        value={firstName}
-                        onChangeText={firstName => this.setState({ firstName })}
-                    />
-                    <TextField
-                        containerStyle={styles.input}
-                        titleTextStyle={{ fontFamily: "Avenir" }}
-                        labelTextStyle={{ fontFamily: "Avenir" }}
-                        tintColor="#4A4A4A"
-                        label="Last name"
-                        value={lastName}
-                        onChangeText={lastName => this.setState({ lastName })}
-                    />
-                    <ClickableField
-                        containerStyle={styles.input}
-                        titleTextStyle={{ fontFamily: "Avenir" }}
-                        labelTextStyle={{ fontFamily: "Avenir" }}
-                        tintColor="#4A4A4A"
-                        label="Date of Birth"
-                        value={formattedDOB}
-                        onPress={this.showDateTimePicker}
-                    />
+                        <PromptText style={{ marginBottom: 60 }}>
+                            Let's get started with some basic information
+                        </PromptText>
+                        <TextField
+                            containerStyle={styles.input}
+                            titleTextStyle={{ fontFamily: "Avenir" }}
+                            labelTextStyle={{ fontFamily: "Avenir" }}
+                            tintColor="#4A4A4A"
+                            label="First name"
+                            value={firstName}
+                            onChangeText={firstName =>
+                                this.setState({ firstName })
+                            }
+                        />
+                        <TextField
+                            containerStyle={styles.input}
+                            titleTextStyle={{ fontFamily: "Avenir" }}
+                            labelTextStyle={{ fontFamily: "Avenir" }}
+                            tintColor="#4A4A4A"
+                            label="Last name"
+                            value={lastName}
+                            onChangeText={lastName =>
+                                this.setState({ lastName })
+                            }
+                        />
+                        <ClickableField
+                            containerStyle={styles.input}
+                            titleTextStyle={{ fontFamily: "Avenir" }}
+                            labelTextStyle={{ fontFamily: "Avenir" }}
+                            tintColor="#4A4A4A"
+                            label="Date of Birth"
+                            value={formattedDOB}
+                            onPress={this.showDateTimePicker}
+                        />
+                    </KeyboardAwareScrollView>
                 </View>
-                {/* </View> */}
                 <FloatyButton
                     onPress={this._goNext}
                     style={{
