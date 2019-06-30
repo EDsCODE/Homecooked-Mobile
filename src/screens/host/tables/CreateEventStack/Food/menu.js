@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { Component } from "react";
+import { View, StyleSheet } from "react-native";
 
-import HeadingText from 'Homecooked/src/components/Text/Heading';
-import PromptText from 'Homecooked/src/components/Text/Prompt';
-import CloseButton from 'Homecooked/src/components/Buttons/Close';
-import BarButton from 'Homecooked/src/components/Buttons/BarButton';
-import TextField from 'Homecooked/src/components/TextFields/Material';
-import ActionButton from 'Homecooked/src/components/Buttons/Action';
-import MenuSection from 'Homecooked/src/components/Event/Menu';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import HeadingText from "Homecooked/src/components/Text/Heading";
+import PromptText from "Homecooked/src/components/Text/Prompt";
+import CloseButton from "Homecooked/src/components/Buttons/Close";
+import BarButton from "Homecooked/src/components/Buttons/BarButton";
+import TextField from "Homecooked/src/components/TextFields/Material";
+import ActionButton from "Homecooked/src/components/Buttons/Action";
+import MenuSection from "Homecooked/src/components/Event/Menu";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-import { Spacing, Typography, Color } from 'Homecooked/src/components/styles';
-import NavigationService from 'Homecooked/src/utils/NavigationService';
-import _ from 'lodash';
+import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
+import NavigationService from "Homecooked/src/utils/NavigationService";
+import _ from "lodash";
 
 export default class Menu extends Component {
     _goBack = () => {
@@ -20,8 +20,8 @@ export default class Menu extends Component {
     };
 
     state = {
-        itemName: '',
-        itemDescription: '',
+        itemName: "",
+        itemDescription: "",
         menu: []
     };
 
@@ -41,14 +41,14 @@ export default class Menu extends Component {
                     description: this.state.itemDescription
                 }
             ],
-            itemName: '',
-            itemDescription: ''
+            itemName: "",
+            itemDescription: ""
         });
     };
 
     _goNext = () => {
         let { menu } = this.state;
-        this.props.screenProps.updateData('menu', menu);
+        this.props.screenProps.updateData("menu", menu);
         this._goBack();
     };
 
@@ -73,7 +73,7 @@ export default class Menu extends Component {
                 <KeyboardAwareScrollView
                     extraScrollHeight={120}
                     extraHeight={50}
-                    keyboardShouldPersistTaps={'handled'}
+                    keyboardShouldPersistTaps={"handled"}
                     showsVerticalScrollIndicator={false}
                     bounces={false}
                 >
@@ -89,18 +89,19 @@ export default class Menu extends Component {
                         onRowPressed={this._onRowPressed}
                     />
                     <TextField
-                        label={''}
+                        label={""}
                         tintColor="#4A4A4A"
                         placeholder="Menu Item"
                         value={itemName}
+                        multiline={true}
+                        returnKeyType="done"
+                        scrollEnabled={true}
+                        blurOnSubmit={true}
+                        enablesReturnKeyAutomatically={true}
                         onChangeText={itemName => this.setState({ itemName })}
                     />
-                    multiline={true}
-                    returnKeyType="done" scrollEnabled={true}
-                    blurOnSubmit={true}
-                    enablesReturnKeyAutomatically={true}
                     <TextField
-                        label={''}
+                        label={""}
                         tintColor="#4A4A4A"
                         placeholder="Description"
                         value={itemDescription}
@@ -116,7 +117,7 @@ export default class Menu extends Component {
                     <ActionButton
                         title="Add Item"
                         style={{
-                            alignSelf: 'center',
+                            alignSelf: "center",
                             marginTop: Spacing.smaller
                         }}
                         borderColor={Color.orange}

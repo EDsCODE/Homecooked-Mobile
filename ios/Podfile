@@ -49,5 +49,18 @@ target 'Homecooked' do
 
   pod 'ReactNativePermissions', :path => '../node_modules/react-native-permissions'
 
+  pod 'CodePush', :path => '../node_modules/react-native-code-push'
+
+  pod 'SentryReactNative', :path => '../node_modules/react-native-sentry'
+
+end
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    
+    if target.name == "React"
+      target.remove_from_project
+    end
+  end
 end
 

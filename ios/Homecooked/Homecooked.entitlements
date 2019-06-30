@@ -3,13 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>aps-environment</key>
-	<string>development</string>
+	<string>production</string>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>applink:gathr.test-app.link</string>
-		<string>applink:gathr-alternate.test-app.link</string>
-		<string>applink:gathr.app.link</string>
-		<string>applink:gathr-alternate.app.link</string>
+		<string>applinks:gathr.test-app.link</string>
+		<string>applinks:gathr-alternate.test-app.link</string>
+		<string>applinks:gathr.app.link</string>
+		<string>applinks:gathr-alternate.app.link</string>
 	</array>
 	<key>com.apple.developer.in-app-payments</key>
 	<array/>
