@@ -118,11 +118,9 @@ class Main extends Component {
 
     _renderProfileImage = () => {
         if (this.props.currentUser.profileImageSignedUrl) {
-            return {
-                uri: this.props.currentUser.profileImageSignedUrl
-            };
+            return this.props.currentUser.profileImageSignedUrl;
         } else {
-            return require(PROFILE_PLACEHOLDER_IMAGE);
+            return null;
         }
     };
 

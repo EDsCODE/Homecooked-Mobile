@@ -8,23 +8,29 @@ import {
     ActivityIndicator
 } from "react-native";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
-
+import FastImage from "react-native-fast-image";
 const imageURI = "Homecooked/src/assets/img/filledTable.jpg";
+
+const PROFILE_PLACEHOLDER_IMAGE = "Homecooked/src/assets/img/Profile.png";
 
 export default props => {
     return (
         <TouchableOpacity onPress={props.onPress}>
             <View style={styles.row}>
-                <Image
-                    style={styles.image}
-                    source={
-                        props.loadingAvatar ? (
-                            <ActivityIndicator />
-                        ) : (
-                            props.source
-                        )
-                    }
-                />
+                {props.source ? (
+                    <FastImage
+                        style={styles.image}
+                        source={{
+                            uri: props.source,
+                            priority: FastImage.priority.normal
+                        }}
+                    />
+                ) : (
+                    <Image
+                        style={styles.image}
+                        source={require(PROFILE_PLACEHOLDER_IMAGE)}
+                    />
+                )}
                 <View style={styles.text}>
                     <Text style={styles.name}>{props.name}</Text>
                     <Text style={styles.prompt}>

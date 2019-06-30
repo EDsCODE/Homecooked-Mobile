@@ -126,6 +126,8 @@ class HostTablesMain extends Component {
     );
 
     _navigateToCreateEvent = () => {
+        this.props.navigation.navigate("CreateEventStack");
+        return;
         if (!this.props.host.description || !this.props.host.profileImageUrl) {
             Alert.alert(
                 "You must create a host profile before creating an event"

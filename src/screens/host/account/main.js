@@ -67,11 +67,9 @@ class Host_Settings_Main extends Component {
 
     _renderProfileImage = () => {
         if (this.props.host.profileImageSignedUrl) {
-            return {
-                uri: this.props.host.profileImageSignedUrl
-            };
+            return this.props.host.profileImageSignedUrl;
         } else {
-            return require(PROFILE_PLACEHOLDER_IMAGE);
+            return null;
         }
     };
 

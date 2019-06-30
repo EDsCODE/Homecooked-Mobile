@@ -6,6 +6,7 @@ import {
 } from "Homecooked/src/services/api";
 import types from "./types";
 import NavigationService from "Homecooked/src/utils/NavigationService";
+import { imageUtils } from "Homecooked/src/utils";
 import * as userSelectors from "Homecooked/src/modules/currentUser/selectors";
 import {
     getEventsByChefIdWorkerSaga,
@@ -95,15 +96,6 @@ function* getChefWorkerSaga(action) {
     }
 }
 
-function* getChefMedia(item) {
-    let { data: url } = yield call(ImageService.getImage, item.key);
-
-    return {
-        ...item,
-        url
-    };
-}
-
 function* loadHostingEventsSaga(action) {
     try {
         yield call(getEventsByChefIdWorkerSaga);
@@ -168,14 +160,10 @@ function* getAvatarWorkerSaga(action) {
         if (!host.profileImageUrl) {
             throw "No profile image key";
         }
-        let { data: url } = yield call(
-            ImageService.getImage,
-            host.profileImageUrl
-        );
         yield put({
             type: types.GET_HOST_AVATAR_SUCCESS,
             payload: {
-                profileImageSignedUrl: url
+                profileImageSignedUrl: imageUtils.url(host.profileImageUrl)
             }
         });
     } catch (error) {

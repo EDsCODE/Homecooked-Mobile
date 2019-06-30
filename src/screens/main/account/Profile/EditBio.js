@@ -40,6 +40,9 @@ class Bio extends Component {
         if (this.state.bio) {
             return this.state.bio;
         } else if (this.props.currentUser.bio) {
+            this.setState({
+                bio: this.props.currentUser.bio
+            });
             return this.props.currentUser.bio;
         } else {
             return "";

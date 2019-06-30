@@ -3,20 +3,21 @@ import types from "./types";
 import { ImageService, UserService } from "Homecooked/src/services/api";
 import * as selectors from "./selectors";
 
+import { imageUtils } from "Homecooked/src/utils";
+
 function* getAvatarWorkerSaga(action) {
     try {
         let currentUser = yield select(selectors.currentUser);
         if (!currentUser.profileImageUrl) {
             throw new Error("No profile image key");
         }
-        let { data: url } = yield call(
-            ImageService.getImage,
-            currentUser.profileImageUrl
-        );
+
         yield put({
             type: types.GET_AVATAR_SUCCESS,
             payload: {
-                profileImageSignedUrl: url
+                profileImageSignedUrl: imageUtils.url(
+                    currentUser.profileImageUrl
+                )
             }
         });
     } catch (error) {

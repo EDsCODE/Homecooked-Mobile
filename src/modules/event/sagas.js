@@ -21,6 +21,7 @@ import * as hostSelectors from "Homecooked/src/modules/host/selectors";
 import * as currentUserSelectors from "Homecooked/src/modules/currentUser/selectors";
 import * as eventSelectors from "Homecooked/src/modules/event/selectors";
 import NavigationService from "Homecooked/src/utils/NavigationService";
+import { imageUtils } from "Homecooked/src/utils";
 import { EventViewTypes } from "Homecooked/src/types/";
 import { currentUserTypes } from "../types";
 import _ from "lodash";
@@ -63,23 +64,13 @@ export function* getEventWorkerSaga(action) {
 }
 
 function* getEventMedia(event) {
-    let media = yield all(event.media.map(media => call(getMedia, media)));
+    let media = event.media.map(media => imageUtils.url(media.key));
     let { data: chef } = yield call(HostService.getChefById, event.chef.id);
     yield call(getUserById, chef.userId);
 
-    let { data: chefImageUrl } = yield call(
-        ImageService.getImage,
-        chef.profileImageUrl
-    );
-    console.log(chefImageUrl);
-    media.unshift(chefImageUrl);
+    media.unshift(imageUtils.url(chef.profileImageUrl));
     event.images = media;
     return event;
-}
-
-function* getMedia(media) {
-    let { data } = yield call(ImageService.getImage, media.key);
-    return data;
 }
 
 export function* getEventDetails(action) {

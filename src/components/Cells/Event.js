@@ -14,6 +14,7 @@ import MinorText from "Homecooked/src/components/Text/Minor";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 
 import LinearGradient from "react-native-linear-gradient";
+import FastImage from "react-native-fast-image";
 
 const imageURI = "Homecooked/src/assets/img/filledTable.jpg";
 
@@ -38,10 +39,13 @@ export default class EventCard extends PureComponent {
                     borderTopLeftRadius={5}
                     borderTopRightRadius={5}
                 >
-                    <ImageBackground
-                        resizeMode="cover"
+                    <FastImage
                         style={styles.image}
-                        source={{ uri: item }}
+                        source={{
+                            uri: item,
+                            priority: FastImage.priority.normal
+                        }}
+                        resizeMode={FastImage.resizeMode.cover}
                     >
                         <LinearGradient
                             colors={["rgba(0,0,0,0.8)", "transparent"]}
@@ -49,7 +53,7 @@ export default class EventCard extends PureComponent {
                             start={{ x: 0.5, y: 1.0 }}
                             end={{ x: 0.5, y: 0.7 }}
                         />
-                    </ImageBackground>
+                    </FastImage>
                 </View>
             </TouchableOpacity>
         );
