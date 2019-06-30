@@ -51,8 +51,7 @@ export const getPastEvents = createSelector(
                 let event = Object.assign({}, events[booking.eventId]);
                 if (
                     booking.status != "CNF" ||
-                    event.status != "OPN" ||
-                    event.status != "FUL"
+                    (event.status != "OPN" && event.status != "FUL")
                 ) {
                     if (booking.status == "ATT") {
                         event.mode = EventViewTypes.HISTORY_REVIEW;
