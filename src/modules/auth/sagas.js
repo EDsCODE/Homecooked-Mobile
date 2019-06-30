@@ -1,12 +1,12 @@
-import { takeLatest, call, put } from "redux-saga/effects";
-import { AuthService, ImageService } from "Homecooked/src/services/api";
-import types from "./types";
-import { currentUserTypes } from "../types";
-import NavigationService from "Homecooked/src/utils/NavigationService";
-import SInfo from "react-native-sensitive-info";
-import branch from "react-native-branch";
-import { UrbanAirship } from "urbanairship-react-native";
-import Permissions from "react-native-permissions";
+import { takeLatest, call, put } from 'redux-saga/effects';
+import { AuthService, ImageService } from 'Homecooked/src/services/api';
+import types from './types';
+import { currentUserTypes } from '../types';
+import NavigationService from 'Homecooked/src/utils/NavigationService';
+import SInfo from 'react-native-sensitive-info';
+import branch from 'react-native-branch';
+import { UrbanAirship } from 'urbanairship-react-native';
+import Permissions from 'react-native-permissions';
 
 // ref: https://hackernoon.com/redux-saga-tutorial-for-beginners-and-dog-lovers-aa69a17db645
 
@@ -22,11 +22,11 @@ function* loginWorkerSaga(action) {
         );
 
         // dispatch a success action to the store with the new accesstoken
-        SInfo.setItem("email", user.email, {});
-        SInfo.setItem("refreshToken", refreshToken, {});
-        Permissions.request("notification").then(response => {
-            if (response == "authorized") {
-                UrbanAirship.setNamedUser(user.id);
+        SInfo.setItem('email', user.email, {});
+        SInfo.setItem('refreshToken', refreshToken, {});
+        Permissions.request('notification').then(response => {
+            if (response == 'authorized') {
+                setNamedUser(user.id);
             }
         });
 
@@ -38,7 +38,7 @@ function* loginWorkerSaga(action) {
         yield put({ type: currentUserTypes.GET_AVATAR_REQUEST });
 
         // navigate to main
-        NavigationService.navigate("Main");
+        NavigationService.navigate('Main');
     } catch (error) {
         // dispatch a failure action to the store with the error
         yield put({ type: types.LOGIN_ERROR, error });
@@ -55,9 +55,9 @@ function* facebookLoginWorkerSaga(action) {
             lastName
         );
         // dispatch a success action to the store with the new accesstoken
-        SInfo.setItem("email", user.email, {});
-        SInfo.setItem("refreshToken", refreshToken, {});
-        UrbanAirship.setNamedUser(user.id);
+        SInfo.setItem('email', user.email, {});
+        SInfo.setItem('refreshToken', refreshToken, {});
+        setNamedUser(user.id);
 
         yield put({ type: types.LOGIN_SUCCESS, accessToken });
         yield put({
@@ -77,7 +77,7 @@ function* facebookLoginWorkerSaga(action) {
         }
 
         // navigate to main
-        NavigationService.navigate("Main");
+        NavigationService.navigate('Main');
     } catch (error) {
         // dispatch a failure action to the store with the error
         yield put({ type: types.LOGIN_ERROR, error });
@@ -97,12 +97,11 @@ function* registerWorkerSaga(action) {
         );
         let { accessToken, user, message, refreshToken } = payload;
 
-        SInfo.setItem("email", user.email, {});
-        SInfo.setItem("refreshToken", refreshToken, {});
+        SInfo.setItem('email', user.email, {});
+        SInfo.setItem('refreshToken', refreshToken, {});
 
         // register named user
-        UrbanAirship.setNamedUser(user.id);
-        branch.setIdentity(user.id);
+        setNamedUser(user.id);
 
         // dispatch a success action to the store with the new access
         yield put({ type: types.SIGNUP_SUCCESS, accessToken });
@@ -112,7 +111,7 @@ function* registerWorkerSaga(action) {
         });
 
         // navigate to main
-        NavigationService.navigate("Onboarding");
+        NavigationService.navigate('Onboarding');
     } catch (error) {
         // dispatch a failure action to the store with the error
         yield put({ type: types.SIGNUP_ERROR, error });
@@ -121,13 +120,13 @@ function* registerWorkerSaga(action) {
 
 function* logoutWorkerSaga(action) {
     try {
-        let refreshToken = yield call(SInfo.getItem, "refreshToken", {});
+        let refreshToken = yield call(SInfo.getItem, 'refreshToken', {});
 
         yield call(AuthService.signout, refreshToken);
         yield put({ type: types.SIGNOUT_SUCCESS });
-        SInfo.setItem("email", "", {});
-        SInfo.setItem("refreshToken", "", {});
-        UrbanAirship.setNamedUser(null);
+        SInfo.setItem('email', '', {});
+        SInfo.setItem('refreshToken', '', {});
+        setNamedUser(user.id);
     } catch (error) {
         yield put({ type: types.SIGNOUT_ERROR, error });
     }
@@ -148,19 +147,24 @@ function* refreshTokenWorkerSaga(action) {
             payload: { ...user }
         });
 
-        UrbanAirship.setNamedUser(user.id);
+        setNamedUser(user.id);
 
         yield put({ type: currentUserTypes.GET_AVATAR_REQUEST });
 
-        NavigationService.navigate("Main");
+        NavigationService.navigate('Main');
     } catch (error) {
-        SInfo.setItem("email", "", {});
-        SInfo.setItem("refreshToken", "", {});
+        SInfo.setItem('email', '', {});
+        SInfo.setItem('refreshToken', '', {});
         yield put({ type: types.SIGNOUT_REQUEST, error });
-        NavigationService.navigate("Auth");
+        NavigationService.navigate('Auth');
 
         yield put({ type: types.LOGIN_ERROR, error });
     }
+}
+
+function setNamedUser(userId) {
+    UrbanAirship.setNamedUser(userId);
+    branch.setIdentity(user.id);
 }
 
 export const authSagas = [
