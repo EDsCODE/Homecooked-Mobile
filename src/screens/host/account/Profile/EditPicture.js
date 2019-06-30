@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
-import { View, FlatList, Text, StyleSheet } from 'react-native';
+import React, { Component } from "react";
+import { View, FlatList, Text, StyleSheet } from "react-native";
 
-import HeadingText from 'Homecooked/src/components/Text/Heading';
-import PromptText from 'Homecooked/src/components/Text/Prompt';
-import CloseButton from 'Homecooked/src/components/Buttons/Close';
-import FloatyButton from 'Homecooked/src/components/Buttons/FloatyButton';
-import ImagePlaceholder from 'Homecooked/src/components/Image/Placeholder';
-import NavigationService from 'Homecooked/src/utils/NavigationService';
+import HeadingText from "Homecooked/src/components/Text/Heading";
+import PromptText from "Homecooked/src/components/Text/Prompt";
+import CloseButton from "Homecooked/src/components/Buttons/Close";
+import FloatyButton from "Homecooked/src/components/Buttons/FloatyButton";
+import ImagePlaceholder from "Homecooked/src/components/Image/Placeholder";
+import NavigationService from "Homecooked/src/utils/NavigationService";
 
-import ImagePicker from 'react-native-image-picker';
+import { ImagePicker } from "Homecooked/src/components/Image/Picker";
 
-import { Spacing, Typography, Color } from 'Homecooked/src/components/styles';
+import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 
-import { hostTypes } from 'Homecooked/src/modules/types';
-import { connect } from 'react-redux';
+import { hostTypes } from "Homecooked/src/modules/types";
+import { connect } from "react-redux";
 
 const placeHolderWidth = Spacing.deviceWidth - 80;
 
@@ -23,29 +23,24 @@ class Photo extends Component {
     };
 
     _goBack = () => {
-        NavigationService.navigate('HostSettingsMain');
+        NavigationService.navigate("HostSettingsMain");
     };
 
     _goNext = () => {
         if (this.state.image) {
             this.props.uploadImage(this.state.image);
         }
-        this.props.navigation.navigate('EditDescription');
+        this.props.navigation.navigate("EditDescription");
     };
 
-    openPicker = () => {
-        const options = {
-            title: 'Select Image',
-            storageOptions: {
-                skipBackup: true,
-                path: 'images'
-            }
-        };
-        ImagePicker.launchImageLibrary(options, response => {
+    openPicker = async () => {
+        console.log("open picker");
+        let response = await ImagePicker();
+        if (response) {
             this.setState({
                 image: response
             });
-        });
+        }
     };
 
     displayImage = () => {
@@ -69,7 +64,7 @@ class Photo extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <CloseButton onPress={this._goBack} icon={'arrow-round-back'} />
+                <CloseButton onPress={this._goBack} icon={"arrow-round-back"} />
                 <HeadingText>Host Profile Picture</HeadingText>
                 <PromptText style={{ marginTop: Spacing.small }}>
                     gathr meals are warm and inviting. Upload a photo that
@@ -79,10 +74,10 @@ class Photo extends Component {
                     style={{
                         width: placeHolderWidth,
                         height: placeHolderWidth,
-                        alignSelf: 'center',
+                        alignSelf: "center",
                         marginTop: Spacing.base
                     }}
-                    caption={'Picture'}
+                    caption={"Picture"}
                     onPress={this.openPicker}
                     source={{
                         uri: this.displayImage()
@@ -91,7 +86,7 @@ class Photo extends Component {
                 <FloatyButton
                     onPress={this._goNext}
                     style={{
-                        position: 'absolute',
+                        position: "absolute",
                         bottom: Spacing.largest,
                         right: Spacing.largest
                     }}
@@ -136,10 +131,10 @@ const styles = StyleSheet.create({
         marginTop: Spacing.small,
         width: placeHolderWidth * 2 + 20,
         height: placeHolderWidth * 2 + 20,
-        alignSelf: 'center',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'space-around',
-        alignContent: 'space-around'
+        alignSelf: "center",
+        flexDirection: "row",
+        flexWrap: "wrap",
+        justifyContent: "space-around",
+        alignContent: "space-around"
     }
 });

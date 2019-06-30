@@ -46,7 +46,7 @@ class CreateEventLogistics extends Component {
 
     state = {
         address: null,
-        specialDirections: "",
+        specialDirections: "lkn",
         date: null,
         startTime: null,
         duration: null,
@@ -68,9 +68,10 @@ class CreateEventLogistics extends Component {
 
     submit = () => {
         // merge date and time
-        let time = moment(this.state.startTime).format("hh:mm:ss a");
-        let date = this.state.date.format("YYYY-MM-DD");
-        let startTime = moment(time + " " + date);
+        let time = moment(this.state.startTime).toISOString();
+        let date = this.state.date.toISOString();
+        let startTime = moment(date.split("T")[0] + "T" + time.split("T")[1]);
+        console.log(startTime);
         this.setState(
             {
                 ...this.state,

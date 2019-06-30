@@ -1,7 +1,7 @@
 import moment from "moment";
 
 function _mealType(hour) {
-    if (mealType < 16) {
+    if (hour < 16) {
         return "Lunch";
     } else {
         return "Dinner";
@@ -11,6 +11,7 @@ function _mealType(hour) {
 function mealType(date) {
     let hour = moment(date).format("H");
     let type = _mealType(hour);
+    console.log("HOUR", hour);
     return type;
 }
 

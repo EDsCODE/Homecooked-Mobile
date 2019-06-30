@@ -13,7 +13,7 @@ import { getHostImage } from "Homecooked/src/modules/host/selectors";
 
 const PROMPT = "Edit Host Profile";
 
-const PROFILE_PLACEHOLDER_IMAGE = "Homecooked/src/assets/img/filledTable.jpg";
+const PROFILE_PLACEHOLDER_IMAGE = "Homecooked/src/assets/img/Profile.png";
 
 class Host_Settings_Main extends Component {
     constructor() {
@@ -126,6 +126,7 @@ class Host_Settings_Main extends Component {
             <View style={styles.container}>
                 <FlatList
                     data={this.state.data}
+                    extraData={this.props.hostImage}
                     renderItem={this._renderItem}
                     ItemSeparatorComponent={this._renderSeparator}
                     bounces={false}

@@ -56,7 +56,7 @@ class Main extends Component {
     };
 
     componentDidMount() {
-        this.props.getChef();
+        this.props.loadChef();
         let settingRows = [
             {},
             this.hostRow(this.props.hostStatus),
@@ -215,6 +215,10 @@ class Main extends Component {
         />
     );
 
+    _refresh = () => {
+        this.props.loadChef();
+    };
+
     render() {
         return (
             <View style={styles.container}>
@@ -223,8 +227,9 @@ class Main extends Component {
                     extraData={this.props}
                     renderItem={this._renderItem}
                     ItemSeparatorComponent={this._renderSeparator}
-                    bounces={false}
                     keyExtractor={this._keyExtractor}
+                    refreshing={this.props.loading}
+                    onRefresh={this._refresh}
                 />
             </View>
         );
@@ -240,17 +245,14 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-    const getChef = () => {
+    const loadChef = () => {
         dispatch({
-            type: hostTypes.GET_CHEF_REQUEST,
-            payload: {
-                userId: "7aff6007-d658-4944-bd41-ea2d05589864"
-            }
+            type: hostTypes.GET_CHEF_REQUEST
         });
     };
 
     return {
-        getChef
+        loadChef
     };
 };
 

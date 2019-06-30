@@ -6,7 +6,7 @@ import PromptText from "Homecooked/src/components/Text/Prompt";
 import MinorText from "Homecooked/src/components/Text/Minor";
 import CloseButton from "Homecooked/src/components/Buttons/Close";
 import BarButton from "Homecooked/src/components/Buttons/BarButton";
-import ImagePicker from "react-native-image-picker";
+import { ImagePicker } from "Homecooked/src/components/Image/Picker";
 import ImagePlaceholder from "Homecooked/src/components/Image/Placeholder";
 
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
@@ -68,16 +68,9 @@ class EventMedia extends Component {
         });
     };
 
-    openPickerFor = index => {
-        const options = {
-            title: "Select Image",
-            storageOptions: {
-                skipBackup: true,
-                path: "images"
-            }
-        };
-
-        ImagePicker.launchImageLibrary(options, response => {
+    openPickerFor = async index => {
+        let response = await ImagePicker();
+        if (response) {
             this.setState({
                 images: {
                     ...this.state.images,
@@ -88,7 +81,7 @@ class EventMedia extends Component {
                     [index]: response
                 }
             });
-        });
+        }
     };
 
     render() {

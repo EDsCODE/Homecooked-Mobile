@@ -65,19 +65,18 @@ function* facebookLoginWorkerSaga(action) {
             payload: { ...user }
         });
 
+        // indicates user first login
         if (!user.profileImageURL) {
-            // TODO: upload image
             let { data: key } = yield call(ImageService.uploadImage, image);
             yield put({
                 type: currentUserTypes.UPDATE_USER_REQUEST,
                 payload: { profileImageURL: key }
             });
+            NavigationService.navigate("Onboarding");
         } else {
             yield put({ type: currentUserTypes.GET_AVATAR_REQUEST });
+            NavigationService.navigate("Main");
         }
-
-        // navigate to main
-        NavigationService.navigate("Main");
     } catch (error) {
         // dispatch a failure action to the store with the error
         yield put({ type: types.LOGIN_ERROR, error });

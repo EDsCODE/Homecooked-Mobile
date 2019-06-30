@@ -49,16 +49,21 @@ export const getPastEvents = createSelector(
         currentBookingsArray.forEach(booking => {
             if (events[booking.eventId]) {
                 let event = Object.assign({}, events[booking.eventId]);
-                if (booking.status == "ATT") {
-                    event.mode = EventViewTypes.HISTORY_REVIEW;
-                } else {
-                    event.mode = EventViewTypes.HISTORY_PAST;
+                if (
+                    booking.status != "CNF" ||
+                    event.status != "OPN" ||
+                    event.status != "FUL"
+                ) {
+                    if (booking.status == "ATT") {
+                        event.mode = EventViewTypes.HISTORY_REVIEW;
+                    } else {
+                        event.mode = EventViewTypes.HISTORY_PAST;
+                    }
+                    pastEvents.push({
+                        ...event,
+                        userBooking: booking
+                    });
                 }
-
-                pastEvents.push({
-                    ...event,
-                    userBooking: booking
-                });
             }
         });
         return pastEvents;

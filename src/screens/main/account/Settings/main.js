@@ -5,7 +5,7 @@ import Header from "Homecooked/src/components/Headers/Basic";
 import NavigationService from "Homecooked/src/utils/NavigationService";
 import Cell from "Homecooked/src/components/Cells/AccountCell";
 
-import { authTypes } from "Homecooked/src/modules/types";
+import { authTypes, hostTypes } from "Homecooked/src/modules/types";
 import { connect } from "react-redux";
 
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
@@ -106,6 +106,7 @@ const mapDispatchToProps = dispatch => {
             type: authTypes.SIGNOUT_REQUEST
         });
     };
+
     return {
         signout
     };

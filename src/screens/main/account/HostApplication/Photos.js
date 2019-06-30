@@ -9,8 +9,7 @@ import BarButton from "Homecooked/src/components/Buttons/BarButton";
 
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 import NavigationService from "Homecooked/src/utils/NavigationService";
-
-import ImagePicker from "react-native-image-picker";
+import { ImagePicker } from "Homecooked/src/components/Image/Picker";
 import ImagePlaceholder from "Homecooked/src/components/Image/Placeholder";
 import { connect } from "react-redux";
 
@@ -59,23 +58,16 @@ class Photos extends Component {
         });
     };
 
-    openPickerFor = index => {
-        const options = {
-            title: "Select Image",
-            storageOptions: {
-                skipBackup: true,
-                path: "images"
-            }
-        };
-
-        ImagePicker.launchImageLibrary(options, response => {
+    openPickerFor = async index => {
+        let response = await ImagePicker();
+        if (response) {
             this.setState({
                 images: {
                     ...this.state.images,
                     [index]: response
                 }
             });
-        });
+        }
     };
 
     render() {
