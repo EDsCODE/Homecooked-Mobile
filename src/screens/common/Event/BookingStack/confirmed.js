@@ -123,8 +123,6 @@ export default connect(
 
 const styles = StyleSheet.create({
     headerContainer: {
-        paddingHorizontal: Spacing.large,
-        flexDirection: 'row',
-        alignContent: 'center'
+        paddingHorizontal: Spacing.large
     }
 });
