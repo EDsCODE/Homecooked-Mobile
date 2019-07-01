@@ -140,6 +140,21 @@ const reducer = (state = initialState, action) => {
                 actionLoading: false,
                 error: action.error
             };
+        case types.LEAVE_REVIEW_REQUEST:
+            return {
+                ...state,
+                actionLoading: true
+            };
+        case types.LEAVE_REVIEW_SUCCESS:
+            return {
+                ...state,
+                actionLoading: false
+            };
+        case types.LEAVE_REVIEW_ERROR:
+            return {
+                ...state,
+                actionLoading: false
+            };
         default:
             return state;
     }

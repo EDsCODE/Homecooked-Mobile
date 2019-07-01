@@ -206,6 +206,7 @@ function* leaveReview(action) {
         );
         yield put({ type: types.LEAVE_REVIEW_SUCCESS });
         yield put({ type: currentUserTypes.GET_CURRENT_BOOKINGS_REQUEST });
+        NavigationService.navigate("ReviewConfirmation");
     } catch (error) {
         yield put({ type: types.LEAVE_REVIEW_ERROR, error });
     }

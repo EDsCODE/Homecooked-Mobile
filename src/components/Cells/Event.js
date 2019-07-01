@@ -1,11 +1,5 @@
 import React, { PureComponent } from "react";
-import {
-    View,
-    TouchableOpacity,
-    Text,
-    StyleSheet,
-    ImageBackground
-} from "react-native";
+import { View, TouchableOpacity, StyleSheet } from "react-native";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 
 import { dateWithMealType, eventCardDate } from "Homecooked/src/utils/Date";
@@ -15,8 +9,6 @@ import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 
 import LinearGradient from "react-native-linear-gradient";
 import FastImage from "react-native-fast-image";
-
-const imageURI = "Homecooked/src/assets/img/filledTable.jpg";
 
 export default class EventCard extends PureComponent {
     state = {
@@ -79,7 +71,6 @@ export default class EventCard extends PureComponent {
                     backgroundColor: "rgba(75, 75, 75, 1.00)"
                 }}
                 inactiveDotStyle={{
-                    // Define styles for inactive dots here
                     backgroundColor: "rgba(160, 160, 160, 1.00)"
                 }}
                 inactiveDotOpacity={0.4}

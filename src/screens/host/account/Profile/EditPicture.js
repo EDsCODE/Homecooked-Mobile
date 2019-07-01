@@ -34,7 +34,6 @@ class Photo extends Component {
     };
 
     openPicker = async () => {
-        console.log("open picker");
         let response = await ImagePicker();
         if (response) {
             this.setState({

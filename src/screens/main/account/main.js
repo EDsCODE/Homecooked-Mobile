@@ -17,8 +17,6 @@ import { connect } from "react-redux";
 import branch, { BranchEvent } from "react-native-branch";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 
-const PROFILE_PLACEHOLDER_IMAGE = "Homecooked/src/assets/img/Profile.png";
-
 class Main extends Component {
     constructor() {
         super();

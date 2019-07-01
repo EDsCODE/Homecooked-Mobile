@@ -99,7 +99,8 @@ const reducer = (state = initialState, action) => {
         case types.SAVE_PAYMENT_ERROR:
             return {
                 ...state,
-                error
+                error,
+                savingPayment: false
             };
         case types.GET_AVATAR_REQUEST:
             return {

@@ -2,6 +2,8 @@
 import { createSelector } from "reselect";
 import { CityFilter, EventViewTypes } from "Homecooked/src/types";
 
+import moment from "moment";
+
 const getCurrentBookings = state => state.currentUser.bookings;
 const getEvents = state => state.events.byId;
 const getUsers = state => state.users.byId;
@@ -17,7 +19,9 @@ const getActiveEvents = createSelector(
 
         // remove events that user is a part of
         eventsArray = eventsArray.filter(event => {
-            if (event.status == "OPN") {
+            let now = moment();
+            let then = moment(event.startTime);
+            if (event.status == "OPN" && then.diff(now, "hours") > 24) {
                 if (chefId && chefId == event.chef.id) {
                     return false;
                 }

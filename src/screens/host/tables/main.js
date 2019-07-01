@@ -47,13 +47,11 @@ class HostTablesMain extends Component {
     _keyExtractor = (item, index) => item.id;
 
     _renderUpcomingItem = ({ item, index }) => {
-        let startTime = new Date();
-        let endTime = new Date(startTime.getTime() + 60 * 60000);
         return (
             <HistoryCell
                 tintColor={Color.green}
-                startTime={startTime}
-                endTime={endTime}
+                startTime={item.startTime}
+                duration={item.duration}
                 title={item.title}
                 onPress={() => {
                     NavigationService.navigate("HostTablesMainEvent");
@@ -73,13 +71,11 @@ class HostTablesMain extends Component {
     };
 
     _renderPastItem = ({ item }) => {
-        let startTime = new Date();
-        let endTime = new Date(startTime.getTime() + 60 * 60000);
         return (
             <HistoryCell
                 tintColor={Color.orange}
-                startTime={startTime}
-                endTime={endTime}
+                startTime={item.startTime}
+                duration={item.duration}
                 title={item.title}
                 onPress={() => {
                     console.log(item);
@@ -91,13 +87,11 @@ class HostTablesMain extends Component {
     };
 
     _renderInReviewItem = ({ item }) => {
-        let startTime = new Date();
-        let endTime = new Date(startTime.getTime() + 60 * 60000);
         return (
             <HistoryCell
                 tintColor={Color.yellow}
-                startTime={startTime}
-                endTime={endTime}
+                startTime={item.startTime}
+                duration={item.duration}
                 title={item.title}
                 onPress={() => {
                     NavigationService.navigate("HostTablesMainEvent");
@@ -126,8 +120,6 @@ class HostTablesMain extends Component {
     );
 
     _navigateToCreateEvent = () => {
-        this.props.navigation.navigate("CreateEventStack");
-        return;
         if (!this.props.host.description || !this.props.host.profileImageUrl) {
             Alert.alert(
                 "You must create a host profile before creating an event"

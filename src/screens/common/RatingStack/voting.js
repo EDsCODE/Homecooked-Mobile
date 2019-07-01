@@ -33,7 +33,7 @@ export default class Voting extends Component {
     };
 
     _goBack = () => {
-        NavigationService.navigate("Info");
+        this.props.screenProps.goBack();
     };
 
     render() {

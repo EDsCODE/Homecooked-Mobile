@@ -18,7 +18,7 @@ export default class HistoryCell extends Component {
         // format date
         let {
             startTime,
-            endTime,
+            duration,
             title,
             style,
             onPress,
@@ -33,7 +33,9 @@ export default class HistoryCell extends Component {
         let type = mealType(startTime);
 
         let startTimeParsed = moment(startTime).format("h A");
-        let endTimeParsed = moment(endTime).format("h A");
+        let endTimeParsed = moment(startTime)
+            .add(duration, "hours")
+            .format("h A");
 
         let month = moment(startTime).format("MMM");
         let day = moment(startTime).format("D");

@@ -8,12 +8,8 @@ import { STRIPE_HOST_ACCOUNT_URL } from "Homecooked/src/config/constants";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 
 import { connect } from "react-redux";
-import { hostTypes } from "Homecooked/src/modules/types";
-import { getHostImage } from "Homecooked/src/modules/host/selectors";
 
 const PROMPT = "Edit Host Profile";
-
-const PROFILE_PLACEHOLDER_IMAGE = "Homecooked/src/assets/img/Profile.png";
 
 class Host_Settings_Main extends Component {
     constructor() {

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, FlatList, Text, StyleSheet, Alert } from "react-native";
+import { View, StyleSheet, Alert } from "react-native";
 
 import HeadingText from "Homecooked/src/components/Text/Heading";
 import PromptText from "Homecooked/src/components/Text/Prompt";

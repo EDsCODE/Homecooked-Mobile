@@ -46,7 +46,7 @@ class CreateEventLogistics extends Component {
 
     state = {
         address: null,
-        specialDirections: "lkn",
+        specialDirections: "",
         date: null,
         startTime: null,
         duration: null,

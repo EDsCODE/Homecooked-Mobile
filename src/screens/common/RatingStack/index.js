@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
-import { createStackNavigator } from 'react-navigation';
-import Info from './info';
-import Voting from './voting';
-import Review from './review';
+import React, { Component } from "react";
+import { createStackNavigator } from "react-navigation";
+import Info from "./info";
+import Voting from "./voting";
+import Review from "./review";
+import ReviewConfirmation from "./ReviewConfirmation";
 
-import { eventTypes } from 'Homecooked/src/modules/types';
-import { connect } from 'react-redux';
-import { getEvent } from 'Homecooked/src/modules/event/selectors';
+import { eventTypes } from "Homecooked/src/modules/types";
+import { connect } from "react-redux";
+import { getEvent } from "Homecooked/src/modules/event/selectors";
 
 const RatingStack = createStackNavigator(
     {
@@ -18,11 +19,14 @@ const RatingStack = createStackNavigator(
         },
         Review: {
             screen: Review
+        },
+        ReviewConfirmation: {
+            screen: ReviewConfirmation
         }
     },
     {
-        initialRouteName: 'Voting',
-        headerMode: 'none'
+        initialRouteName: "Voting",
+        headerMode: "none"
     }
 );
 
@@ -31,7 +35,7 @@ class ReviewEvent extends Component {
 
     state = {
         ratings: [],
-        review: ''
+        review: ""
     };
 
     updateData = (key, value, cb) => {
@@ -40,7 +44,7 @@ class ReviewEvent extends Component {
                 [key]: value
             },
             () => {
-                typeof cb === 'function' && cb();
+                typeof cb === "function" && cb();
             }
         );
     };
@@ -61,7 +65,8 @@ class ReviewEvent extends Component {
                     ...this.props,
                     updateData: this.updateData,
                     ...this.state,
-                    submit: this.submit
+                    submit: this.submit,
+                    goBack: this.props.navigation.goBack
                 }}
             />
         );

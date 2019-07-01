@@ -8,7 +8,6 @@ import Placeholder, {
     ImageContent
 } from "rn-placeholder";
 
-import HistoryCell from "Homecooked/src/components/Cells/History";
 import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
 
 class CellList extends Component {
