@@ -13,11 +13,11 @@ export default props => {
 
     return (
         <View style={styles.rectangle}>
-            <FastImageBackground
-                source={props.eventImage}
+            <ImageBackground
+                source={{ uri: props.eventImage }}
                 style={styles.banner}
                 resizeMode="cover"
-                blurRadius={30}
+                blurRadius={15}
                 //flexDirection="row"
             >
                 <FastImage
@@ -26,14 +26,20 @@ export default props => {
                     //resizeMode="cover"
                 />
                 <View style={styles.textBox}>
-                    <HeadingText style={{ color: Color.white, fontSize: 17 }}>
-                        How was {props.eventName}?
+                    <HeadingText
+                        style={{
+                            fontWeight: 'bold',
+                            color: Color.white,
+                            fontSize: 17
+                        }}
+                    >
+                        {props.eventBannerDescription}
                     </HeadingText>
                     <PromptText style={{ color: Color.white, fontSize: 12 }}>
                         {extendedDateWithMealType(props.eventDate)}
                     </PromptText>
                 </View>
-            </FastImageBackground>
+            </ImageBackground>
         </View>
     );
 };

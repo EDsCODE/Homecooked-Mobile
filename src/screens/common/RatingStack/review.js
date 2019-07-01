@@ -38,7 +38,7 @@ class Review extends Component {
                 <Header title="Rating and Review" leftOnPress={this._goBack} />
                 <Banner
                     eventImage={images[0]}
-                    eventName={`${firstName}'s table`}
+                    eventBannerDescription={`How was ${firstName}'s Table?`}
                     eventDate={startTime}
                 />
                 <View style={styles.parentContainer}>
