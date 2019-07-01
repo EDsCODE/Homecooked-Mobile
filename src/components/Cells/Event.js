@@ -86,10 +86,8 @@ export default class EventCard extends PureComponent {
     render() {
         let {
             title,
-            date,
-            distance,
+            startTime,
             attributes,
-            people,
             key,
             marker,
             chef,
@@ -97,13 +95,13 @@ export default class EventCard extends PureComponent {
             confirmedBookingCount
         } = this.props.event;
         let { price } = attributes;
-        let MEALTYPE_TIME = dateWithMealType(date);
+        let MEALTYPE_TIME = dateWithMealType(startTime);
         let LOCATION = `${marker.city}, ${marker.state}`;
         let SEATS_LEFT =
             attributes.tableSizeMax -
             parseInt(confirmedBookingCount) +
             " seats left";
-        let EVENT_CARD_DATE = eventCardDate(date);
+        let EVENT_CARD_DATE = eventCardDate(startTime);
         return (
             <TouchableOpacity
                 style={styles.card}
