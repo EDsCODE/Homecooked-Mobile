@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
     View,
     FlatList,
@@ -6,32 +6,33 @@ import {
     StyleSheet,
     TouchableOpacity,
     Keyboard
-} from "react-native";
+} from 'react-native';
 
-import HeadingText from "Homecooked/src/components/Text/Heading";
-import PromptText from "Homecooked/src/components/Text/Prompt";
-import MinorText from "Homecooked/src/components/Text/Minor";
-import CloseButton from "Homecooked/src/components/Buttons/Close";
-import FloatyButton from "Homecooked/src/components/Buttons/FloatyButton";
-import { connect } from "react-redux";
+import HeadingText from 'Homecooked/src/components/Text/Heading';
+import PromptText from 'Homecooked/src/components/Text/Prompt';
+import MinorText from 'Homecooked/src/components/Text/Minor';
+import CloseButton from 'Homecooked/src/components/Buttons/Close';
+import FloatyButton from 'Homecooked/src/components/Buttons/FloatyButton';
+import { connect } from 'react-redux';
 
-import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
-import NavigationService from "Homecooked/src/utils/NavigationService";
+import { Spacing, Typography, Color } from 'Homecooked/src/components/styles';
+import NavigationService from 'Homecooked/src/utils/NavigationService';
 
 import {
     getPossibleMatches,
     getPlaceDetails
-} from "Homecooked/src/services/location";
-import PhoneInput from "react-native-phone-input";
+} from 'Homecooked/src/services/location';
+import PhoneInput from 'react-native-phone-input';
 
-import TextField from "Homecooked/src/components/TextFields/Material";
+import TextField from 'Homecooked/src/components/TextFields/Material';
 
 class BasicInfo extends Component {
     state = {
-        query: "",
+        query: '',
         results: [],
         selected: null,
-        phoneNumber: ""
+        phoneNumber: '',
+        phoneError: ''
     };
 
     componentDidMount() {
@@ -41,15 +42,26 @@ class BasicInfo extends Component {
     }
 
     _goBack = () => {
-        NavigationService.navigate("AccountMain");
+        NavigationService.navigate('AccountMain');
     };
 
     _goNext = () => {
         let { phoneNumber, selected } = this.state;
 
-        this.props.screenProps.updateData("address", selected);
-        this.props.screenProps.updateData("phoneNumber", phoneNumber);
-        this.props.navigation.navigate("ShortResponse");
+        if (!this.phone.isValidNumber()) {
+            this.setState({
+                phoneError: 'Please enter a valid phone number'
+            });
+            return;
+        } else {
+            this.setState({
+                phoneError: ''
+            });
+        }
+
+        this.props.screenProps.updateData('address', selected);
+        this.props.screenProps.updateData('phoneNumber', phoneNumber);
+        this.props.navigation.navigate('ShortResponse');
     };
 
     onChangeText = async query => {
@@ -115,14 +127,14 @@ class BasicInfo extends Component {
                 <HeadingText>Basic Information</HeadingText>
                 <PromptText style={{ marginTop: Spacing.large }}>
                     We phone screen our hosts to determine if you’re a right fit
-                    for Homecooked.
+                    for gathr.
                 </PromptText>
                 <PromptText style={{ marginTop: Spacing.large }}>
                     Your location helps us gauge how many chefs are in your
                     area.
                 </PromptText>
                 <TextField
-                    label={""}
+                    label={''}
                     tintColor="#4A4A4A"
                     placeholder="Address"
                     multiline={true}
@@ -136,7 +148,7 @@ class BasicInfo extends Component {
                         keyExtractor={this._keyExtractor}
                         data={results}
                         renderItem={this.renderItem}
-                        keyboardShouldPersistTaps={"handled"}
+                        keyboardShouldPersistTaps={'handled'}
                     />
                 ) : null}
                 <MinorText
@@ -148,7 +160,7 @@ class BasicInfo extends Component {
                     Phone Number
                 </MinorText>
                 <PhoneInput
-                    ref="phone"
+                    ref={ref => (this.phone = ref)}
                     onChangePhoneNumber={phoneNumber =>
                         this.setState({ phoneNumber })
                     }
@@ -161,12 +173,15 @@ class BasicInfo extends Component {
                         borderRadius: 6,
                         borderColor: Color.lightGray
                     }}
-                    textProps={{ returnKeyType: "done" }}
+                    textProps={{ returnKeyType: 'done' }}
                 />
+                <PromptText style={{ fontSize: 14, color: Color.red }}>
+                    {this.state.phoneError}
+                </PromptText>
                 <FloatyButton
                     onPress={this._goNext}
                     style={{
-                        position: "absolute",
+                        position: 'absolute',
                         bottom: Spacing.largest,
                         right: Spacing.largest
                     }}

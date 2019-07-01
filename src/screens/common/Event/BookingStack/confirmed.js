@@ -1,56 +1,57 @@
-import React, { Component } from "react";
-import { View, StyleSheet } from "react-native";
-import NavigationService from "Homecooked/src/utils/NavigationService";
-import HeadingText from "Homecooked/src/components/Text/Heading";
-import CloseButton from "Homecooked/src/components/Buttons/Close";
-import InfoSection from "Homecooked/src/components/Event/Info";
-import BarButton from "Homecooked/src/components/Buttons/BarButton";
+import React, { Component } from 'react';
+import { View, StyleSheet } from 'react-native';
+import NavigationService from 'Homecooked/src/utils/NavigationService';
+import HeadingText from 'Homecooked/src/components/Text/Heading';
+import CloseButton from 'Homecooked/src/components/Buttons/Close';
+import InfoSection from 'Homecooked/src/components/Event/Info';
+import BarButton from 'Homecooked/src/components/Buttons/BarButton';
 
-import { connect } from "react-redux";
-import { getEvent } from "Homecooked/src/modules/event/selectors";
-import branch, { BranchEvent } from "react-native-branch";
+import { connect } from 'react-redux';
+import { getEvent } from 'Homecooked/src/modules/event/selectors';
+import branch, { BranchEvent } from 'react-native-branch';
 
-import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
+import { Spacing, Typography, Color } from 'Homecooked/src/components/styles';
+import Banner from 'Homecooked/src/components/Image/Banner';
 
 class Confirmed extends Component {
     state = {
-        modules: ["dateTime", "location", "reminder", "invite"]
+        modules: ['dateTime', 'location', 'reminder', 'invite']
     };
     _goBack = () => {
-        NavigationService.navigate("Feed");
+        NavigationService.navigate('Feed');
     };
 
     _goNext = () => {
-        this.props.navigation.navigate("Photo");
+        this.props.navigation.navigate('Photo');
     };
 
     getReferralLink = async () => {
         //branch.setIdentity('theUserId') // <- Identifiy the user in branch
         let branchUniversalObject = await branch.createBranchUniversalObject(
-            "canonicalIdentifier",
+            'canonicalIdentifier',
             {
                 automaticallyListOnSpotlight: true,
-                metadata: { prop1: "test", prop2: "abc" },
+                metadata: { prop1: 'test', prop2: 'abc' },
                 title: "You're Invited!",
                 contentDescription:
-                    "" + firstName + " has invited you to join Gathr!"
+                    '' + firstName + ' has invited you to join Gathr!'
             }
         );
         let linkProperties = {
-            feature: "referral",
-            channel: "SMS"
+            feature: 'referral',
+            channel: 'SMS'
         };
         let controlParams = {
-            $desktop_url: "http://gathrtable.com"
+            $desktop_url: 'http://gathrtable.com'
         };
 
         var firstName = this.props.currentUser.firstName;
         let shareOptions = {
             messageHeader: "You're Invited!",
             messageBody:
-                "" +
+                '' +
                 firstName +
-                " has invited you to Gathr. Come join the table!"
+                ' has invited you to Gathr. Come join the table!'
         };
         let {
             channel,
@@ -66,14 +67,22 @@ class Confirmed extends Component {
     };
 
     render() {
-        let { startTime, marker, duration } = this.props.event;
+        let { chef, startTime, marker, duration, images } = this.props.event;
         let { formattedAddress } = marker;
+        let {
+            user: { firstName }
+        } = chef;
         return (
             <View style={{ flex: 1, paddingTop: 30 }}>
                 <View style={styles.headerContainer}>
                     <CloseButton onPress={this._goBack} />
-                    <HeadingText>Booking Confirmed!</HeadingText>
+                    {/* <HeadingText>Booking Confirmed!</HeadingText> */}
                 </View>
+                <Banner
+                    eventImage={images[0]}
+                    eventBannerDescription={`Booking Confirmed! \n${firstName}'s Table`}
+                    eventDate={startTime}
+                />
                 <InfoSection
                     modules={this.state.modules}
                     startTime={startTime}
@@ -83,7 +92,7 @@ class Confirmed extends Component {
                 <BarButton
                     title="Invite"
                     style={{
-                        position: "absolute",
+                        position: 'absolute',
                         bottom: Spacing.large,
                         left: Spacing.large
                     }}
