@@ -104,7 +104,7 @@ class Review extends Component {
 
     render() {
         let { actionLoading } = this.props;
-        let { attributes, startTime, duration } = this.props.event;
+        let { attributes, startTime, duration, chef } = this.props.event;
         let { price } = attributes;
         let { useCustomer } = this.state;
 
@@ -127,6 +127,7 @@ class Review extends Component {
                         startTime={startTime}
                         price={price}
                         duration={duration}
+                        chefName={chef.user.firstName}
                     />
 
                     {useCustomer ? (

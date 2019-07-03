@@ -1,4 +1,4 @@
-export const API_URL = "https://gathr-backend-staging.herokuapp.com/v2/";
+export const API_URL = "https://gathr-backend-production.herokuapp.com/v2/";
 export const GOOGLE_API_KEY = "AIzaSyALPiDn5Yo4sYb574VHQY3DnASadnoBUhQ";
 export const STRIPE_CLIENT_ID = "ca_FFkrxwBWxtXVlE0owsTs0dHjHyCIwQCo";
 export const STRIPE_HOST_ACCOUNT_URL = (id, email, firstName) => {

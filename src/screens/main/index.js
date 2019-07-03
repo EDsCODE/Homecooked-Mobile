@@ -27,7 +27,7 @@ const MainStack = createBottomTabNavigator(
         }
     },
     {
-        initialRouteName: "Account",
+        initialRouteName: "Feed",
         defaultNavigationOptions: ({ navigation }) => ({
             tabBarIcon: ({ focused, horizontal, tintColor }) => {
                 const { routeName } = navigation.state;

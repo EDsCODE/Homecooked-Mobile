@@ -22,6 +22,8 @@ Sentry.config(
 
 const AppContainer = createAppContainer(TopLevelNavigator);
 
+let codePushOptions = { checkFrequency: codePush.CheckFrequency.ON_APP_RESUME };
+
 class App extends Component {
     constructor(props) {
         super(props);
@@ -40,4 +42,4 @@ class App extends Component {
     }
 }
 
-export default codePush(App);
+export default codePush(codePushOptions)(App);
