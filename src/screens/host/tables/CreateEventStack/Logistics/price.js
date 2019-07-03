@@ -1,18 +1,18 @@
-import React, { Component } from "react";
-import { View, StyleSheet } from "react-native";
+import React, { Component } from 'react';
+import { View, StyleSheet } from 'react-native';
 
-import HeadingText from "Homecooked/src/components/Text/Heading";
-import PromptText from "Homecooked/src/components/Text/Prompt";
-import CloseButton from "Homecooked/src/components/Buttons/Close";
-import BarButton from "Homecooked/src/components/Buttons/BarButton";
-import StaticField from "Homecooked/src/components/TextFields/Static";
-import Picker from "Homecooked/src/components/Picker/Basic";
+import HeadingText from 'Homecooked/src/components/Text/Heading';
+import PromptText from 'Homecooked/src/components/Text/Prompt';
+import CloseButton from 'Homecooked/src/components/Buttons/Close';
+import BarButton from 'Homecooked/src/components/Buttons/BarButton';
+import StaticField from 'Homecooked/src/components/TextFields/Static';
+import Picker from 'Homecooked/src/components/Picker/Basic';
 
-import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
+import { Spacing, Typography, Color } from 'Homecooked/src/components/styles';
 
 let priceOptions = [];
 
-for (let i = 15; i <= 25; i++) {
+for (let i = 15; i <= 35; i++) {
     priceOptions.push({
         label: `$${i}`,
         value: i
@@ -38,7 +38,7 @@ export default class Price extends Component {
 
     _goNext = () => {
         let { price } = this.state;
-        this.props.screenProps.updateData("price", price);
+        this.props.screenProps.updateData('price', price);
         this._goBack();
     };
 
@@ -65,7 +65,7 @@ export default class Price extends Component {
                     Typical meals range between $15-25/person.
                 </PromptText>
                 <StaticField
-                    label={"Price"}
+                    label={'Price'}
                     value={`$${price}`}
                     containerStyle={{ marginTop: Spacing.larger }}
                     onPress={this.showPicker}
@@ -73,7 +73,7 @@ export default class Price extends Component {
                 <BarButton
                     title="Confirm"
                     style={{
-                        position: "absolute",
+                        position: 'absolute',
                         bottom: Spacing.large,
                         left: Spacing.large
                     }}

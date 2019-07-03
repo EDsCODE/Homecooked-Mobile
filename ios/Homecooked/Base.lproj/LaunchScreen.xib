@@ -16,7 +16,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="25" verticalHuggingPriority="251" image="gtransparent.png" translatesAutoresizingMaskIntoConstraints="NO" id="b05-VI-60r">
-                    <rect key="frame" x="144.66666666666666" y="-287.66666666666674" width="124.99999999999997" height="1471.3333333333333"/>
+                    <rect key="frame" x="144.66666666666666" y="-287.66666666666669" width="124.99999999999997" height="1471.3333333333333"/>
                 </imageView>
             </subviews>
             <color key="backgroundColor" red="1" green="0.40392156862745099" blue="0.30980392156862746" alpha="1" colorSpace="calibratedRGB"/>

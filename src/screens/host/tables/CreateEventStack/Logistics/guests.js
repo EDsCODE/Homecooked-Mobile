@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import { View, StyleSheet } from "react-native";
+import React, { Component } from 'react';
+import { View, StyleSheet } from 'react-native';
 
-import HeadingText from "Homecooked/src/components/Text/Heading";
-import PromptText from "Homecooked/src/components/Text/Prompt";
-import CloseButton from "Homecooked/src/components/Buttons/Close";
-import BarButton from "Homecooked/src/components/Buttons/BarButton";
-import StaticField from "Homecooked/src/components/TextFields/Static";
-import Picker from "Homecooked/src/components/Picker/Basic";
+import HeadingText from 'Homecooked/src/components/Text/Heading';
+import PromptText from 'Homecooked/src/components/Text/Prompt';
+import CloseButton from 'Homecooked/src/components/Buttons/Close';
+import BarButton from 'Homecooked/src/components/Buttons/BarButton';
+import StaticField from 'Homecooked/src/components/TextFields/Static';
+import Picker from 'Homecooked/src/components/Picker/Basic';
 
-import { Spacing, Typography, Color } from "Homecooked/src/components/styles";
+import { Spacing, Typography, Color } from 'Homecooked/src/components/styles';
 
 export default class Guests extends Component {
     _goBack = () => {
@@ -32,8 +32,8 @@ export default class Guests extends Component {
 
     _goNext = () => {
         let { minGuests, maxGuests } = this.state;
-        this.props.screenProps.updateData("minGuests", minGuests);
-        this.props.screenProps.updateData("maxGuests", maxGuests);
+        this.props.screenProps.updateData('minGuests', minGuests);
+        this.props.screenProps.updateData('maxGuests', maxGuests);
         this._goBack();
     };
 
@@ -65,7 +65,7 @@ export default class Guests extends Component {
 
     getMaxItems = min => {
         let items = [];
-        for (let i = min + 1; i < 8; i++) {
+        for (let i = min + 1; i <= 8; i++) {
             items.push({
                 label: `${i} people`,
                 value: i
@@ -99,13 +99,13 @@ export default class Guests extends Component {
                     guests + you = table of 6)
                 </PromptText>
                 <StaticField
-                    label={"Minimum"}
+                    label={'Minimum'}
                     value={`${minGuests} people`}
                     containerStyle={{ marginTop: Spacing.larger }}
                     onPress={this.showMinPicker}
                 />
                 <StaticField
-                    label={"Maximum"}
+                    label={'Maximum'}
                     value={`${maxGuests} people`}
                     containerStyle={{ marginVertical: Spacing.base }}
                     onPress={this.showMaxPicker}
@@ -113,7 +113,7 @@ export default class Guests extends Component {
                 <BarButton
                     title="Confirm"
                     style={{
-                        position: "absolute",
+                        position: 'absolute',
                         bottom: Spacing.large,
                         left: Spacing.large
                     }}
